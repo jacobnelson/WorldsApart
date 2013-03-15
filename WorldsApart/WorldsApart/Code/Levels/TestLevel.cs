@@ -110,7 +110,6 @@ namespace WorldsApart.Code.Levels
             console1.AddLight(player2Light);
 
             console1 = gsPlay.AddLightConsole(console1.texture, GridToPosition(220, 17));
-            console1 = gsPlay.AddLinkedLightConsole(console1, console1.texture, GridToPosition(228, 17));
 
 
             gsPlay.AddBouncyBall(.5f, gsPlay.LoadTexture("TestSprites/pickUp"), GridToPosition(new Point(137, 46))).selfIlluminating = true;

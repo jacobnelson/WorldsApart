@@ -16,6 +16,7 @@ namespace WorldsApart.Code.Entities
     {
         public LightConsole linkedConsole;
         public PointLight light;
+        public PointLight sleeperLight;
 
         public bool hasLight = true;
 
@@ -64,6 +65,12 @@ namespace WorldsApart.Code.Entities
                         linkedConsole.light = null;
                         linkedConsole.hasLight = false;
                     }
+                    else if (linkedConsole == null && player.sleeperLight == null && sleeperLight != null)
+                    {
+                        player.sleeperLight = sleeperLight;
+                        sleeperLight.target = player;
+                        sleeperLight = null;
+                    }
                 }
                 hasLight = false;
             }
@@ -81,6 +88,12 @@ namespace WorldsApart.Code.Entities
                         linkedConsole.light.visible = true;
                         player.sleeperLight = null;
                         linkedConsole.hasLight = true;
+                    }
+                    else if (linkedConsole == null && player.sleeperLight != null)
+                    {
+                        sleeperLight = player.sleeperLight;
+                        player.sleeperLight = null;
+                        sleeperLight.target = this;
                     }
                 }
                 hasLight = true;
