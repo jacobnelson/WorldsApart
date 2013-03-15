@@ -18,6 +18,7 @@ namespace WorldsApart.Code.Entities
         public TriggerState triggerState = TriggerState.Untriggered;
         public List<EventTrigger> triggerList = new List<EventTrigger>();
         public bool onlyTriggered = false;
+        public bool clearTriggers = false;
 
         public EventObject(Texture2D texture, Vector2 position)
             : base(texture, position)

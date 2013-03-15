@@ -16,7 +16,7 @@ namespace WorldsApart.Code.Entities
     {
         //List<PhysObj> residentList = new List<PhysObj>();
 
-        bool pressingDown = false;
+        //bool pressingDown = false;
         bool raisingUp = false;
 
         Vector2 unpressedScale = Vector2.One;
@@ -55,7 +55,6 @@ namespace WorldsApart.Code.Entities
             }
             else
             {
-                pressingDown = false;
                 if (!raisingUp)
                 {
                     raisingUp = true;

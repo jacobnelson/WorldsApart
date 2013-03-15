@@ -117,6 +117,7 @@
     <Compile Include="Code\Controllers\TimerObject.cs" />
     <Compile Include="Code\Entities\Button.cs" />
     <Compile Include="Code\Entities\CircularPlatforms.cs" />
+    <Compile Include="Code\Entities\Collectible.cs" />
     <Compile Include="Code\Entities\Door.cs" />
     <Compile Include="Code\Entities\EventObject.cs" />
     <Compile Include="Code\Entities\LightConsole.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Code\Entities\PickUpObj.cs" />
     <Compile Include="Code\Entities\Player.cs" />
     <Compile Include="Code\Entities\FlipSwitch.cs" />
+    <Compile Include="Code\Entities\Portal.cs" />
     <Compile Include="Code\Entities\TriggerArea.cs" />
     <Compile Include="Code\Gamestates\GameState.cs" />
     <Compile Include="Code\Gamestates\GameStateManager.cs" />
@@ -144,6 +146,12 @@
     <Compile Include="Code\Levels\EnvironmentData.cs" />
     <Compile Include="Code\Levels\Level.cs" />
     <Compile Include="Code\Levels\Level1.cs" />
+    <Compile Include="Code\Levels\Level2.cs" />
+    <Compile Include="Code\Levels\Level3.cs" />
+    <Compile Include="Code\Levels\Level4.cs" />
+    <Compile Include="Code\Levels\Level5.cs" />
+    <Compile Include="Code\Levels\Level6.cs" />
+    <Compile Include="Code\Levels\Level7.cs" />
     <Compile Include="Code\Levels\TestLevel.cs" />
     <Compile Include="Code\Mathness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

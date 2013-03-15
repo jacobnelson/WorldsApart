@@ -51,19 +51,19 @@ namespace WorldsApart.Code.Entities
         float runningSpeedConst = 6;
 
         bool rightDown = false;
-        bool rightUp = false;
+        //bool rightUp = false;
         bool leftDown = false;
-        bool leftUp = false;
+        //bool leftUp = false;
         bool upDown = false;
-        bool upUp = false;
+        //bool upUp = false;
         bool downDown = false;
-        bool downUp = false;
+        //bool downUp = false;
         bool jumpDown = false;
         bool jumpPressed = false;
         bool jumpReleased = false;
         bool actionDown = false;
         bool actionPressed = false;
-        bool actionReleased = false;
+        //bool actionReleased = false;
 
         bool ableToPressDrop = false;
         int dropCounter = 0;
@@ -71,7 +71,7 @@ namespace WorldsApart.Code.Entities
 
         Vector2 thumb = Vector2.Zero;
 
-        PlayerMode currentMode = PlayerMode.Idle;
+        //PlayerMode currentMode = PlayerMode.Idle;
         PlayerMode currentFrame = PlayerMode.Idle;
 
         Facing facing = Facing.Right;
@@ -105,19 +105,14 @@ namespace WorldsApart.Code.Entities
 
             thumb = Vector2.Zero;
             rightDown = false;
-            rightUp = false;
             leftDown = false;
-            leftUp = false;
             upDown = false;
-            upUp = false;
             downDown = false;
-            downUp = false;
             jumpDown = false;
             jumpPressed = false;
             jumpReleased = false;
             actionDown = false;
             actionPressed = false;
-            actionReleased = false;
             GetInput();
 
             if (pushTarget == null) runningSpeed = runningSpeedConst;
@@ -275,7 +270,6 @@ namespace WorldsApart.Code.Entities
 
             if ((InputManager.IsKeyDown(Keys.RightShift) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
             if (InputManager.IsKeyPressed(Keys.RightShift) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
-            if ((InputManager.IsKeyReleased(Keys.RightShift) || InputManager.IsButtonReleased(Buttons.X))) actionReleased = true;
 
             if ((InputManager.IsKeyPressed(Keys.Space) || InputManager.IsButtonPressed(Buttons.A)) && state == PhysState.Grounded) jumpPressed = true;
             if (InputManager.IsKeyDown(Keys.Space) || InputManager.IsButtonDown(Buttons.A)) jumpDown = true;

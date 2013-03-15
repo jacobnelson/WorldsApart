@@ -22,8 +22,8 @@ namespace WorldsApart.Code.Controllers
         public float rotation = 0;
         public float speedRotation = 0;
 
-        float halfW = 0;
-        float halfH = 0;
+        //float halfW = 0;
+        //float halfH = 0;
 
         List<Vector2> cpList = new List<Vector2>();
         List<Vector2> tpList = new List<Vector2>();

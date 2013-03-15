@@ -87,6 +87,17 @@ namespace WorldsApart.Code.Levels
             gsPlay.player2.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
             gsPlay.player2.SetCollisionBox(52, 44, Vector2.Zero);
 
+
+            Portal glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), GridToPosition(211, 12));
+            glados.SetAnimationStuff(1, 2, 1, 2, 48, 96, 2, 5);
+            glados.isAnimating = false;
+            Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), GridToPosition(204, 12));
+            goody.selfIlluminating = true;
+            goody.SetAnimationStuff(1, 1, 1, 2, 64, 64, 2, 10);
+            goody.SetCollisionBox(32, 32, Vector2.Zero);
+            
+
+
             gsPlay.AddPointLight(gsPlay.LoadTexture("ShaderAssets/pointLight"), GridToPosition(30, 47), new Vector2(3));
             player1Light = gsPlay.AddPointLight(gsPlay.LoadTexture("ShaderAssets/pointLight"), Vector2.Zero, new Vector2(2));
             player1Light.SetGlowing(2, 2.4f, 120);
@@ -97,6 +108,9 @@ namespace WorldsApart.Code.Levels
             console1.AddLight(player1Light);
             console1 = gsPlay.AddLinkedLightConsole(console1, console1.texture, GridToPosition(189, 32));
             console1.AddLight(player2Light);
+
+            console1 = gsPlay.AddLightConsole(console1.texture, GridToPosition(220, 17));
+            console1 = gsPlay.AddLinkedLightConsole(console1, console1.texture, GridToPosition(228, 17));
 
 
             gsPlay.AddBouncyBall(.5f, gsPlay.LoadTexture("TestSprites/pickUp"), GridToPosition(new Point(137, 46))).selfIlluminating = true;
@@ -125,10 +139,10 @@ namespace WorldsApart.Code.Levels
             //d1.SetPlayerMode(PlayerObjectMode.Two);
             //d1.visible = false;
 
-            Door d2 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(191, 31), OpenState.Closed);
-            //gsPlay.AddTriggerArea(new EventTrigger(this, d2), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(187, 39)).traceID = 27;
-            FlipSwitch fs1 = gsPlay.AddSwitch(new EventTrigger(this, d2), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(187, 39));
-            fs1.pressureCooker = true;
+            //Door d2 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(191, 31), OpenState.Closed);
+            ////gsPlay.AddTriggerArea(new EventTrigger(this, d2), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(187, 39)).traceID = 27;
+            //FlipSwitch fs1 = gsPlay.AddSwitch(new EventTrigger(this, d2), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(187, 39));
+            //fs1.pressureCooker = true;
 
             d1 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(204, 38), OpenState.Closed);
             gsPlay.AddButton(new EventTrigger(this, d1), 1, gsPlay.LoadTexture("TestSprites/button"), GridToPosition(200, 33));
@@ -148,12 +162,15 @@ namespace WorldsApart.Code.Levels
             item1 = new InventoryItem(gsPlay.LoadTexture("TestSprites/item1"));
             itemList.Add(item1);
             item1Area = gsPlay.AddTriggerArea(new EventTrigger(this, 1), item1.itemImage.texture, GridToPosition(3, 25));
+            item1Area.selfIlluminating = true;
             item2 = new InventoryItem(gsPlay.LoadTexture("TestSprites/item2"));
             itemList.Add(item2);
             item2Area = gsPlay.AddTriggerArea(new EventTrigger(this, 2), item2.itemImage.texture, GridToPosition(248, 2));
+            item2Area.selfIlluminating = true;
             item3 = new InventoryItem(gsPlay.LoadTexture("TestSprites/item3"));
             itemList.Add(item3);
             item3Area = gsPlay.AddTriggerArea(new EventTrigger(this, 3), item3.itemImage.texture, GridToPosition(227, 31));
+            item3Area.selfIlluminating = true;
             //gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(54, 27)), .8f);
             //gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(45, 27)), .8f);
             //gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(69, 12)), .8f);
@@ -161,7 +178,7 @@ namespace WorldsApart.Code.Levels
 
             finalDoor = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(207, 13) + new Vector2(16, 16), OpenState.Closed);
             //gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddEventPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(93, 26)), Level.GridToPosition(new Point(100, 26)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(88, 28)));
-            gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/winSpot"), Level.GridToPosition(new Point(207, 11)) + new Vector2(16,16));
+            //gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/winSpot"), Level.GridToPosition(new Point(207, 11)) + new Vector2(16,16));
 
 
             final1 = gsPlay.AddTriggerArea(new EventTrigger(this, 5), gsPlay.LoadTexture("TestSprites/lock1"), GridToPosition(202, 16) + new Vector2(16, 16));
@@ -218,6 +235,7 @@ namespace WorldsApart.Code.Levels
                     {
                         if (item1.hasItem)
                         {
+                            final1.selfIlluminating = true;
                             final1.currentCellCol = 1;
                             final1Unlock = true;
 
@@ -230,6 +248,7 @@ namespace WorldsApart.Code.Levels
                     {
                         if (item2.hasItem)
                         {
+                            final2.selfIlluminating = true;
                             final2.currentCellCol = 1;
                             final2Unlock = true;
 
@@ -242,6 +261,7 @@ namespace WorldsApart.Code.Levels
                     {
                         if (item3.hasItem)
                         {
+                            final3.selfIlluminating = true;
                             final3.currentCellCol = 1;
                             final3Unlock = true;
 
@@ -252,7 +272,7 @@ namespace WorldsApart.Code.Levels
                 case 8:
                     if (final1Unlock && final2Unlock && final3Unlock)
                     {
-                        if (finalDoor.state == OpenState.Closed)
+                        if (finalDoor.openState == OpenState.Closed)
                             finalDoor.Open();
                     }
                     break;

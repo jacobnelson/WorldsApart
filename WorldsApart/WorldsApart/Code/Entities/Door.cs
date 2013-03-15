@@ -26,7 +26,7 @@ namespace WorldsApart.Code.Entities
 
     class Door : EventObject
     {
-        public OpenState state = OpenState.Closed;
+        public OpenState openState = OpenState.Closed;
 
         Vector2 openPosition = Vector2.Zero;
         Vector2 closePosition = Vector2.Zero;
@@ -73,13 +73,13 @@ namespace WorldsApart.Code.Entities
 
         public void Open()
         {
-            state = OpenState.Open;
+            openState = OpenState.Open;
             am.StartNewAnimation(AnimationType.EaseInOutCubic, position, openPosition, 30);
         }
 
         public void Close()
         {
-            state = OpenState.Closed;
+            openState = OpenState.Closed;
             am.StartNewAnimation(AnimationType.EaseInOutCubic, position, closePosition, 30);
         }
 

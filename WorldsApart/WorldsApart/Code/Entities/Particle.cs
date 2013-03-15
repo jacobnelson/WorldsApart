@@ -49,7 +49,7 @@ namespace WorldsApart.Code.Entities
             }
         }
 
-        public virtual void Die()
+        public override void Die()
         {
             isDead = true;
         }

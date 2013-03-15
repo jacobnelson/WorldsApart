@@ -48,7 +48,9 @@ namespace WorldsApart.Code.Entities
 
         public void ActivateTrigger()
         {
-            foreach (EventTrigger eventTrigger in triggerList)
+            EventTrigger[] tempTrigers = new EventTrigger[triggerList.Count];
+            triggerList.CopyTo(tempTrigers);
+            foreach (EventTrigger eventTrigger in tempTrigers)
             {
                 eventTrigger.ActivateEvent(TriggerState.Triggered);
             }
@@ -56,7 +58,9 @@ namespace WorldsApart.Code.Entities
 
         public void DeactivateTrigger()
         {
-            foreach (EventTrigger eventTrigger in triggerList)
+            EventTrigger[] tempTrigers = new EventTrigger[triggerList.Count];
+            triggerList.CopyTo(tempTrigers);
+            foreach (EventTrigger eventTrigger in tempTrigers)
             {
                 eventTrigger.ActivateEvent(TriggerState.Untriggered);
             }

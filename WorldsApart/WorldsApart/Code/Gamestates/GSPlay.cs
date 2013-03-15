@@ -78,6 +78,7 @@ namespace WorldsApart.Code.Gamestates
         public List<ParallaxLayer> bgList = new List<ParallaxLayer>();
         public List<PointLight> lightList = new List<PointLight>();
         public List<LightConsole> consoleList = new List<LightConsole>();
+        public List<Portal> portalList = new List<Portal>();
 
         public GSPlay(GameStateManager gsm, int levelIndex)
             : base(gsm)
@@ -101,6 +102,24 @@ namespace WorldsApart.Code.Gamestates
                     break;
                 case 1:
                     level = new Level1(this);
+                    break;
+                case 2:
+                    level = new Level2(this);
+                    break;
+                case 3:
+                    level = new Level3(this);
+                    break;
+                case 4:
+                    level = new Level4(this);
+                    break;
+                case 5:
+                    level = new Level5(this);
+                    break;
+                case 6:
+                    level = new Level6(this);
+                    break;
+                case 7:
+                    level = new Level7(this);
                     break;
                 default:
                     level = new TestLevel(this);
@@ -297,6 +316,21 @@ namespace WorldsApart.Code.Gamestates
             doorList.Add(door);
             return door;
         }
+
+        public Collectible AddCollectible(EventTrigger eventTrigger, Texture2D texture, Vector2 position)
+        {
+            Collectible collectible = new Collectible(eventTrigger, texture, position);
+            areaList.Add(collectible);
+            return collectible;
+        }
+
+        public Portal AddPortal(EventTrigger eventTrigger, Texture2D texture, Vector2 position)
+        {
+            Portal portal = new Portal(player1, player2, eventTrigger, texture, position);
+            portalList.Add(portal);
+            return portal;
+        }
+
         public Particle AddParticle(AnimatedSprite image, Vector2 position, Vector2 speed)
         {
             Particle p = new Particle(this, image.texture, position);
@@ -380,7 +414,7 @@ namespace WorldsApart.Code.Gamestates
 
             if (InputManager.IsButtonPressed(Buttons.Y))
             {
-                Trace.WriteLine(cPlatformList[0].residentList.Count);
+                level.ActivateEvent(0, TriggerState.Triggered);
             }
             
 
@@ -467,6 +501,11 @@ namespace WorldsApart.Code.Gamestates
                 player1.CheckForArea(area);
                 player2.CheckForArea(area);
                 area.Update();
+            }
+
+            foreach (Portal portal in portalList)
+            {
+                portal.Update();
             }
 
             foreach (LightConsole console in consoleList)
@@ -566,7 +605,9 @@ namespace WorldsApart.Code.Gamestates
                 foreach (CircularPlatform platform in cPlatformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.One)) platform.Draw(spriteBatch);
                 foreach (Moveable move in moveList) if (move.selfIlluminating && (move.playerVisible == PlayerObjectMode.None || move.playerVisible == PlayerObjectMode.One)) move.Draw(spriteBatch);
                 foreach (PickUpObj pickUp in pickUpList) if (pickUp.selfIlluminating && (pickUp.playerVisible == PlayerObjectMode.None || pickUp.playerVisible == PlayerObjectMode.One)) pickUp.Draw(spriteBatch);
+                foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.One)) portal.Draw(spriteBatch);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.One) light.Draw(spriteBatch);
+                
             }
             else
             {
@@ -580,6 +621,7 @@ namespace WorldsApart.Code.Gamestates
                 foreach (CircularPlatform platform in cPlatformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.Two)) platform.Draw(spriteBatch);
                 foreach (Moveable move in moveList) if (move.selfIlluminating && (move.playerVisible == PlayerObjectMode.None || move.playerVisible == PlayerObjectMode.Two)) move.Draw(spriteBatch);
                 foreach (PickUpObj pickUp in pickUpList) if (pickUp.selfIlluminating && (pickUp.playerVisible == PlayerObjectMode.None || pickUp.playerVisible == PlayerObjectMode.Two)) pickUp.Draw(spriteBatch);
+                foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.Two)) portal.Draw(spriteBatch);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch);
             }
 
@@ -659,7 +701,7 @@ namespace WorldsApart.Code.Gamestates
             foreach (MovingPlatform platform in platformList) if (platform.playerVisible == PlayerObjectMode.None) platform.Draw(spriteBatch);
             foreach (CircularPlatform platform in cPlatformList) if (platform.playerVisible == PlayerObjectMode.None) platform.Draw(spriteBatch);
             foreach (Moveable move in moveList) if (move.playerVisible == PlayerObjectMode.None) move.Draw(spriteBatch);
-
+            foreach (Portal portal in portalList) if (portal.playerVisible == PlayerObjectMode.None) portal.Draw(spriteBatch);
             foreach (Particle particle in particleList) if (particle.playerVisible == PlayerObjectMode.None) particle.Draw(spriteBatch);
 
             if (playerIndex == PlayerIndex.One) player2.Draw(spriteBatch);

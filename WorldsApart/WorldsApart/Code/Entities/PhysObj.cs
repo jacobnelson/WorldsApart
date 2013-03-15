@@ -191,7 +191,7 @@ namespace WorldsApart.Code.Entities
             }
         }
 
-        public void Die()
+        public virtual void Die()
         {
             position = new Vector2(checkpoint.X, checkpoint.Y);
             hitBox.SetPosition(position);

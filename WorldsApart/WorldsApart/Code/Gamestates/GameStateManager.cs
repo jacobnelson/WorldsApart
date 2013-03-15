@@ -21,7 +21,7 @@ namespace WorldsApart.Code.Gamestates
         GSWin gsWin;
 
         public int currentLevel = 0;
-        public int goodness = 5;
+        public int goodness = 0;
 
 
         public GameStateManager(Game1 game)

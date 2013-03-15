@@ -26,7 +26,7 @@ namespace WorldsApart.Code.Gamestates
         {
             gameStateManager = gsm;
             contentManager = gsm.NewContentManager();
-
+            GraphicsDevice = gsm.game.GraphicsDevice;
 
 
         }
