@@ -34,6 +34,11 @@ namespace WorldsApart.Code.Entities
     class Player : PhysObj
     {
 
+        public Texture2D indicatorTexture;
+        public byte indicatorAlpha = 255;
+
+        public Texture2D regularTexture;
+
         PlayerObjectMode playerIndex = PlayerObjectMode.One;
         public bool stopInput = false;
 
@@ -89,6 +94,7 @@ namespace WorldsApart.Code.Entities
         public Player(PlayerObjectMode playerIndex, Texture2D texture, Vector2 position)
             : base(texture, position)
         {
+            regularTexture = texture;
             this.playerIndex = playerIndex;
             playerTangible = playerIndex;
             playerVisible = playerIndex;
@@ -517,6 +523,16 @@ namespace WorldsApart.Code.Entities
             {
                 console.PressConsole(this, !CheckForAlreadyHeld());
             }
+        }
+
+        public override void DrawAura(SpriteBatch spriteBatch, Vector2 screenOrigin)
+        {
+            base.DrawAura(spriteBatch, screenOrigin);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
         }
     }
 }

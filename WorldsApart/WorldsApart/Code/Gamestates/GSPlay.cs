@@ -89,6 +89,8 @@ namespace WorldsApart.Code.Gamestates
             //backgroundThread.Start();
             LoadTheStuffs(levelIndex);
 
+            
+
             loadingScreen = new SpriteIMG(LoadTexture("loadingScreen"), Game1.GetScreenCenter());
         }
 
@@ -180,6 +182,130 @@ namespace WorldsApart.Code.Gamestates
             gaussianBlur.PerformGaussianBlur(player1.texture, blurX, blurY, gameStateManager.game.spriteBatch);
             //okayToDraw = true;
             isLoading = false;
+
+
+
+            player1.indicatorTexture = LoadTexture("player1Ideal");
+            player2.indicatorTexture = LoadTexture("player2Ideal");
+            //if (gameStateManager.goodness < 0)
+            //{
+            //    RenderTarget2D indicatorTarget = new RenderTarget2D(GraphicsDevice, player1.texture.Width, player1.texture.Height);
+            //    GraphicsDevice.SetRenderTarget(indicatorTarget);
+            //    GraphicsDevice.Clear(Color.Transparent);
+            //    colorShader.Parameters["DestColor"].SetValue(Color.Black.ToVector4());
+            //    gameStateManager.game.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
+            //    gameStateManager.game.spriteBatch.Draw(player1.indicatorTexture, Vector2.Zero, Color.White);
+            //    gameStateManager.game.spriteBatch.End();
+            //    player1.indicatorTexture = indicatorTarget;
+
+            //    RenderTarget2D indicatorTarget2 = new RenderTarget2D(GraphicsDevice, player2.texture.Width, player2.texture.Height);
+            //    GraphicsDevice.SetRenderTarget(indicatorTarget2);
+            //    GraphicsDevice.Clear(Color.Transparent);
+            //    colorShader.Parameters["DestColor"].SetValue(Color.Black.ToVector4());
+            //    gameStateManager.game.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
+            //    gameStateManager.game.spriteBatch.Draw(player2.indicatorTexture, Vector2.Zero, Color.White);
+            //    gameStateManager.game.spriteBatch.End();
+            //    player2.indicatorTexture = indicatorTarget2;
+            //}
+
+            switch (gameStateManager.goodness)
+            {
+                case 0:
+                    player1.indicatorAlpha = 255;
+                    player2.indicatorAlpha = 255;
+                    break;
+                case -1:
+                    player1.indicatorAlpha = 229;
+                    player2.indicatorAlpha = 229;
+                    break;
+                case 1:
+                    player1.indicatorAlpha = 26;
+                    player2.indicatorAlpha = 26;
+                    break;
+                case -2:
+                    player1.indicatorAlpha = 191;
+                    player2.indicatorAlpha = 191;
+                    break;
+                case 2:
+                    player1.indicatorAlpha = 64;
+                    player2.indicatorAlpha = 64;
+                    break;
+                case -3:
+                    player1.indicatorAlpha = 153;
+                    player2.indicatorAlpha = 153;
+                    break;
+                case 3:
+                    player1.indicatorAlpha = 102;
+                    player2.indicatorAlpha = 102;
+                    break;
+                case -4:
+                case 4:
+                    player1.indicatorAlpha = 115;
+                    player2.indicatorAlpha = 115;
+                    break;
+                case -5:
+                case 5:
+                    player1.indicatorAlpha = 77;
+                    player2.indicatorAlpha = 77;
+                    break;
+                case -6:
+                case 6:
+                    player1.indicatorAlpha = 38;
+                    player2.indicatorAlpha = 38;
+                    break;
+                case -7:
+                case 7:
+                    player1.indicatorAlpha = 0;
+                    player2.indicatorAlpha = 0;
+                    break;
+            }
+
+            RenderTarget2D player1Texture = new RenderTarget2D(GraphicsDevice, player1.texture.Width, player1.texture.Height);
+            GraphicsDevice.SetRenderTarget(player1Texture);
+            GraphicsDevice.Clear(Color.Transparent);
+            gameStateManager.game.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            if (gameStateManager.goodness > 0 && gameStateManager.goodness < 4)
+            {
+                gameStateManager.game.spriteBatch.Draw(player1.indicatorTexture, Vector2.Zero, Color.White);
+                gameStateManager.game.spriteBatch.Draw(player1.texture, Vector2.Zero, new Color(0, 0, 0, player1.indicatorAlpha));
+                
+            }
+            else if (gameStateManager.goodness >= 4)
+            {
+                gameStateManager.game.spriteBatch.Draw(player1.texture, Vector2.Zero, Color.White);
+                gameStateManager.game.spriteBatch.Draw(player1.indicatorTexture, Vector2.Zero, new Color(0, 0, 0, player1.indicatorAlpha));
+            }
+            else if (gameStateManager.goodness <= 0)
+            {
+                byte c = player1.indicatorAlpha;
+                gameStateManager.game.spriteBatch.Draw(player1.indicatorTexture, Vector2.Zero, new Color(c, c, c));
+            }
+            gameStateManager.game.spriteBatch.End();
+            player1.indicatorTexture = player1Texture;
+            
+
+            RenderTarget2D player2Texture = new RenderTarget2D(GraphicsDevice, player2.texture.Width, player2.texture.Height);
+            GraphicsDevice.SetRenderTarget(player2Texture);
+            GraphicsDevice.Clear(Color.Transparent);
+            gameStateManager.game.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            if (gameStateManager.goodness > 0 && gameStateManager.goodness < 4)
+            {
+                gameStateManager.game.spriteBatch.Draw(player2.indicatorTexture, Vector2.Zero, Color.White);
+                gameStateManager.game.spriteBatch.Draw(player2.texture, Vector2.Zero, new Color(0, 0, 0, player2.indicatorAlpha));
+                
+            }
+            else if (gameStateManager.goodness >= 4)
+            {
+                gameStateManager.game.spriteBatch.Draw(player2.texture, Vector2.Zero, Color.White);
+                gameStateManager.game.spriteBatch.Draw(player2.indicatorTexture, Vector2.Zero, new Color(0, 0, 0, player2.indicatorAlpha));
+            }
+            else if (gameStateManager.goodness <= 0)
+            {
+                byte c = player2.indicatorAlpha;
+                gameStateManager.game.spriteBatch.Draw(player2.indicatorTexture, Vector2.Zero, new Color(c, c, c));
+            }
+            gameStateManager.game.spriteBatch.End();
+            player2.indicatorTexture = player2Texture;
         }
 
         //public void DrawLoadingScreen(SpriteBatch spriteBatch)
@@ -423,10 +549,14 @@ namespace WorldsApart.Code.Gamestates
                 case PlayerIndex.One:
                     player1.stopInput = false;
                     player2.stopInput = true;
+                    player1.texture = player1.regularTexture;
+                    player2.texture = player2.indicatorTexture;
                     break;
                 case PlayerIndex.Two:
                     player1.stopInput = true;
                     player2.stopInput = false;
+                    player1.texture = player1.indicatorTexture;
+                    player2.texture = player2.regularTexture;
                     break;
             }
 

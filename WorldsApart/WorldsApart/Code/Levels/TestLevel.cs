@@ -76,7 +76,7 @@ namespace WorldsApart.Code.Levels
             //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(157, 15));
             //pe.speed = new Vector2(1, 0);
 
-            atmosphereLight = new Color(0,0,0);
+            atmosphereLight = new Color(100,100,100);
 
             CircularPlatform cp1 = gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(36, 45), 100, 240);
             gsPlay.AddSwitch(new EventTrigger(this, cp1), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(42, 48));
