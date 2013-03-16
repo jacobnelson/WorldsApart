@@ -48,6 +48,13 @@ namespace WorldsApart.Code.Levels
                 case 0:
                     if (triggerState == TriggerState.Triggered)
                     {
+                        bool isGood = true;
+                        foreach (Portal portal in gsPlay.portalList)
+                        {
+                            if (portal.goodMode == false) isGood = false;
+                        }
+                        if (isGood) gsPlay.gameStateManager.goodness++;
+                        else gsPlay.gameStateManager.goodness--;
                         gsPlay.gameStateManager.currentLevel = 2;
                         gsPlay.gameStateManager.SwitchToGSPlay();
                     }

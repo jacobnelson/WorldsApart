@@ -591,7 +591,21 @@ namespace WorldsApart.Code.Gamestates
             colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, colorShader, camera.transform);
             if (player1.selfIlluminating) player1.Draw(spriteBatch);
+            else
+            {
+                colorShader.Parameters["DestColor"].SetValue(new Color(50,50,50).ToVector4());
+                player1.Draw(spriteBatch);
+                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+
+            }
             if (player2.selfIlluminating) player2.Draw(spriteBatch);
+            else
+            {
+                colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
+                player2.Draw(spriteBatch);
+                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+
+            }
             foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.None) light.Draw(spriteBatch);
             if (playerIndex == PlayerIndex.One)
             {
