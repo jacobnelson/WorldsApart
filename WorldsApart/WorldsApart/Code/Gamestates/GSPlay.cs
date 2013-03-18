@@ -28,8 +28,8 @@ namespace WorldsApart.Code.Gamestates
         Level level;
 
 
-        Camera cameraPlayer1;
-        Camera cameraPlayer2;
+        public Camera cameraPlayer1;
+        public Camera cameraPlayer2;
         PlayerIndex playerIndex = PlayerIndex.One;
 
         SpriteIMG alphaDot;
@@ -129,8 +129,7 @@ namespace WorldsApart.Code.Gamestates
             }
 
             
-            cameraPlayer1 = new Camera(player1, player2, new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2));
-            cameraPlayer2 = new Camera(player2, player1, new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2));
+            
             alphaDot = new SpriteIMG(LoadTexture("ShaderAssets/playerAlphaMask"));
             alphaMask = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             renderTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
@@ -538,7 +537,7 @@ namespace WorldsApart.Code.Gamestates
                 else playerIndex = PlayerIndex.One;
             }
 
-            if (InputManager.IsButtonPressed(Buttons.Y))
+            if (InputManager.IsButtonPressed(Buttons.Y) || InputManager.IsKeyPressed(Keys.Y))
             {
                 level.ActivateEvent(0, TriggerState.Triggered);
             }
@@ -831,9 +830,9 @@ namespace WorldsApart.Code.Gamestates
             
             gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget);
             gameStateManager.game.GraphicsDevice.Clear(Color.SlateBlue); //TODO: change here
-            //spriteBatch.Begin();
-            //spriteBatch.Draw(bgTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            //spriteBatch.End();
+            spriteBatch.Begin();
+            spriteBatch.Draw(bgTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
             //colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in tileList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch);

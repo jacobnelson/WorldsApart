@@ -44,10 +44,17 @@ namespace WorldsApart.Code.Levels
         {
             
             levelDataTexture = gsPlay.LoadTexture("TestSprites/testLevelData");
+
+            player1Pos = GridToPosition(175, 25);
+            player2Pos = GridToPosition(24, 47);
+
+            portalPos = GridToPosition(211, 12);
+            pItemPos = GridToPosition(204, 12);
+
             SetupLevel();
 
-            //SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(levelWidth / 2, levelHeight / 2));
-            //gsPlay.AddParallax(s, .5f);
+            SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(0, levelHeight / 2));
+            gsPlay.AddParallax(s, .5f);
 
             //SpriteIMG fg = new SpriteIMG(gsPlay.LoadTexture("TestSprites/environmentArt1"));
             //fg.origin = Vector2.Zero;
@@ -81,21 +88,6 @@ namespace WorldsApart.Code.Levels
             CircularPlatform cp1 = gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(36, 45), 100, 240);
             gsPlay.AddSwitch(new EventTrigger(this, cp1), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(42, 48));
 
-            gsPlay.player1 = new Player(PlayerObjectMode.One, gsPlay.LoadTexture("player1"), Level.GridToPosition(new Point(175, 25)));
-            gsPlay.player1.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
-            gsPlay.player1.SetCollisionBox(52, 44, Vector2.Zero);
-            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), Level.GridToPosition(new Point(24, 47)));
-            gsPlay.player2.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
-            gsPlay.player2.SetCollisionBox(52, 44, Vector2.Zero);
-
-
-            Portal glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), GridToPosition(211, 12));
-            glados.SetAnimationStuff(1, 2, 1, 2, 48, 96, 2, 5);
-            glados.isAnimating = false;
-            Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), GridToPosition(204, 12));
-            goody.selfIlluminating = true;
-            goody.SetAnimationStuff(1, 1, 1, 2, 64, 64, 2, 10);
-            goody.SetCollisionBox(32, 32, Vector2.Zero);
             
 
 

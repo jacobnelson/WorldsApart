@@ -19,7 +19,8 @@ namespace WorldsApart.Code.Controllers
         public Matrix transform = Matrix.Identity;
 
         public Sprite target;
-        public Sprite secondaryTarget;
+        //public Sprite secondaryTarget;
+        public List<Sprite> targetList = new List<Sprite>();
         public float innerDistance = 600;
         public float midDistance = 600;
         public float farDistance = 1000;
@@ -36,14 +37,31 @@ namespace WorldsApart.Code.Controllers
         public Camera(Sprite target, Sprite secondaryTarget, Vector2 offset)
         {
             this.target = target;
-            this.secondaryTarget = secondaryTarget;
+            AddTarget(secondaryTarget);
             this.offset = offset;
+        }
+
+        public void AddTarget(Sprite t)
+        {
+            targetList.Add(t);
         }
 
         public void Update()
         {
-
+            Sprite secondaryTarget = targetList[0];
             float distance = Vector2.Distance(target.position, secondaryTarget.position);
+
+            foreach (Sprite tar in targetList)
+            {
+                float newDist = Vector2.Distance(target.position, tar.position);
+                if (newDist < distance)
+                {
+                    distance = newDist;
+                    secondaryTarget = tar;
+                }
+            }
+
+            
             float halfDistance = distance / 2;
             if (distance > 0 && distance < innerDistance)
             {
@@ -62,7 +80,7 @@ namespace WorldsApart.Code.Controllers
             //}
             else
             {
-                targetPosition = target.sPosition;
+                targetPosition = target.sPosition + offset;
                 targetScale = 1;
             }
 

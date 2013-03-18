@@ -20,22 +20,14 @@ namespace WorldsApart.Code.Levels
             : base(gsPlay)
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level6Data");
+
+            player1Pos = GridToPosition(3, 11);
+            player2Pos = GridToPosition(3, 11);
+
+            portalPos = GridToPosition(28, 11);
+            pItemPos = GridToPosition(23, 12);
+
             SetupLevel();
-
-            gsPlay.player1 = new Player(PlayerObjectMode.One, gsPlay.LoadTexture("player1"), Level.GridToPosition(new Point(3, 11)));
-            gsPlay.player1.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
-            gsPlay.player1.SetCollisionBox(52, 44, Vector2.Zero);
-            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), Level.GridToPosition(new Point(3, 11)));
-            gsPlay.player2.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
-            gsPlay.player2.SetCollisionBox(52, 44, Vector2.Zero);
-
-            Portal glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), GridToPosition(28, 11));
-            glados.SetAnimationStuff(1, 2, 1, 2, 48, 96, 2, 5);
-            glados.isAnimating = false;
-            Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), GridToPosition(23, 12));
-            goody.selfIlluminating = true;
-            goody.SetAnimationStuff(1, 1, 1, 2, 64, 64, 2, 10);
-            goody.SetCollisionBox(32, 32, Vector2.Zero);
 
             //672,11
         }

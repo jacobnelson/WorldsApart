@@ -26,6 +26,11 @@ namespace WorldsApart.Code.Levels
         public static EnvironmentData[,] environmentData;
         public List<InventoryItem> itemList = new List<InventoryItem>();
 
+        public Vector2 player1Pos = Vector2.Zero;
+        public Vector2 player2Pos = Vector2.Zero;
+        public Vector2 portalPos = Vector2.Zero;
+        public Vector2 pItemPos = Vector2.Zero;
+
         public Color atmosphereLight = Color.White;
 
         static public float deathHeight = 0;
@@ -213,6 +218,26 @@ namespace WorldsApart.Code.Levels
                     }
                 }
             }
+
+            gsPlay.player1 = new Player(PlayerObjectMode.One, gsPlay.LoadTexture("player1"), player1Pos);
+            gsPlay.player1.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
+            gsPlay.player1.SetCollisionBox(52, 44, Vector2.Zero);
+            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), player2Pos);
+            gsPlay.player2.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
+            gsPlay.player2.SetCollisionBox(52, 44, Vector2.Zero);
+
+            Portal glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), portalPos);
+            glados.SetAnimationStuff(1, 2, 1, 2, 48, 96, 2, 5);
+            glados.isAnimating = false;
+            Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), pItemPos);
+            goody.selfIlluminating = true;
+            goody.SetAnimationStuff(1, 1, 1, 2, 64, 64, 2, 10);
+            goody.SetCollisionBox(32, 32, Vector2.Zero);
+
+            gsPlay.cameraPlayer1 = new Camera(gsPlay.player1, gsPlay.player2, new Vector2(0, -Game1.screenHeight / 10));
+            gsPlay.cameraPlayer2 = new Camera(gsPlay.player2, gsPlay.player1, new Vector2(0, -Game1.screenHeight / 10));
+            gsPlay.cameraPlayer1.AddTarget(glados);
+            gsPlay.cameraPlayer2.AddTarget(glados);
         }
 
         public virtual void ActivateEvent(int eventID, TriggerState triggerState)

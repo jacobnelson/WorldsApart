@@ -15,6 +15,8 @@ namespace WorldsApart.Code.Entities
         Player player1;
         Player player2;
 
+        
+
         public bool goodMode = false;
 
         public Portal(Player player1, Player player2, EventTrigger eventTrigger, Texture2D texture, Vector2 position) : base(texture, position)
