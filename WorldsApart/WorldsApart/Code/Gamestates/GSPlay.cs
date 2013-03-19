@@ -483,11 +483,12 @@ namespace WorldsApart.Code.Gamestates
         public void AddParallax(SpriteIMG img, float parallaxRatio)
         {
             bool noMatches = true;
+            img.position *= parallaxRatio;
             foreach (ParallaxLayer bg in bgList)
             {
                 if (bg.parallaxRatio == parallaxRatio)
                 {
-                    bg.imageList.Add(img);
+                    bg.imageList.Add(img); 
                     noMatches = false;
                 }
 

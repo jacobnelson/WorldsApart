@@ -43,7 +43,7 @@ namespace WorldsApart.Code.Graphics
 
         public Sprite(Vector2 position)
         {
-            this.sPosition = position;
+            this.position = position;
             am = new AnimationManager(this);
         }
 

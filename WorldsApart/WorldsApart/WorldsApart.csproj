@@ -137,6 +137,7 @@
     <Compile Include="Code\Gamestates\GSTitle.cs" />
     <Compile Include="Code\Gamestates\GSWin.cs" />
     <Compile Include="Code\Graphics\AnimatedSprite.cs" />
+    <Compile Include="Code\Graphics\FadingBackground.cs" />
     <Compile Include="Code\Graphics\GaussianBlur.cs" />
     <Compile Include="Code\Graphics\GaussianTargets.cs" />
     <Compile Include="Code\Graphics\ParallaxLayer.cs" />

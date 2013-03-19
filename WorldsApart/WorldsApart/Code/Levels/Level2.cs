@@ -28,7 +28,7 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
-            SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(64, levelHeight / 2));
+            SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(32, levelHeight / 4));
             gsPlay.AddParallax(s, .5f);
 
             //672,11

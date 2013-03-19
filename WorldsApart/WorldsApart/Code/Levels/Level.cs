@@ -518,10 +518,8 @@ namespace WorldsApart.Code.Levels
             {
                 case FrictionType.Normal:
                     return EnvironmentData.NORMAL;
-                    break;
                 case FrictionType.Ice:
                     return EnvironmentData.ICE;
-                    break;
             }
             return 1;
         }
