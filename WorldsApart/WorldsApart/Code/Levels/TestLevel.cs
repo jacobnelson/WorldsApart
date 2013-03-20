@@ -53,8 +53,19 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
-            SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(levelWidth / 2, levelHeight / 2));
-            gsPlay.AddParallax(s, .5f);
+
+
+            SpriteIMG bg = new SpriteIMG(gsPlay.LoadTexture("TestSprites/testWash1"), new Vector2(levelWidth/2, levelHeight/2));
+            gsPlay.AddParallax(bg, .5f);
+            FadingBackground bg2 = new FadingBackground(gsPlay.LoadTexture("TestSprites/testWash2"), new Vector2(levelWidth / 2, levelHeight / 2));
+            gsPlay.AddParallax(bg2, .75f);
+            bg2.SetFading(120, 10);
+            bg2.SetMoving(bg2.position, bg2.position + new Vector2(-1000, 0), 2, 0);
+            
+            
+
+            //SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(levelWidth / 2, levelHeight / 2));
+            //gsPlay.AddParallax(s, .5f);
 
             //SpriteIMG fg = new SpriteIMG(gsPlay.LoadTexture("TestSprites/environmentArt1"));
             //fg.origin = Vector2.Zero;
@@ -83,7 +94,7 @@ namespace WorldsApart.Code.Levels
             //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(157, 15));
             //pe.speed = new Vector2(1, 0);
 
-            atmosphereLight = new Color(100,100,100);
+            atmosphereLight = new Color(100, 100, 100);
 
             CircularPlatform cp1 = gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(36, 45), 100, 240);
             gsPlay.AddSwitch(new EventTrigger(this, cp1), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(42, 48));

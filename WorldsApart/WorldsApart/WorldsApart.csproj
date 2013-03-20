@@ -142,6 +142,7 @@
     <Compile Include="Code\Graphics\GaussianTargets.cs" />
     <Compile Include="Code\Graphics\ParallaxLayer.cs" />
     <Compile Include="Code\Graphics\PointLight.cs" />
+    <Compile Include="Code\Graphics\RandomScrollingBackground.cs" />
     <Compile Include="Code\Graphics\Sprite.cs" />
     <Compile Include="Code\Graphics\SpriteIMG.cs" />
     <Compile Include="Code\Levels\EnvironmentData.cs" />

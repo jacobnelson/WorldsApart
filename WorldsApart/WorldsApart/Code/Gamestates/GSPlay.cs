@@ -75,7 +75,7 @@ namespace WorldsApart.Code.Gamestates
         public List<TimerObject> timerList = new List<TimerObject>();
         public List<Particle> particleList = new List<Particle>();
         public List<ParticleEmitter> emitterList = new List<ParticleEmitter>();
-        public List<ParallaxLayer> bgList = new List<ParallaxLayer>();
+        public List<ParallaxLayer> bgLayerList = new List<ParallaxLayer>();
         public List<PointLight> lightList = new List<PointLight>();
         public List<LightConsole> consoleList = new List<LightConsole>();
         public List<Portal> portalList = new List<Portal>();
@@ -484,7 +484,7 @@ namespace WorldsApart.Code.Gamestates
         {
             bool noMatches = true;
             img.position *= parallaxRatio;
-            foreach (ParallaxLayer bg in bgList)
+            foreach (ParallaxLayer bg in bgLayerList)
             {
                 if (bg.parallaxRatio == parallaxRatio)
                 {
@@ -498,7 +498,7 @@ namespace WorldsApart.Code.Gamestates
                 ParallaxLayer bg = new ParallaxLayer();
                 bg.imageList.Add(img);
                 bg.parallaxRatio = parallaxRatio;
-                bgList.Add(bg);
+                bgLayerList.Add(bg);
             }
         }
 
@@ -691,6 +691,14 @@ namespace WorldsApart.Code.Gamestates
             foreach (PointLight light in lightList)
             {
                 light.Update();
+            }
+
+            foreach (ParallaxLayer layer in bgLayerList)
+            {
+                foreach (SpriteIMG bg in layer.imageList)
+                {
+                    bg.Update();
+                }
             }
 
             #endregion
@@ -951,7 +959,7 @@ namespace WorldsApart.Code.Gamestates
         {
             gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
-            foreach (ParallaxLayer bg in bgList)
+            foreach (ParallaxLayer bg in bgLayerList)
             {
 
                 camera.parallaxRatio = bg.parallaxRatio;

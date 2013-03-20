@@ -96,6 +96,7 @@ namespace WorldsApart.Code.Controllers
 
         public void UpdateMatrixValues()
         {
+            //scaleValue = 1 - ((1 - scaleValue) * parallaxRatio);
             Matrix scale = Matrix.CreateScale(scaleValue, scaleValue, 1);
             Matrix translate = Matrix.CreateTranslation(-position.X * parallaxRatio, -position.Y * parallaxRatio, 0);
             Matrix originTranslate = Matrix.CreateTranslation(Game1.screenWidth / 2, Game1.screenHeight / 2, 0);
