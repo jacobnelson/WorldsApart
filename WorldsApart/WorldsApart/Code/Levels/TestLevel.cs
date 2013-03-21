@@ -96,6 +96,9 @@ namespace WorldsApart.Code.Levels
 
             atmosphereLight = new Color(100, 100, 100);
 
+            Door dooor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(36, 30), GridToPosition(36, 34), OpenState.Closed);
+            gsPlay.AddSwitch(new EventTrigger(this, dooor), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(29, 35));
+
             CircularPlatform cp1 = gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(36, 45), 100, 240);
             gsPlay.AddSwitch(new EventTrigger(this, cp1), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(42, 48));
 

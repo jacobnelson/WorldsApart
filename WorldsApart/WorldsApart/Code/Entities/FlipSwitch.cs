@@ -46,15 +46,29 @@ namespace WorldsApart.Code.Entities
         public void PressSwitch()
         {
             if (onlyTriggered && triggerState == TriggerState.Triggered) return;
-            foreach (EventTrigger eventTrigger in triggerList)
+
+            if (currentCellCol == 1)
             {
-                eventTrigger.ActivateEvent();
+                currentCellCol = 2;
+                foreach (EventTrigger eventTrigger in triggerList)
+                {
+                    eventTrigger.ActivateEvent(TriggerState.Triggered);
+                }
+            }
+            else
+            {
+                currentCellCol = 1;
+                foreach (EventTrigger eventTrigger in triggerList)
+                {
+                    eventTrigger.ActivateEvent(TriggerState.Untriggered);
+                }
             }
 
-            if (triggerState == TriggerState.Triggered) triggerState = TriggerState.Untriggered;
-            if (triggerState == TriggerState.Untriggered) triggerState = TriggerState.Triggered;
-            if (currentCellCol == 1) currentCellCol = 2;
-            else currentCellCol = 1;
+            
+
+            
+            //if (currentCellCol == 1) currentCellCol = 2;
+            //else currentCellCol = 1;
         }
 
         public void PressureOn()
