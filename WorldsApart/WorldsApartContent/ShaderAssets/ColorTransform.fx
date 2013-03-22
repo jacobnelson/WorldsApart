@@ -4,6 +4,8 @@ texture2D ColorMap;
 sampler2D ColorMapSampler = sampler_state
 {
     Texture = <ColorMap>;
+	AddressU = clamp;
+	AddressV = clamp;
 };
 
 struct PixelShaderInput

@@ -220,18 +220,18 @@ namespace WorldsApart.Code.Levels
             }
 
             gsPlay.player1 = new Player(PlayerObjectMode.One, gsPlay.LoadTexture("player1"), player1Pos);
-            gsPlay.player1.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
+            gsPlay.player1.SetAnimationStuff(1, 1, 3, 3, 128, 128, 9, 5);
             gsPlay.player1.SetCollisionBox(52, 44, Vector2.Zero);
-            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), player2Pos);
-            gsPlay.player2.SetAnimationStuff(1, 1, 3, 3, 64, 64, 9, 5);
-            gsPlay.player2.SetCollisionBox(52, 44, Vector2.Zero);
+            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("playerRunTest"), player2Pos);
+            gsPlay.player2.SetAnimationStuff(1, 1, 2, 4, 64, 128, 8, 5);
+            gsPlay.player2.SetCollisionBox(32, 64, Vector2.Zero);
 
             Portal glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), portalPos);
-            glados.SetAnimationStuff(1, 2, 1, 2, 48, 96, 2, 5);
+            glados.SetAnimationStuff(1, 2, 1, 2, 96, 192, 2, 5);
             glados.isAnimating = false;
             Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), pItemPos);
             goody.selfIlluminating = true;
-            goody.SetAnimationStuff(1, 1, 1, 2, 64, 64, 2, 10);
+            goody.SetAnimationStuff(1, 1, 1, 2, 128, 128, 2, 10);
             goody.SetCollisionBox(32, 32, Vector2.Zero);
 
             gsPlay.cameraPlayer1 = new Camera(gsPlay.player1, gsPlay.player2, new Vector2(0, -Game1.screenHeight / 10));

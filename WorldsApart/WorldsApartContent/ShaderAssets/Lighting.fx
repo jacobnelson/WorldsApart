@@ -1,6 +1,11 @@
 texture lightMask;
 sampler mainSampler : register(s0);
-sampler lightSampler = sampler_state{Texture = lightMask;};
+sampler lightSampler = sampler_state
+{
+	Texture = lightMask;
+	AddressU = clamp;
+	AddressV = clamp;
+};
 
 struct PixelShaderInput
 {

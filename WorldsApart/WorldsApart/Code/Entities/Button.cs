@@ -30,7 +30,7 @@ namespace WorldsApart.Code.Entities
         {
             AddEvent(eventTrigger);
             isSolidEnvironment = false;
-            origin = new Vector2(texture.Width / 2, texture.Height);
+            origin = new Vector2(texture.Width / 4, texture.Height / 2);
         }
 
         public override void Update()

@@ -290,6 +290,9 @@ namespace WorldsApart.Code.Entities
             isAnimating = true;
             if (facing == Facing.Right) spriteEffects = SpriteEffects.None;
             else spriteEffects = SpriteEffects.FlipHorizontally;
+
+            if (playerIndex == PlayerObjectMode.Two) return;
+
             if (state == PhysState.Grounded)
             {
                 if (speed.X != 0)

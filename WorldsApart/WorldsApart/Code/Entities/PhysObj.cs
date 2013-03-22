@@ -81,9 +81,9 @@ namespace WorldsApart.Code.Entities
         {
             if (texture != null)
             {
-                halfWidth = texture.Width / 2;
-                halfHeight = texture.Height / 2;
-                hitBox = new CollisionBox(this, new Vector2(texture.Width, texture.Height));
+                halfWidth = texture.Width / 4;
+                halfHeight = texture.Height / 4;
+                hitBox = new CollisionBox(this, new Vector2(texture.Width / 2, texture.Height / 2));
                 hitBox.SetPosition(position);
                 checkpoint = position;
             }
@@ -92,8 +92,8 @@ namespace WorldsApart.Code.Entities
         public override void SetAnimationStuff(int _minRow, int _minCol, int _rows, int _cols, int _cellW, int _cellH, int _frames, int _animationRate)
         {
             base.SetAnimationStuff(_minRow, _minCol, _rows, _cols, _cellW, _cellH, _frames, _animationRate);
-            halfWidth = cellW / 2;
-            halfHeight = cellH / 2;
+            halfWidth = cellW / 4;
+            halfHeight = cellH / 4;
             SetCollisionBox(cellW, cellH, Vector2.Zero);
         }
 

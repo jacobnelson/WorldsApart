@@ -95,6 +95,7 @@ namespace WorldsApart.Code
             // Allows the game to exit
 
             InputManager.UpdateStates(GamePad.GetState(PlayerIndex.One), Keyboard.GetState());
+            if (InputManager.IsKeyPressed(Keys.F11)) graphics.ToggleFullScreen();
             gsm.Update(gameTime);
             // TOO: Add your update logic here
 

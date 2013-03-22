@@ -56,8 +56,8 @@ namespace WorldsApart.Code.Graphics
         {
             if (!visible) return;
             base.Draw(spriteBatch);
-            if (auraTexture != null) spriteBatch.Draw(auraTexture, position, Color.White);
-            if (texture != null) spriteBatch.Draw(texture, sPosition, crop, color, rotation, origin, scale, spriteEffects, 0);
+            if (auraTexture != null) spriteBatch.Draw(auraTexture, position * 2, Color.White);
+            if (texture != null) spriteBatch.Draw(texture, sPosition * 2, crop, color, rotation, origin, scale, spriteEffects, 0);
         }
     }
 }

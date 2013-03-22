@@ -328,7 +328,7 @@ namespace WorldsApart.Code.Gamestates
             PickUpObj obj = new PickUpObj(texture, position);
             obj.playerTangible = playerMode;
             obj.playerVisible = playerMode;
-            obj.SetAnimationStuff(1, 1, 1, 3, 32, 32, 3, 5);
+            obj.SetAnimationStuff(1, 1, 1, 3, 64, 64, 3, 5);
             obj.SetCollisionBox(22, 22, Vector2.Zero);
             pickUpList.Add(obj);
         }
@@ -338,7 +338,7 @@ namespace WorldsApart.Code.Gamestates
             PickUpObj obj = new PickUpObj(bounceMultiplier, texture, position);
             pickUpList.Add(obj);
             pickUpAuras.Add(new GaussianTargets(gameStateManager.game.GraphicsDevice));
-            obj.SetAnimationStuff(1, 1, 1, 3, 32, 32, 3, 20);
+            obj.SetAnimationStuff(1, 1, 1, 3, 64, 64, 3, 20);
             obj.SetCollisionBox(22, 22, Vector2.Zero);
             return obj;
         }
@@ -349,7 +349,7 @@ namespace WorldsApart.Code.Gamestates
             obj.playerVisible = playerMode;
             pickUpList.Add(obj);
             pickUpAuras.Add(new GaussianTargets(gameStateManager.game.GraphicsDevice));
-            obj.SetAnimationStuff(1, 1, 1, 3, 32, 32, 3, 10);
+            obj.SetAnimationStuff(1, 1, 1, 3, 64, 64, 3, 10);
             obj.SetCollisionBox(22, 22, Vector2.Zero);
             return obj;
         }
@@ -717,7 +717,7 @@ namespace WorldsApart.Code.Gamestates
 
             gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaMask);
             gameStateManager.game.GraphicsDevice.Clear(Color.White);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.transform);
             alphaDot.Draw(spriteBatch);
             spriteBatch.End();
 
@@ -727,7 +727,7 @@ namespace WorldsApart.Code.Gamestates
             ////spriteBatch.Draw(blackSquare, new Vector2(0, 0), new Rectangle(0, 0, Game1.screenWidth, Game1.screenHeight), Color.White);
             //spriteBatch.End();
             colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, null, null, null, colorShader, camera.transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
             if (player1.selfIlluminating) player1.Draw(spriteBatch);
             else
             {
@@ -908,7 +908,7 @@ namespace WorldsApart.Code.Gamestates
 
                 gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaPlayer);
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, alphaShader);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, alphaShader);
                 spriteBatch.Draw(player2Objects, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.End();
 
@@ -922,7 +922,7 @@ namespace WorldsApart.Code.Gamestates
             {
                 gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaPlayer);
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, alphaShader);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, alphaShader);
                 spriteBatch.Draw(player1Objects, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.End();
 
@@ -964,7 +964,8 @@ namespace WorldsApart.Code.Gamestates
 
                 camera.parallaxRatio = bg.parallaxRatio;
                 camera.UpdateMatrixValues();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+                GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, null, null, null, camera.transform);
                 foreach (SpriteIMG img in bg.imageList)
                 {
                     img.Draw(spriteBatch);

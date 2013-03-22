@@ -27,8 +27,9 @@ namespace WorldsApart.Code.Controllers
 
         public Vector2 offset = Vector2.Zero;
 
-        public float scaleValue = 1;
-        public float targetScale = 1;
+        public static float scaleConstant = .6f;
+        public float scaleValue = scaleConstant;
+        public float targetScale = scaleConstant;
 
         public float shiftRate = 8;
 
@@ -67,7 +68,7 @@ namespace WorldsApart.Code.Controllers
             {
                 float ratio = distance / innerDistance;
                 targetPosition = target.position + Mathness.VectorToTarget(target.position, secondaryTarget.position, (halfDistance) * ratio);
-                targetScale = 1 - .2f * ratio;
+                targetScale = scaleConstant - (scaleConstant * .2f) * ratio;
             }
             //else if (distance >= innerDistance && distance < farDistance)
             //{
@@ -81,7 +82,7 @@ namespace WorldsApart.Code.Controllers
             else
             {
                 targetPosition = target.sPosition + offset;
-                targetScale = 1;
+                targetScale = scaleConstant;
             }
 
             position += (targetPosition - position) / shiftRate;
@@ -98,7 +99,7 @@ namespace WorldsApart.Code.Controllers
         {
             //scaleValue = 1 - ((1 - scaleValue) * parallaxRatio);
             Matrix scale = Matrix.CreateScale(scaleValue, scaleValue, 1);
-            Matrix translate = Matrix.CreateTranslation(-position.X * parallaxRatio, -position.Y * parallaxRatio, 0);
+            Matrix translate = Matrix.CreateTranslation(-position.X * 2 * parallaxRatio, -position.Y * 2 * parallaxRatio, 0);
             Matrix originTranslate = Matrix.CreateTranslation(Game1.screenWidth / 2, Game1.screenHeight / 2, 0);
             Matrix reverseTranslate = Matrix.CreateTranslation(-Game1.screenWidth / 2, -Game1.screenHeight / 2, 0);
 
