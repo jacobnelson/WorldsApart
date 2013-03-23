@@ -222,8 +222,8 @@ namespace WorldsApart.Code.Levels
             gsPlay.player1 = new Player(PlayerObjectMode.One, gsPlay.LoadTexture("player1"), player1Pos);
             gsPlay.player1.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player1.SetCollisionBox(48, 96, Vector2.Zero);
-            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("playerRunTest2"), player2Pos);
-            gsPlay.player2.SetAnimationStuff(1, 1, 2, 4, 96, 192, 8, 5);
+            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), player2Pos);
+            gsPlay.player2.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player2.SetCollisionBox(48, 96, Vector2.Zero);
 
             Portal glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), portalPos);

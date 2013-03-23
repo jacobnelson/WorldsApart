@@ -104,10 +104,16 @@ namespace WorldsApart.Code.Entities
             playerTangible = playerIndex;
             playerVisible = playerIndex;
             gravity = new Vector2(0, .5f);
-            grabBox = new CollisionBox(this, new Vector2(halfWidth, halfHeight / 4));
+            grabBox = new CollisionBox(this, new Vector2(halfWidth * 2, halfHeight * 2));
 
             if (playerIndex == PlayerObjectMode.One) auraColor = new Color(255, 128, 0);
             else auraColor = new Color(0, 128, 255);
+        }
+
+        public override void SetAnimationStuff(int _minRow, int _minCol, int _rows, int _cols, int _cellW, int _cellH, int _frames, int _animationRate)
+        {
+            base.SetAnimationStuff(_minRow, _minCol, _rows, _cols, _cellW, _cellH, _frames, _animationRate);
+            grabBox = new CollisionBox(this, new Vector2(halfWidth * 3, halfHeight));
         }
 
         public override void Update()
@@ -321,8 +327,6 @@ namespace WorldsApart.Code.Entities
             isAnimating = true;
             if (facing == Facing.Right) spriteEffects = SpriteEffects.None;
             else spriteEffects = SpriteEffects.FlipHorizontally;
-
-            if (playerIndex == PlayerObjectMode.Two) return;
 
             if (currentFrame == PlayerMode.Dying)
             {

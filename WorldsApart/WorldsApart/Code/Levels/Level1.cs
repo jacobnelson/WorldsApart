@@ -11,10 +11,16 @@ using WorldsApart.Code.Gamestates;
 using WorldsApart.Code.Controllers;
 using WorldsApart.Code.Graphics;
 
+using System.Diagnostics;
+
 namespace WorldsApart.Code.Levels
 {
     class Level1 : Level
     {
+        Door doubleButtonDoor; 
+        bool buttonOneDown = false;
+        bool buttonTwoDown = false;
+
         public Level1(GSPlay gsPlay)
             : base(gsPlay)
         {
@@ -34,10 +40,10 @@ namespace WorldsApart.Code.Levels
             gsPlay.AddParallax(s, .5f);
 
 
-            Door d1 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(214, 23)), Level.GridToPosition(new Point(214, 27)), OpenState.Closed);  //first door puzzle
-            gsPlay.AddButton(new EventTrigger(this, d1), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(206, 29)));                                            //first door puzzle
-            gsPlay.AddButton(new EventTrigger(this, d1), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(222, 29)));                                            //first door puzzle
-            gsPlay.AddBouncyBall(.5f, gsPlay.LoadTexture("TestSprites/pickUp"), Level.GridToPosition(new Point(222, 16)));
+            doubleButtonDoor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(214, 23)), Level.GridToPosition(new Point(214, 27)), OpenState.Closed);  //first door puzzle
+            gsPlay.AddButton(new EventTrigger(this, 1), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(206, 29)));                                            //first door puzzle
+            gsPlay.AddButton(new EventTrigger(this, 2), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(222, 29)));                                            //first door puzzle
+            //gsPlay.AddBouncyBall(.5f, gsPlay.LoadTexture("TestSprites/pickUp"), Level.GridToPosition(new Point(222, 16)));
 
             Door d2 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(305, 23)), Level.GridToPosition(new Point(305, 27)), OpenState.Closed);  //jump from box, ball on button
             gsPlay.AddButton(new EventTrigger(this, d2), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(297, 29)));                                            //jump from box, ball on button
@@ -102,6 +108,47 @@ namespace WorldsApart.Code.Levels
                         else gsPlay.gameStateManager.goodness--;
                         gsPlay.gameStateManager.currentLevel = 2;
                         gsPlay.gameStateManager.SwitchToGSPlay();
+                    }
+                    break;
+                case 1:
+                    if (triggerState == TriggerState.Triggered)
+                    {
+                        
+                        buttonOneDown = true;
+                    }
+                    else 
+                    {
+                        buttonOneDown = false;
+                    }
+                    ActivateEvent(3, TriggerState.Triggered);
+                    break;
+                case 2:
+                    if (triggerState == TriggerState.Triggered)
+                    {
+                        buttonTwoDown = true;
+                    }
+                    else
+                    {
+                        buttonTwoDown = false;
+                    }
+                    ActivateEvent(3, TriggerState.Triggered);
+                    break;
+                case 3:
+                    if (buttonOneDown || buttonTwoDown)
+                    {
+                        if (doubleButtonDoor.triggerState == TriggerState.Untriggered)
+                        {
+                            doubleButtonDoor.triggerState = TriggerState.Triggered;
+                            doubleButtonDoor.ActivateEvent(TriggerState.Triggered);
+                        }
+                    }
+                    else
+                    {
+                        if (doubleButtonDoor.triggerState == TriggerState.Triggered)
+                        {
+                            doubleButtonDoor.triggerState = TriggerState.Untriggered;
+                            doubleButtonDoor.ActivateEvent(TriggerState.Untriggered);
+                        }
                     }
                     break;
             }

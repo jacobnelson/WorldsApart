@@ -94,7 +94,7 @@ namespace WorldsApart.Code.Entities
             base.SetAnimationStuff(_minRow, _minCol, _rows, _cols, _cellW, _cellH, _frames, _animationRate);
             halfWidth = cellW / 4;
             halfHeight = cellH / 4;
-            SetCollisionBox(cellW, cellH, Vector2.Zero);
+            SetCollisionBox(cellW / 2, cellH / 2, Vector2.Zero);
         }
 
         public void SetCollisionBox(float width, float height, Vector2 offset)
