@@ -96,6 +96,7 @@ namespace WorldsApart.Code.Entities
         public PointLight light;
         public PointLight sleeperLight;
 
+
         public Player(PlayerObjectMode playerIndex, Texture2D texture, Vector2 position)
             : base(texture, position)
         {
@@ -382,12 +383,12 @@ namespace WorldsApart.Code.Entities
                             currentFrame = PlayerMode.RunningLead;
                             ChangeAnimationBounds(3, 1, 2);
                         }
-                        else if (currentFrame == PlayerMode.RunningLead)
+                        if (currentFrame == PlayerMode.RunningLead) //TODO: change this back to else for lead-in
                         {
-                            if (currentCellCol == 2)
+                            if (currentCellCol == 1) //TODO: change this back to proper
                             {
                                 currentFrame = PlayerMode.Running;
-                                ChangeAnimationBounds(3, 3, 14);
+                                ChangeAnimationBounds(3, 3, 8);
                             }
                         }
                         //if (currentFrame == PlayerMode.Running)
@@ -395,23 +396,23 @@ namespace WorldsApart.Code.Entities
                         //    animationRate = 12 - (int)((Math.Abs(speed.X) / terminalSpeed.X) * 8);
                         //}
                     }
-                    else if (currentFrame != PlayerMode.Idle && currentFrame != PlayerMode.RunningEnd && currentFrame == PlayerMode.Running)
-                    {
-                        currentFrame = PlayerMode.RunningEnd;
-                        ChangeAnimationBounds(2, 7, 1);
-                    }
-                    else if (currentFrame == PlayerMode.RunningEnd)
-                    {
-                        if (currentCellCol == 7)
-                        {
-                            currentFrame = PlayerMode.Idle;
-                            ChangeAnimationBounds(1, 1, 4);
-                        }
-                    }
-                    else if (currentFrame != PlayerMode.Idle)
+                    //else if (currentFrame != PlayerMode.Idle && currentFrame != PlayerMode.RunningEnd && currentFrame == PlayerMode.Running) //TODO: uncomment these else ifs
+                    //{
+                    //    currentFrame = PlayerMode.RunningEnd;
+                    //    ChangeAnimationBounds(2, 7, 1);
+                    //}
+                    //else if (currentFrame == PlayerMode.RunningEnd)
+                    //{
+                    //    if (currentCellCol == 7)
+                    //    {
+                    //        currentFrame = PlayerMode.Idle;
+                    //        ChangeAnimationBounds(1, 1, 4);
+                    //    }
+                    //}
+                    else if (currentFrame != PlayerMode.Idle) 
                     {
                         currentFrame = PlayerMode.Idle;
-                        ChangeAnimationBounds(1, 1, 4);
+                        ChangeAnimationBounds(7, 1, 12);
                     }
                 }
             }
@@ -453,7 +454,8 @@ namespace WorldsApart.Code.Entities
 
 
             animationRate = 5;
-            if (currentFrame == PlayerMode.Idle) animationRate = 10;
+            if (currentFrame == PlayerMode.Running) animationRate = 8;
+            if (currentFrame == PlayerMode.Idle) animationRate = 8;
 
         }
 
