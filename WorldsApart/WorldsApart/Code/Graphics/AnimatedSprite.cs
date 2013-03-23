@@ -65,7 +65,7 @@ namespace WorldsApart.Code.Graphics
             currentCellRow = minRow;
         }
 
-        public void nextCell() //Goes to the next cell, and loops based on your mins and maxes
+        public virtual void nextCell() //Goes to the next cell, and loops based on your mins and maxes
         {
             currentCellCol++;
             if (currentCellCol > cols)

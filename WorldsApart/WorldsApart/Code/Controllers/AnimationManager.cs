@@ -71,7 +71,8 @@ namespace WorldsApart.Code.Controllers
         public int scaleTime;
         public bool scaling;
 
-
+        public bool pauseMovement = false;
+        public Vector2 pausedPosition = Vector2.Zero;
 
         public AnimationManager(Sprite target)
         {
@@ -251,10 +252,19 @@ namespace WorldsApart.Code.Controllers
                 }
                 target.scale = newScale;
             }
+            if (pauseMovement)
+            {
+                target.position = pausedPosition;
+            }
 
 
 
+        }
 
+        public void Pause()
+        {
+            pauseMovement = true;
+            pausedPosition = target.position;
         }
 
         float linear(float t, float b, float c, float d)

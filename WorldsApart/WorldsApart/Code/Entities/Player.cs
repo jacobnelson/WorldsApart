@@ -24,11 +24,16 @@ namespace WorldsApart.Code.Entities
     enum PlayerMode
     {
         Idle,
+        RunningLead,
         Running,
+        RunningEnd,
         JumpingUpLead,
-        JumpingDownLead,
         JumpingUp,
-        JumpingDown
+        JumpingDownLead,
+        JumpingDown,
+        JumpingDownEnd,
+        Dying,
+        Reviving
     }
 
     class Player : PhysObj
@@ -245,6 +250,16 @@ namespace WorldsApart.Code.Entities
             grabBox.SetPosition(position);
         }
 
+        public override void Die()
+        {
+            if (currentFrame != PlayerMode.Dying)
+            {
+                am.Pause();
+                ChangeAnimationBounds(5, 1, 4);
+                currentFrame = PlayerMode.Dying;
+            }
+        }
+
         public void GetInput()
         {
             if (stopInput) return;
@@ -283,7 +298,23 @@ namespace WorldsApart.Code.Entities
 
         }
 
-        
+        public override void nextCell() //Goes to the next cell, and loops based on your mins and maxes
+        {
+            currentCellCol++;
+            if (currentCellCol > cols)
+            {
+                currentCellRow++;
+                currentCellCol = 1;
+            }
+            frameCounter++;
+            if (frameCounter >= frames)
+            {
+                //if (currentFrame == PlayerMode.Reviving) Trace.WriteLine("Barf!");
+                frameCounter = 0;
+                currentCellCol = minCol;
+                currentCellRow = minRow;
+            }
+        }
 
         public void ChangeSprite()
         {
@@ -293,21 +324,91 @@ namespace WorldsApart.Code.Entities
 
             if (playerIndex == PlayerObjectMode.Two) return;
 
+            if (currentFrame == PlayerMode.Dying)
+            {
+                stopInput = true;
+                if (currentCellCol == 4)
+                {
+                    ChangeAnimationBounds(5, 5, 9);
+                    currentFrame = PlayerMode.Reviving;
+                    am.pauseMovement = false;
+                    base.Die();
+                    
+                }
+                return;
+            }
+            else if (currentFrame == PlayerMode.Reviving)
+            {
+                stopInput = true;
+                //Trace.WriteLine("Row: " + currentCellRow + " | Col: " + currentCellCol);
+                if (currentCellRow == 6 && currentCellCol == 5)
+                {
+                    Trace.WriteLine("Barf!");
+                    currentFrame = PlayerMode.Idle;
+                    ChangeAnimationBounds(1, 1, 4);
+                }
+                return;
+            }
+
             if (state == PhysState.Grounded)
             {
-                if (speed.X != 0)
+                bool landed = false;
+                if (currentFrame == PlayerMode.JumpingDown && currentFrame != PlayerMode.JumpingDownEnd)
                 {
-                    if (currentFrame != PlayerMode.Running)
-                    {
-                        currentFrame = PlayerMode.Running;
-                        ChangeAnimationBounds(1, 1, 3);
-                    }
-                    animationRate = 12 - (int)((Math.Abs(speed.X) / terminalSpeed.X) * 8);
+                    currentFrame = PlayerMode.JumpingDownEnd;
+                    ChangeAnimationBounds(2, 5, 3);
                 }
-                else if (currentFrame != PlayerMode.Idle)
+                else if (currentFrame == PlayerMode.JumpingDownEnd)
                 {
-                    currentFrame = PlayerMode.Idle;
-                    ChangeAnimationBounds(1, 1, 1);
+                    if (currentCellCol == 7)
+                    {
+                        landed = true;
+                    }
+                }
+                else if (currentFrame != PlayerMode.JumpingDown && currentFrame != PlayerMode.JumpingDownEnd)
+                {
+                    landed = true;
+                }
+                if (landed)
+                {
+                    if (speed.X != 0)
+                    {
+                        if (currentFrame != PlayerMode.Running && currentFrame != PlayerMode.RunningLead)
+                        {
+                            currentFrame = PlayerMode.RunningLead;
+                            ChangeAnimationBounds(3, 1, 2);
+                        }
+                        else if (currentFrame == PlayerMode.RunningLead)
+                        {
+                            if (currentCellCol == 2)
+                            {
+                                currentFrame = PlayerMode.Running;
+                                ChangeAnimationBounds(3, 3, 14);
+                            }
+                        }
+                        //if (currentFrame == PlayerMode.Running)
+                        //{
+                        //    animationRate = 12 - (int)((Math.Abs(speed.X) / terminalSpeed.X) * 8);
+                        //}
+                    }
+                    else if (currentFrame != PlayerMode.Idle && currentFrame != PlayerMode.RunningEnd && currentFrame == PlayerMode.Running)
+                    {
+                        currentFrame = PlayerMode.RunningEnd;
+                        ChangeAnimationBounds(2, 7, 1);
+                    }
+                    else if (currentFrame == PlayerMode.RunningEnd)
+                    {
+                        if (currentCellCol == 7)
+                        {
+                            currentFrame = PlayerMode.Idle;
+                            ChangeAnimationBounds(1, 1, 4);
+                        }
+                    }
+                    else if (currentFrame != PlayerMode.Idle)
+                    {
+                        currentFrame = PlayerMode.Idle;
+                        ChangeAnimationBounds(1, 1, 4);
+                    }
                 }
             }
             else if (state == PhysState.Air)
@@ -317,17 +418,14 @@ namespace WorldsApart.Code.Entities
                     if (currentFrame != PlayerMode.JumpingUpLead && currentFrame != PlayerMode.JumpingUp)
                     {
                         currentFrame = PlayerMode.JumpingUpLead;
-                        ChangeAnimationBounds(2, 1, 3);
+                        ChangeAnimationBounds(1, 5, 4);
                     }
-                    else if (currentFrame == PlayerMode.JumpingUp)
+                    else if (currentFrame == PlayerMode.JumpingUpLead)
                     {
-                        ChangeAnimationBounds(2, 3, 1);
-                    }
-                    else
-                    {
-                        if (currentCellRow == 2 && currentCellCol == 3)
+                        if (currentCellCol == 8)
                         {
                             currentFrame = PlayerMode.JumpingUp;
+                            ChangeAnimationBounds(1, 8, 1);
                         }
                     }
                 }
@@ -336,21 +434,23 @@ namespace WorldsApart.Code.Entities
                     if (currentFrame != PlayerMode.JumpingDownLead && currentFrame != PlayerMode.JumpingDown)
                     {
                         currentFrame = PlayerMode.JumpingDownLead;
-                        ChangeAnimationBounds(3, 1, 3);
+                        ChangeAnimationBounds(2, 1, 4);
                     }
-                    else if (currentFrame == PlayerMode.JumpingDown)
+                    else if (currentFrame == PlayerMode.JumpingDownLead)
                     {
-                        ChangeAnimationBounds(3, 3, 1);
-                    }
-                    else
-                    {
-                        if (currentCellCol == 3 && currentCellRow == 3)
+                        if (currentCellCol == 4)
                         {
                             currentFrame = PlayerMode.JumpingDown;
+                            ChangeAnimationBounds(2, 4, 1);
                         }
                     }
                 }
             }
+
+
+            animationRate = 5;
+            if (currentFrame == PlayerMode.Idle) animationRate = 10;
+
         }
 
         public void StopJump()

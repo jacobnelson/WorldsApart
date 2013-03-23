@@ -542,6 +542,14 @@ namespace WorldsApart.Code.Gamestates
             {
                 level.ActivateEvent(0, TriggerState.Triggered);
             }
+
+            if (InputManager.IsKeyPressed(Keys.P))
+            {
+                if (player1.am.pauseMovement)
+                    player1.am.pauseMovement = false;
+                else
+                    player1.am.Pause();
+            }
             
 
             switch (playerIndex)
