@@ -182,10 +182,59 @@ namespace WorldsApart.Code.Gamestates
             //okayToDraw = true;
             isLoading = false;
 
-
-
             player1.indicatorTexture = LoadTexture("player1Ideal");
             player2.indicatorTexture = LoadTexture("player2Ideal");
+
+
+            List<IdealAnimationSet> player1Textures = new List<IdealAnimationSet>();
+            player1.idleSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 7, 1, 8, 8, 12, 8);
+            player1Textures.Add(player1.idleSet);
+            player1.runningLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 3, 1, 8, 8, 2, 5, new Point(3,2));
+            player1Textures.Add(player1.runningLeadSet);
+            player1.runningSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 3, 3, 8, 8, 8 ,8);
+            player1Textures.Add(player1.runningSet);
+            player1.runningEndSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 2, 7, 8, 8, 1, 5, new Point(2,7));
+            player1Textures.Add(player1.runningEndSet);
+            player1.jumpingUpLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 1, 5, 8, 8, 4,5, new Point(1,8));
+            player1Textures.Add(player1.jumpingUpLeadSet);
+            player1.jumpingUpSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 1, 8, 8, 8, 1,5);
+            player1Textures.Add(player1.jumpingUpSet);
+            player1.jumpingDownLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 2, 1, 8, 8, 4,5, new Point(2,4));
+            player1Textures.Add(player1.jumpingDownLeadSet);
+            player1.jumpingDownSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 2, 4, 8, 8, 1,5);
+            player1Textures.Add(player1.jumpingDownSet);
+            player1.jumpingDownEndSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 2, 5, 8, 8, 3,5, new Point(2,7));
+            player1Textures.Add(player1.jumpingDownEndSet);
+            player1.DyingSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 1, 8, 8, 4,5, new Point(5,4));
+            player1Textures.Add(player1.DyingSet);
+            player1.RevivingSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 5, 8, 8, 9,5, new Point(6,5)); 
+            player1Textures.Add(player1.RevivingSet);
+
+            List<IdealAnimationSet> player2Textures = new List<IdealAnimationSet>();
+            player2.idleSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 1, 1, 8, 8, 4,10);
+            player2Textures.Add(player2.idleSet);
+            player2.runningLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 3, 1, 8, 8, 2, 5,new Point(3, 2));
+            player2Textures.Add(player2.runningLeadSet);
+            player2.runningSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 3, 3, 8, 8, 14,5);
+            player2Textures.Add(player2.runningSet);
+            player2.runningEndSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 2, 7, 8, 8, 1,5, new Point(2, 7));
+            player2Textures.Add(player2.runningEndSet);
+            player2.jumpingUpLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 1, 5, 8, 8, 4,5, new Point(1, 8));
+            player2Textures.Add(player2.jumpingUpLeadSet);
+            player2.jumpingUpSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 1, 8, 8, 8, 1,5);
+            player2Textures.Add(player2.jumpingUpSet);
+            player2.jumpingDownLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 2, 1, 8, 8, 4, 5,new Point(2, 4));
+            player2Textures.Add(player2.jumpingDownLeadSet);
+            player2.jumpingDownSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 2, 4, 8, 8, 1,5);
+            player2Textures.Add(player2.jumpingDownSet);
+            player2.jumpingDownEndSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 2, 5, 8, 8, 3,5, new Point(2,7));
+            player2Textures.Add(player2.jumpingDownEndSet);
+            player2.DyingSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 1, 8, 8, 4, 5,new Point(5, 4));
+            player2Textures.Add(player2.DyingSet);
+            player2.RevivingSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 5, 8, 8, 9, 5,new Point(6, 5));
+            player2Textures.Add(player2.RevivingSet);
+
+            
             //if (gameStateManager.goodness < 0)
             //{
             //    RenderTarget2D indicatorTarget = new RenderTarget2D(GraphicsDevice, player1.texture.Width, player1.texture.Height);
@@ -259,52 +308,9 @@ namespace WorldsApart.Code.Gamestates
                     break;
             }
 
-            RenderTarget2D player1Texture = new RenderTarget2D(GraphicsDevice, player1.texture.Width, player1.texture.Height);
-            GraphicsDevice.SetRenderTarget(player1Texture);
-            GraphicsDevice.Clear(Color.Transparent);
-            gameStateManager.game.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            if (gameStateManager.goodness > 0 && gameStateManager.goodness < 4)
-            {
-                gameStateManager.game.spriteBatch.Draw(player1.indicatorTexture, Vector2.Zero, Color.White);
-                gameStateManager.game.spriteBatch.Draw(player1.texture, Vector2.Zero, new Color(0, 0, 0, player1.indicatorAlpha));
-                
-            }
-            else if (gameStateManager.goodness >= 4)
-            {
-                gameStateManager.game.spriteBatch.Draw(player1.texture, Vector2.Zero, Color.White);
-                gameStateManager.game.spriteBatch.Draw(player1.indicatorTexture, Vector2.Zero, new Color(0, 0, 0, player1.indicatorAlpha));
-            }
-            else if (gameStateManager.goodness <= 0)
-            {
-                byte c = player1.indicatorAlpha;
-                gameStateManager.game.spriteBatch.Draw(player1.indicatorTexture, Vector2.Zero, new Color(c, c, c));
-            }
-            gameStateManager.game.spriteBatch.End();
-            player1.indicatorTexture = player1Texture;
-            
+            RenderIdealTextures(player1Textures, player1.indicatorAlpha);
 
-            RenderTarget2D player2Texture = new RenderTarget2D(GraphicsDevice, player2.texture.Width, player2.texture.Height);
-            GraphicsDevice.SetRenderTarget(player2Texture);
-            GraphicsDevice.Clear(Color.Transparent);
-            gameStateManager.game.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            if (gameStateManager.goodness > 0 && gameStateManager.goodness < 4)
-            {
-                gameStateManager.game.spriteBatch.Draw(player2.indicatorTexture, Vector2.Zero, Color.White);
-                gameStateManager.game.spriteBatch.Draw(player2.texture, Vector2.Zero, new Color(0, 0, 0, player2.indicatorAlpha));
-                
-            }
-            else if (gameStateManager.goodness >= 4)
-            {
-                gameStateManager.game.spriteBatch.Draw(player2.texture, Vector2.Zero, Color.White);
-                gameStateManager.game.spriteBatch.Draw(player2.indicatorTexture, Vector2.Zero, new Color(0, 0, 0, player2.indicatorAlpha));
-            }
-            else if (gameStateManager.goodness <= 0)
-            {
-                byte c = player2.indicatorAlpha;
-                gameStateManager.game.spriteBatch.Draw(player2.indicatorTexture, Vector2.Zero, new Color(c, c, c));
-            }
-            gameStateManager.game.spriteBatch.End();
-            player2.indicatorTexture = player2Texture;
+            RenderIdealTextures(player2Textures, player2.indicatorAlpha);
         }
 
         //public void DrawLoadingScreen(SpriteBatch spriteBatch)
@@ -314,6 +320,47 @@ namespace WorldsApart.Code.Gamestates
         //    loadingScreen.Draw(spriteBatch);
         //    spriteBatch.End();
         //}
+
+        public void RenderIdealTextures(List<IdealAnimationSet> playerTextures, byte playerAlpha)
+        {
+            List<Texture2D> usedTextures = new List<Texture2D>();
+            List<Texture2D> completedTextures = new List<Texture2D>();
+
+            foreach (IdealAnimationSet set in playerTextures)
+            {
+                if (usedTextures.Contains(set.idealTexture))
+                {
+                    set.idealTexture = completedTextures[usedTextures.IndexOf(set.idealTexture)];
+                    return;
+                }
+
+                RenderTarget2D playerTexture = new RenderTarget2D(GraphicsDevice, set.texture.Width, set.texture.Height);
+                GraphicsDevice.SetRenderTarget(playerTexture);
+                GraphicsDevice.Clear(Color.Transparent);
+                gameStateManager.game.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                if (gameStateManager.goodness > 0 && gameStateManager.goodness < 4)
+                {
+                    gameStateManager.game.spriteBatch.Draw(set.idealTexture, Vector2.Zero, Color.White);
+                    gameStateManager.game.spriteBatch.Draw(set.texture, Vector2.Zero, new Color(0, 0, 0, playerAlpha));
+
+                }
+                else if (gameStateManager.goodness >= 4)
+                {
+                    gameStateManager.game.spriteBatch.Draw(set.texture, Vector2.Zero, Color.White);
+                    gameStateManager.game.spriteBatch.Draw(set.idealTexture, Vector2.Zero, new Color(0, 0, 0, playerAlpha));
+                }
+                else if (gameStateManager.goodness <= 0)
+                {
+                    byte c = playerAlpha;
+                    gameStateManager.game.spriteBatch.Draw(set.idealTexture, Vector2.Zero, new Color(c, c, c));
+                }
+                gameStateManager.game.spriteBatch.End();
+
+                usedTextures.Add(set.idealTexture);
+                completedTextures.Add(playerTexture);
+                set.idealTexture = playerTexture;
+            }
+        }
 
         #region Add Objects
         public void AddGroundTile(Vector2 tilePosition)
@@ -557,14 +604,14 @@ namespace WorldsApart.Code.Gamestates
                 case PlayerIndex.One:
                     player1.stopInput = false;
                     player2.stopInput = true;
-                    player1.texture = player1.regularTexture;
-                    player2.texture = player2.indicatorTexture;
+                    player1.showingRegular = true;
+                    player2.showingRegular = false;
                     break;
                 case PlayerIndex.Two:
                     player1.stopInput = true;
                     player2.stopInput = false;
-                    player1.texture = player1.indicatorTexture;
-                    player2.texture = player2.regularTexture;
+                    player1.showingRegular = false;
+                    player2.showingRegular = true;
                     break;
             }
 

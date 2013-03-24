@@ -39,6 +39,8 @@ namespace WorldsApart.Code.Entities
     class Player : PhysObj
     {
 
+        public bool showingRegular = true;
+
         public Texture2D indicatorTexture;
         public byte indicatorAlpha = 255;
 
@@ -46,8 +48,6 @@ namespace WorldsApart.Code.Entities
 
         PlayerObjectMode playerIndex = PlayerObjectMode.One;
         public bool stopInput = false;
-
-        
 
         bool isJumping = false;
         float maxJumpForce = -2;
@@ -82,7 +82,7 @@ namespace WorldsApart.Code.Entities
         Vector2 thumb = Vector2.Zero;
 
         //PlayerMode currentMode = PlayerMode.Idle;
-        PlayerMode currentFrame = PlayerMode.Idle;
+        PlayerMode currentSet = PlayerMode.Idle;
 
         Facing facing = Facing.Right;
 
@@ -97,6 +97,18 @@ namespace WorldsApart.Code.Entities
         public PointLight sleeperLight;
 
 
+        public IdealAnimationSet idleSet;
+        public IdealAnimationSet runningLeadSet;
+        public IdealAnimationSet runningSet;
+        public IdealAnimationSet runningEndSet;
+        public IdealAnimationSet jumpingUpLeadSet;
+        public IdealAnimationSet jumpingUpSet;
+        public IdealAnimationSet jumpingDownLeadSet;
+        public IdealAnimationSet jumpingDownSet;
+        public IdealAnimationSet jumpingDownEndSet;
+        public IdealAnimationSet DyingSet;
+        public IdealAnimationSet RevivingSet;
+
         public Player(PlayerObjectMode playerIndex, Texture2D texture, Vector2 position)
             : base(texture, position)
         {
@@ -109,6 +121,63 @@ namespace WorldsApart.Code.Entities
 
             if (playerIndex == PlayerObjectMode.One) auraColor = new Color(255, 128, 0);
             else auraColor = new Color(0, 128, 255);
+        }
+
+        public void ChangeCurrentSet(PlayerMode currentSet)
+        {
+            this.currentSet = currentSet;
+            switch (currentSet)
+            {
+                case PlayerMode.Dying:
+                    ChangeAnimationSet(DyingSet);
+                    break;
+                case PlayerMode.Idle:
+                    ChangeAnimationSet(idleSet);
+                    break;
+                case PlayerMode.JumpingDown:
+                    ChangeAnimationSet(jumpingDownSet);
+                    break;
+                case PlayerMode.JumpingDownEnd:
+                    ChangeAnimationSet(jumpingDownEndSet);
+                    break;
+                case PlayerMode.JumpingDownLead:
+                    ChangeAnimationSet(jumpingDownLeadSet);
+                    break;
+                case PlayerMode.JumpingUp:
+                    ChangeAnimationSet(jumpingUpSet);
+                    break;
+                case PlayerMode.JumpingUpLead:
+                    ChangeAnimationSet(jumpingUpLeadSet);
+                    break;
+                case PlayerMode.Reviving:
+                    ChangeAnimationSet(RevivingSet);
+                    break;
+                case PlayerMode.Running:
+                    ChangeAnimationSet(runningSet);
+                    break;
+                case PlayerMode.RunningEnd:
+                    ChangeAnimationSet(runningEndSet);
+                    break;
+                case PlayerMode.RunningLead:
+                    ChangeAnimationSet(runningLeadSet);
+                    break;
+            }
+        }
+
+        public void ChangeAnimationSet(IdealAnimationSet set)
+        {
+            texture = set.texture;
+            indicatorTexture = set.idealTexture;
+            SetPlayerAnimationStuff(set.minRow, set.minCol, set.rows, set.cols, cellW, cellH, set.frames, set.animationRate);
+        }
+
+        public void SetPlayerAnimationStuff(int _minRow, int _minCol, int _rows, int _cols, int _cellW, int _cellH, int _frames, int _animationRate)
+        {
+            ChangeAnimationBounds(_minRow, _minCol, _frames);
+            rows = _rows;
+            cols = _cols;
+            animationRate = _animationRate;
+            isAnimating = true;
         }
 
         public override void SetAnimationStuff(int _minRow, int _minCol, int _rows, int _cols, int _cellW, int _cellH, int _frames, int _animationRate)
@@ -259,11 +328,11 @@ namespace WorldsApart.Code.Entities
 
         public override void Die()
         {
-            if (currentFrame != PlayerMode.Dying)
+            if (currentSet != PlayerMode.Dying)
             {
                 am.Pause();
                 ChangeAnimationBounds(5, 1, 4);
-                currentFrame = PlayerMode.Dying;
+                currentSet = PlayerMode.Dying;
             }
         }
 
@@ -316,7 +385,6 @@ namespace WorldsApart.Code.Entities
             frameCounter++;
             if (frameCounter >= frames)
             {
-                //if (currentFrame == PlayerMode.Reviving) Trace.WriteLine("Barf!");
                 frameCounter = 0;
                 currentCellCol = minCol;
                 currentCellRow = minRow;
@@ -329,28 +397,25 @@ namespace WorldsApart.Code.Entities
             if (facing == Facing.Right) spriteEffects = SpriteEffects.None;
             else spriteEffects = SpriteEffects.FlipHorizontally;
 
-            if (currentFrame == PlayerMode.Dying)
+            if (currentSet == PlayerMode.Dying)
             {
                 stopInput = true;
-                if (currentCellCol == 4)
+                if (CheckForFrameStop(DyingSet))
                 {
-                    ChangeAnimationBounds(5, 5, 9);
-                    currentFrame = PlayerMode.Reviving;
+                    ChangeCurrentSet(PlayerMode.Reviving);
                     am.pauseMovement = false;
                     base.Die();
                     
                 }
                 return;
             }
-            else if (currentFrame == PlayerMode.Reviving)
+            else if (currentSet == PlayerMode.Reviving)
             {
                 stopInput = true;
                 //Trace.WriteLine("Row: " + currentCellRow + " | Col: " + currentCellCol);
-                if (currentCellRow == 6 && currentCellCol == 5)
+                if (CheckForFrameStop(RevivingSet))
                 {
-                    Trace.WriteLine("Barf!");
-                    currentFrame = PlayerMode.Idle;
-                    ChangeAnimationBounds(1, 1, 4);
+                    ChangeCurrentSet(PlayerMode.Idle);
                 }
                 return;
             }
@@ -358,37 +423,35 @@ namespace WorldsApart.Code.Entities
             if (state == PhysState.Grounded)
             {
                 bool landed = false;
-                if (currentFrame == PlayerMode.JumpingDown && currentFrame != PlayerMode.JumpingDownEnd)
+                if (currentSet == PlayerMode.JumpingDown && currentSet != PlayerMode.JumpingDownEnd)
                 {
-                    currentFrame = PlayerMode.JumpingDownEnd;
-                    ChangeAnimationBounds(2, 5, 3);
+                    ChangeCurrentSet(PlayerMode.JumpingDownEnd);
                 }
-                else if (currentFrame == PlayerMode.JumpingDownEnd)
+                else if (currentSet == PlayerMode.JumpingDownEnd)
                 {
-                    if (currentCellCol == 7)
+                    if (CheckForFrameStop(jumpingDownEndSet))
                     {
                         landed = true;
                     }
                 }
-                else if (currentFrame != PlayerMode.JumpingDown && currentFrame != PlayerMode.JumpingDownEnd)
+                else if (currentSet != PlayerMode.JumpingDown && currentSet != PlayerMode.JumpingDownEnd)
                 {
                     landed = true;
                 }
+
                 if (landed)
                 {
                     if (speed.X != 0)
                     {
-                        if (currentFrame != PlayerMode.Running && currentFrame != PlayerMode.RunningLead)
+                        if (currentSet != PlayerMode.Running && currentSet != PlayerMode.RunningLead)
                         {
-                            currentFrame = PlayerMode.RunningLead;
-                            ChangeAnimationBounds(3, 1, 2);
+                            ChangeCurrentSet(PlayerMode.RunningLead);
                         }
-                        if (currentFrame == PlayerMode.RunningLead) //TODO: change this back to else for lead-in
+                        else if (currentSet == PlayerMode.RunningLead)
                         {
-                            if (currentCellCol == 1) //TODO: change this back to proper
+                            if (CheckForFrameStop(runningLeadSet))
                             {
-                                currentFrame = PlayerMode.Running;
-                                ChangeAnimationBounds(3, 3, 8);
+                                ChangeCurrentSet(PlayerMode.Running);
                             }
                         }
                         //if (currentFrame == PlayerMode.Running)
@@ -396,23 +459,20 @@ namespace WorldsApart.Code.Entities
                         //    animationRate = 12 - (int)((Math.Abs(speed.X) / terminalSpeed.X) * 8);
                         //}
                     }
-                    //else if (currentFrame != PlayerMode.Idle && currentFrame != PlayerMode.RunningEnd && currentFrame == PlayerMode.Running) //TODO: uncomment these else ifs
-                    //{
-                    //    currentFrame = PlayerMode.RunningEnd;
-                    //    ChangeAnimationBounds(2, 7, 1);
-                    //}
-                    //else if (currentFrame == PlayerMode.RunningEnd)
-                    //{
-                    //    if (currentCellCol == 7)
-                    //    {
-                    //        currentFrame = PlayerMode.Idle;
-                    //        ChangeAnimationBounds(1, 1, 4);
-                    //    }
-                    //}
-                    else if (currentFrame != PlayerMode.Idle) 
+                    else if (currentSet != PlayerMode.Idle && currentSet != PlayerMode.RunningEnd && currentSet == PlayerMode.Running) 
                     {
-                        currentFrame = PlayerMode.Idle;
-                        ChangeAnimationBounds(7, 1, 12);
+                        ChangeCurrentSet(PlayerMode.RunningEnd);
+                    }
+                    else if (currentSet == PlayerMode.RunningEnd)
+                    {
+                        if (CheckForFrameStop(runningEndSet))
+                        {
+                            ChangeCurrentSet(PlayerMode.Idle);
+                        }
+                    }
+                    else if (currentSet != PlayerMode.Idle) 
+                    {
+                        ChangeCurrentSet(PlayerMode.Idle);
                     }
                 }
             }
@@ -420,43 +480,52 @@ namespace WorldsApart.Code.Entities
             {
                 if (speed.Y < 0)
                 {
-                    if (currentFrame != PlayerMode.JumpingUpLead && currentFrame != PlayerMode.JumpingUp)
+                    if (currentSet != PlayerMode.JumpingUpLead && currentSet != PlayerMode.JumpingUp)
                     {
-                        currentFrame = PlayerMode.JumpingUpLead;
-                        ChangeAnimationBounds(1, 5, 4);
+                        ChangeCurrentSet(PlayerMode.JumpingUpLead);
                     }
-                    else if (currentFrame == PlayerMode.JumpingUpLead)
+                    else if (currentSet == PlayerMode.JumpingUpLead)
                     {
-                        if (currentCellCol == 8)
+                        if (jumpingUpLeadSet.endingRowCol == new Point(currentCellRow, currentCellCol))
                         {
-                            currentFrame = PlayerMode.JumpingUp;
-                            ChangeAnimationBounds(1, 8, 1);
+                            ChangeCurrentSet(PlayerMode.JumpingUp);
                         }
                     }
                 }
                 else
                 {
-                    if (currentFrame != PlayerMode.JumpingDownLead && currentFrame != PlayerMode.JumpingDown)
+                    if (currentSet != PlayerMode.JumpingDownLead && currentSet != PlayerMode.JumpingDown)
                     {
-                        currentFrame = PlayerMode.JumpingDownLead;
-                        ChangeAnimationBounds(2, 1, 4);
+                        ChangeCurrentSet(PlayerMode.JumpingDownLead);
                     }
-                    else if (currentFrame == PlayerMode.JumpingDownLead)
+                    else if (currentSet == PlayerMode.JumpingDownLead)
                     {
-                        if (currentCellCol == 4)
+                        if (CheckForFrameStop(jumpingDownLeadSet))
                         {
-                            currentFrame = PlayerMode.JumpingDown;
-                            ChangeAnimationBounds(2, 4, 1);
+                            ChangeCurrentSet(PlayerMode.JumpingDown);
                         }
                     }
                 }
             }
 
 
-            animationRate = 5;
-            if (currentFrame == PlayerMode.Running) animationRate = 8;
-            if (currentFrame == PlayerMode.Idle) animationRate = 8;
+            if (showingRegular)
+            {
+                texture = regularTexture;
+            }
+            else
+            {
+                texture = indicatorTexture;
+            }
+            //animationRate = 5;
+            //if (currentSet == PlayerMode.Running) animationRate = 8;
+            //if (currentSet == PlayerMode.Idle) animationRate = 8;
 
+        }
+
+        public bool CheckForFrameStop(IdealAnimationSet set)
+        {
+            return (set.endingRowCol == new Point(currentCellRow, currentCellCol) && animationCounter == animationRate - 1);
         }
 
         public void StopJump()

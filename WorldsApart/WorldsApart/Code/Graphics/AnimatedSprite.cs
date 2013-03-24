@@ -63,6 +63,8 @@ namespace WorldsApart.Code.Graphics
             frames = _frames;
             currentCellCol = minCol;
             currentCellRow = minRow;
+            frameCounter = 0;
+            animationCounter = 0;
         }
 
         public virtual void nextCell() //Goes to the next cell, and loops based on your mins and maxes
