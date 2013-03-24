@@ -17,17 +17,20 @@ namespace WorldsApart.Code.Levels
 {
     class Level1 : Level
     {
-        Door doubleButtonDoor; 
+        Door doubleButtonDoor;
         bool buttonOneDown = false;
         bool buttonTwoDown = false;
+
+        Door finalTopDoor;
+        Door finalTrapDoor;
 
         public Level1(GSPlay gsPlay)
             : base(gsPlay)
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level1Data");
 
-            player1Pos = GridToPosition(39, 24);
-            player2Pos = GridToPosition(39, 24);
+            player1Pos = GridToPosition(41, 25);
+            player2Pos = GridToPosition(41, 25);
 
             portalPos = GridToPosition(681, 20);
             pItemPos = GridToPosition(672, 11);
@@ -56,14 +59,14 @@ namespace WorldsApart.Code.Levels
 
             Door d4 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(373, 23)), Level.GridToPosition(new Point(373, 27)), OpenState.Closed);  //box drop
             gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(339, 16)), .8f);                                                                  //box drop
-            gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(358, 16)), .8f);                                                                  //box drop
+            gsPlay.AddBouncyBall(.8f,gsPlay.LoadTexture("TestSprites/pickUp"), Level.GridToPosition(new Point(358, 16)));                                                                  //box drop
             gsPlay.AddButton(new EventTrigger(this, d4), 2, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(365, 29)));                                            //box drop
             gsPlay.AddBouncyBall(.5f, gsPlay.LoadTexture("TestSprites/pickUp"), Level.GridToPosition(new Point(370, 16)));                                                                  //box drop
             gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(351, 21)), Level.GridToPosition(new Point(346, 21)));                             //box drop
 
             gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(378, 16)), .8f);                                                                  //box accross moving
-            gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(398, 26)), Level.GridToPosition(new Point(406, 26)));                             //box accross moving
-            gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(386, 26)), Level.GridToPosition(new Point(386, 30)));                             //box accross moving
+            gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(398, 25)), Level.GridToPosition(new Point(406, 25)));                             //box accross moving
+            gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(386, 25)), Level.GridToPosition(new Point(386, 30)));                             //box accross moving
 
             Door d5 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(561, 24)), OpenState.Closed);                                             //barn door
             gsPlay.AddSwitch(new EventTrigger(this, d5), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(556, 25)));                                               //barn door
@@ -82,11 +85,15 @@ namespace WorldsApart.Code.Levels
             Door d8 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(605, 18)), OpenState.Closed);                                                //lower barn exit
             gsPlay.AddSwitch(new EventTrigger(this, d8), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(601, 19)));                                                  //lower barn exit 
 
-            Door d9 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(605, 09)), OpenState.Closed);                                                //upper barn exit
-            gsPlay.AddSwitch(new EventTrigger(this, d9), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(601, 10)));                                                  //upper barn exit 
+            
 
-            Door d10 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(600, 28)), Level.GridToPosition(new Point(600, 24)), OpenState.Closed);
-            gsPlay.AddButton(new EventTrigger(this, d10), 2, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(591, 26)));
+            finalTrapDoor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(600, 28)), Level.GridToPosition(new Point(600, 24)), OpenState.Closed);
+            Button finalButton = gsPlay.AddButton(new EventTrigger(this, finalTrapDoor), 2, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(591, 26)));
+
+            finalTopDoor = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(605, 09)), OpenState.Closed);                                                //upper barn exit
+            FlipSwitch finalSwitch = gsPlay.AddSwitch(new EventTrigger(this, finalTopDoor), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(601, 10)));                                                  //upper barn exit 
+            finalSwitch.AddEvent(new EventTrigger(this, 4));
+            
 
         }
 
@@ -149,6 +156,12 @@ namespace WorldsApart.Code.Levels
                             doubleButtonDoor.triggerState = TriggerState.Untriggered;
                             doubleButtonDoor.ActivateEvent(TriggerState.Untriggered);
                         }
+                    }
+                    break;
+                case 4:
+                    if (triggerState == TriggerState.Triggered)
+                    {
+                        finalTrapDoor.ActivateEvent(triggerState);
                     }
                     break;
             }
