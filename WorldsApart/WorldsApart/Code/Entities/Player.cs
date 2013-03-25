@@ -365,8 +365,8 @@ namespace WorldsApart.Code.Entities
             if (InputManager.IsKeyUp(Keys.W) && InputManager.IsButtonUp(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
             if (InputManager.IsKeyUp(Keys.S) && InputManager.IsButtonUp(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
 
-            if ((InputManager.IsKeyDown(Keys.RightShift) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
-            if (InputManager.IsKeyPressed(Keys.RightShift) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
+            if ((InputManager.IsKeyDown(Keys.RightControl) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
+            if (InputManager.IsKeyPressed(Keys.RightControl) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
 
             if ((InputManager.IsKeyPressed(Keys.Space) || InputManager.IsButtonPressed(Buttons.A)) && state == PhysState.Grounded) jumpPressed = true;
             if (InputManager.IsKeyDown(Keys.Space) || InputManager.IsButtonDown(Buttons.A)) jumpDown = true;
