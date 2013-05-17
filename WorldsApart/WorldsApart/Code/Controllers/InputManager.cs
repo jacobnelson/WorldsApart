@@ -12,16 +12,20 @@ namespace WorldsApart.Code.Controllers
     {
         static GamePadState gps;
         static KeyboardState ks;
+        static MouseState ms;
 
         static GamePadState gpsPrev;
         static KeyboardState ksPrev;
+        static MouseState msPrev;
 
-        public static void UpdateStates(GamePadState gpsNew, KeyboardState ksNew)
+        public static void UpdateStates(GamePadState gpsNew, KeyboardState ksNew, MouseState msNew)
         {
             gpsPrev = gps;
             ksPrev = ks;
+            msPrev = ms;
             gps = gpsNew;
             ks = ksNew;
+            ms = msNew;
         }
 
         public static bool IsKeyDown(Keys key)
@@ -72,6 +76,32 @@ namespace WorldsApart.Code.Controllers
         public static Vector2 GetRightThumbstick()
         {
             return gps.ThumbSticks.Right;
+        }
+
+        public static bool GetLeftMouseDown()
+        {
+            return ms.LeftButton == ButtonState.Pressed;
+        }
+        public static bool GetLeftMousePressed()
+        {
+            return ms.LeftButton == ButtonState.Pressed && msPrev.LeftButton == ButtonState.Released;
+        }
+        public static bool GetLeftMouseReleased()
+        {
+            return ms.LeftButton == ButtonState.Released && msPrev.LeftButton == ButtonState.Pressed;
+        }
+
+        public static bool GetRightMouseDown()
+        {
+            return ms.RightButton == ButtonState.Pressed;
+        }
+        public static bool GetRightMousePressed()
+        {
+            return ms.RightButton == ButtonState.Pressed && msPrev.RightButton == ButtonState.Released;
+        }
+        public static bool GetRightMouseReleased()
+        {
+            return ms.RightButton == ButtonState.Released && msPrev.RightButton == ButtonState.Pressed;
         }
     }
 }

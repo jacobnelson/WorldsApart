@@ -60,6 +60,11 @@ namespace WorldsApart.Code.Entities
         float runningSpeed = 6;
         float runningSpeedConst = 6;
 
+        bool signalPressed = false;
+        public bool isSignaling = false;
+        float signalCounter = 0;
+        float signalRate = 0;
+
         bool rightDown = false;
         //bool rightUp = false;
         bool leftDown = false;
@@ -125,6 +130,7 @@ namespace WorldsApart.Code.Entities
 
         public void ChangeCurrentSet(PlayerMode currentSet)
         {
+            
             this.currentSet = currentSet;
             switch (currentSet)
             {
@@ -200,6 +206,7 @@ namespace WorldsApart.Code.Entities
             jumpReleased = false;
             actionDown = false;
             actionPressed = false;
+            signalPressed = false;
             GetInput();
 
             if (pushTarget == null) runningSpeed = runningSpeedConst;
@@ -247,6 +254,20 @@ namespace WorldsApart.Code.Entities
                 pressing = true;
             }
 
+
+            if (signalPressed)
+            {
+                ActivateSignal();
+            }
+            if (isSignaling)
+            {
+                signalCounter += Time.GetSeconds();
+                if (signalCounter >= signalRate)
+                {
+                    isSignaling = false;
+                    signalCounter = 0;
+                }
+            }
 
             
             if (dropCounter >= dropRate)
@@ -320,6 +341,13 @@ namespace WorldsApart.Code.Entities
 
         }
 
+        public void ActivateSignal()
+        {
+            isSignaling = true;
+            signalCounter = 0;
+            //TODO: create signal particle
+        }
+
         public override void AdjustCollision(PhysObj obj)
         {
             base.AdjustCollision(obj);
@@ -365,17 +393,20 @@ namespace WorldsApart.Code.Entities
             if (InputManager.IsKeyUp(Keys.W) && InputManager.IsButtonUp(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
             if (InputManager.IsKeyUp(Keys.S) && InputManager.IsButtonUp(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
 
-            if ((InputManager.IsKeyDown(Keys.RightControl) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
-            if (InputManager.IsKeyPressed(Keys.RightControl) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
+            if ((InputManager.IsKeyDown(Keys.Down) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
+            if (InputManager.IsKeyPressed(Keys.Down) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
 
             if ((InputManager.IsKeyPressed(Keys.Space) || InputManager.IsButtonPressed(Buttons.A)) && state == PhysState.Grounded) jumpPressed = true;
             if (InputManager.IsKeyDown(Keys.Space) || InputManager.IsButtonDown(Buttons.A)) jumpDown = true;
             if (InputManager.IsKeyReleased(Keys.Space) || InputManager.IsButtonReleased(Buttons.A)) jumpReleased = true;
 
+            if (InputManager.IsButtonPressed(Buttons.Y) || InputManager.IsKeyPressed(Keys.Up)) signalPressed = true;
+
         }
 
         public override void nextCell() //Goes to the next cell, and loops based on your mins and maxes
         {
+            //TODO: just here for debugging
             currentCellCol++;
             if (currentCellCol > cols)
             {

@@ -93,8 +93,8 @@ namespace WorldsApart.Code
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-
-            InputManager.UpdateStates(GamePad.GetState(PlayerIndex.One), Keyboard.GetState());
+            Time.UpdateTime(gameTime);
+            InputManager.UpdateStates(GamePad.GetState(PlayerIndex.One), Keyboard.GetState(), Mouse.GetState());
             if (InputManager.IsKeyPressed(Keys.F11)) graphics.ToggleFullScreen();
             gsm.Update(gameTime);
             // TOO: Add your update logic here

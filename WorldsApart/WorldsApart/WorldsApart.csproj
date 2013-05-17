@@ -114,6 +114,7 @@
     <Compile Include="Code\Controllers\InputManager.cs" />
     <Compile Include="Code\Controllers\InventoryItem.cs" />
     <Compile Include="Code\Controllers\OBB.cs" />
+    <Compile Include="Code\Controllers\Time.cs" />
     <Compile Include="Code\Controllers\TimerObject.cs" />
     <Compile Include="Code\Entities\Button.cs" />
     <Compile Include="Code\Entities\CircularPlatforms.cs" />

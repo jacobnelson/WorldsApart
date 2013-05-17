@@ -58,7 +58,6 @@ namespace WorldsApart.Code.Entities
                     speed = parent.speed;
                     auraColor = parent.auraColor;
                     psyHold = true;
-                    //TODO: movement code
                 }
 
             }

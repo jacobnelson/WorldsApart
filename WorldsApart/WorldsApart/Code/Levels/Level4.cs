@@ -26,7 +26,7 @@ namespace WorldsApart.Code.Levels
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level4Data");
 
-            player1Pos = GridToPosition(224, 48);
+            player1Pos = GridToPosition(17, 10);
             player2Pos = GridToPosition(17, 10);
 
             portalPos = GridToPosition(232, 48);

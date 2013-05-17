@@ -36,6 +36,7 @@ namespace WorldsApart.Code.Gamestates
         Effect alphaShader;
         Effect lightingShader;
         Effect colorShader;
+        Effect glowShader;
         RenderTarget2D alphaMask;
         RenderTarget2D lightMask;
         RenderTarget2D renderTarget;
@@ -58,6 +59,7 @@ namespace WorldsApart.Code.Gamestates
         RenderTarget2D blurY2;
 
         SpriteIMG loadingScreen;
+
 
         public Player player1;
         public Player player2;
@@ -141,6 +143,7 @@ namespace WorldsApart.Code.Gamestates
             alphaShader = LoadEffect("ShaderAssets/AlphaMapping");
             lightingShader = LoadEffect("ShaderAssets/Lighting");
             colorShader = LoadEffect("ShaderAssets/ColorTransform");
+            glowShader = LoadEffect("ShaderAssets/StrokeGlow");
             lightMask = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             auraTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             auraTargetOrigin = new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2);
@@ -574,18 +577,15 @@ namespace WorldsApart.Code.Gamestates
 
         #endregion
 
-        public override void Update(GameTime gameTime)
+        public void GetInput()
         {
-            if (isLoading) return;
-            base.Update(gameTime);
-
-            if (InputManager.IsButtonPressed(Buttons.Back) || InputManager.IsKeyPressed(Keys.LeftShift))
+             if (InputManager.IsButtonPressed(Buttons.Back) || InputManager.IsKeyPressed(Keys.LeftShift))
             {
                 if (playerIndex == PlayerIndex.One) playerIndex = PlayerIndex.Two;
                 else playerIndex = PlayerIndex.One;
             }
 
-            if (InputManager.IsButtonPressed(Buttons.Y) || InputManager.IsKeyPressed(Keys.Y))
+            if (InputManager.IsKeyPressed(Keys.Y))
             {
                 level.ActivateEvent(0, TriggerState.Triggered);
             }
@@ -597,6 +597,16 @@ namespace WorldsApart.Code.Gamestates
                 else
                     player1.am.Pause();
             }
+
+            
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (isLoading) return;
+            base.Update(gameTime);
+
+            GetInput();
             
 
             switch (playerIndex)
@@ -893,7 +903,7 @@ namespace WorldsApart.Code.Gamestates
             }
             
             gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget);
-            gameStateManager.game.GraphicsDevice.Clear(Color.SlateBlue); //TODO: change here
+            gameStateManager.game.GraphicsDevice.Clear(Color.SlateBlue); //TODO: change here for background color
             spriteBatch.Begin();
             spriteBatch.Draw(bgTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();

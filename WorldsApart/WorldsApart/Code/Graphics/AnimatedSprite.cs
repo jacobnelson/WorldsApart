@@ -84,14 +84,14 @@ namespace WorldsApart.Code.Graphics
             }
         }
 
-        public override void Update() //Runs each update
+        public override void Update() 
         {
             base.Update();
             Animate();
             int x = cellW * (currentCellCol - 1);
             int y = cellH * (currentCellRow - 1);
 
-            crop = new Rectangle(x, y, cellW, cellH); //Set the size
+            crop = new Rectangle(x, y, cellW, cellH); 
         }
 
         public void Animate()

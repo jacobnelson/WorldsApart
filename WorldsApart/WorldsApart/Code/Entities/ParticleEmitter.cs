@@ -26,7 +26,7 @@ namespace WorldsApart.Code.Entities
         public float startScale = .5f;
         public float endScale = .8f;
 
-        public int spawnRate = 20;
+        public int spawnRate = 60;
         int spawnCounter = 0;
 
         public int life = 30;
