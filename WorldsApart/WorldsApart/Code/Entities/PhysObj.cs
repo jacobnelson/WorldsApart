@@ -29,7 +29,7 @@ namespace WorldsApart.Code.Entities
                 return sPosition;
             }
             set
-            {
+            { 
                 sPosition = value;
             }
         }

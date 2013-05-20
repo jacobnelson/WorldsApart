@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
+using WorldsApart.Code.Controllers;
+
 namespace WorldsApart.Code.Graphics
 {
     class SpriteIMG : Sprite
@@ -58,6 +60,25 @@ namespace WorldsApart.Code.Graphics
             base.Draw(spriteBatch);
             if (auraTexture != null) spriteBatch.Draw(auraTexture, position * 2, Color.White);
             if (texture != null) spriteBatch.Draw(texture, sPosition * 2, crop, color, rotation, origin, scale, spriteEffects, 0);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        {
+            Rectangle textureArea = new Rectangle((int)position.X - texture.Width / 2, (int)position.Y - texture.Width / 2, texture.Width, texture.Height);
+
+            if (textureArea.Intersects(camera.visibleArea))
+            {
+                Draw(spriteBatch);
+            }
+
+            //if (position.X * 2 - texture.Width > camera.visibleArea.Right || position.X * 2 + texture.Width < camera.visibleArea.Left || position.Y * 2 - texture.Height > camera.visibleArea.Bottom || position.Y * 2 + texture.Height < camera.visibleArea.Top)
+            //{
+            //    return;
+            //}
+            //else
+            //{
+            //    Draw(spriteBatch);
+            //}
         }
     }
 }

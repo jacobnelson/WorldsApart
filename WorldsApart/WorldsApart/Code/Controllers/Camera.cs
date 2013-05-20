@@ -27,6 +27,8 @@ namespace WorldsApart.Code.Controllers
 
         public Vector2 offset = Vector2.Zero;
 
+        public Rectangle visibleArea;
+
         public static float scaleConstant = .6f;
         public float scaleValue = scaleConstant;
         public float targetScale = scaleConstant;
@@ -40,6 +42,7 @@ namespace WorldsApart.Code.Controllers
             this.target = target;
             AddTarget(secondaryTarget);
             this.offset = offset;
+            visibleArea = new Rectangle();
         }
 
         public void AddTarget(Sprite t)
@@ -87,6 +90,8 @@ namespace WorldsApart.Code.Controllers
 
             position += (targetPosition - position) / shiftRate;
             scaleValue += (targetScale - scaleValue) / shiftRate;
+
+            visibleArea = new Rectangle((int)position.X - Game1.screenWidth / 2, (int)position.Y - Game1.screenHeight / 2, Game1.screenWidth, Game1.screenHeight);
 
 
             UpdateMatrixValues();
