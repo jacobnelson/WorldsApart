@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using WorldsApart.Code.Levels;
 using WorldsApart.Code.Controllers;
 using WorldsApart.Code.Graphics;
+using WorldsApart.Code.Gamestates;
 
 using System.Diagnostics;
 
@@ -364,40 +365,100 @@ namespace WorldsApart.Code.Entities
         {
             if (stopInput) return;
 
-            thumb = InputManager.GetLeftThumbstick();
-
-            
-
-            if (InputManager.IsKeyDown(Keys.W) || InputManager.IsButtonDown(Buttons.DPadUp) || thumb.Y > 0) upDown = true;
-            if (InputManager.IsKeyDown(Keys.S) || InputManager.IsButtonDown(Buttons.DPadDown) || thumb.Y < 0) downDown = true;
-
-            if (playerIndex == PlayerObjectMode.One)
+            if (!GameStateManager.isMultiplayer)
             {
-                if (InputManager.IsButtonDown(Buttons.DPadLeft) || InputManager.IsKeyDown(Keys.A)) leftDown = true;
-                if (InputManager.IsButtonDown(Buttons.DPadRight) || InputManager.IsKeyDown(Keys.D)) rightDown = true;
-                if (InputManager.IsKeyUp(Keys.A) && InputManager.IsButtonUp(Buttons.DPadLeft) && thumb.X >= 0) leftDown = false;
-                if (InputManager.IsKeyUp(Keys.D) && InputManager.IsButtonUp(Buttons.DPadRight) && thumb.X <= 0) rightDown = false;
+                #region Single Player
+                thumb = InputManager.GetLeftThumbstick();
+
+                if (InputManager.IsKeyDown(Keys.W) || InputManager.IsButtonDown(Buttons.DPadUp) || thumb.Y > 0) upDown = true;
+                if (InputManager.IsKeyDown(Keys.S) || InputManager.IsButtonDown(Buttons.DPadDown) || thumb.Y < 0) downDown = true;
+
+                if (playerIndex == PlayerObjectMode.One)
+                {
+                    if (InputManager.IsButtonDown(Buttons.DPadLeft) || InputManager.IsKeyDown(Keys.A)) leftDown = true;
+                    if (InputManager.IsButtonDown(Buttons.DPadRight) || InputManager.IsKeyDown(Keys.D)) rightDown = true;
+                    if (InputManager.IsKeyUp(Keys.A) && InputManager.IsButtonUp(Buttons.DPadLeft) && thumb.X >= 0) leftDown = false;
+                    if (InputManager.IsKeyUp(Keys.D) && InputManager.IsButtonUp(Buttons.DPadRight) && thumb.X <= 0) rightDown = false;
+                }
+                else if (playerIndex == PlayerObjectMode.Two)
+                {
+                    thumb.X = -thumb.X;
+                    if (InputManager.IsButtonDown(Buttons.DPadLeft) || InputManager.IsKeyDown(Keys.A)) rightDown = true;
+                    if (InputManager.IsButtonDown(Buttons.DPadRight) || InputManager.IsKeyDown(Keys.D)) leftDown = true;
+                    if (InputManager.IsKeyUp(Keys.A) && InputManager.IsButtonUp(Buttons.DPadLeft) && thumb.X >= 0) rightDown = false;
+                    if (InputManager.IsKeyUp(Keys.D) && InputManager.IsButtonUp(Buttons.DPadRight) && thumb.X <= 0) leftDown = false;
+                }
+                if (InputManager.IsKeyUp(Keys.W) && InputManager.IsButtonUp(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
+                if (InputManager.IsKeyUp(Keys.S) && InputManager.IsButtonUp(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
+
+                if ((InputManager.IsKeyDown(Keys.Down) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
+                if (InputManager.IsKeyPressed(Keys.Down) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
+
+                if ((InputManager.IsKeyPressed(Keys.Space) || InputManager.IsButtonPressed(Buttons.A)) && state == PhysState.Grounded) jumpPressed = true;
+                if (InputManager.IsKeyDown(Keys.Space) || InputManager.IsButtonDown(Buttons.A)) jumpDown = true;
+                if (InputManager.IsKeyReleased(Keys.Space) || InputManager.IsButtonReleased(Buttons.A)) jumpReleased = true;
+
+                if (InputManager.IsButtonPressed(Buttons.Y) || InputManager.IsKeyPressed(Keys.Up)) signalPressed = true;
+#endregion
             }
-            else if (playerIndex == PlayerObjectMode.Two)
+            else
             {
-                thumb.X = -thumb.X;
-                if (InputManager.IsButtonDown(Buttons.DPadLeft) || InputManager.IsKeyDown(Keys.A)) rightDown = true;
-                if (InputManager.IsButtonDown(Buttons.DPadRight) || InputManager.IsKeyDown(Keys.D)) leftDown = true;
-                if (InputManager.IsKeyUp(Keys.A) && InputManager.IsButtonUp(Buttons.DPadLeft) && thumb.X >= 0) rightDown = false;
-                if (InputManager.IsKeyUp(Keys.D) && InputManager.IsButtonUp(Buttons.DPadRight) && thumb.X <= 0) leftDown = false;
+                if (playerIndex == PlayerObjectMode.One)
+                {
+                    #region Player 1 
+                    thumb = InputManager.GetLeftThumbstick();
+
+                    if (InputManager.IsButtonDown(Buttons.DPadUp) || thumb.Y > 0) upDown = true;
+                    if (InputManager.IsButtonDown(Buttons.DPadDown) || thumb.Y < 0) downDown = true;
+
+
+                    if (InputManager.IsButtonDown(Buttons.DPadLeft)) leftDown = true;
+                    if (InputManager.IsButtonDown(Buttons.DPadRight)) rightDown = true;
+                    if (InputManager.IsButtonUp(Buttons.DPadLeft) && thumb.X >= 0) leftDown = false;
+                    if (InputManager.IsButtonUp(Buttons.DPadRight) && thumb.X <= 0) rightDown = false;
+
+                    if (InputManager.IsButtonUp(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
+                    if (InputManager.IsButtonUp(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
+
+                    if ((InputManager.IsButtonDown(Buttons.X))) actionDown = true;
+                    if (InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
+
+                    if ((InputManager.IsButtonPressed(Buttons.A)) && state == PhysState.Grounded) jumpPressed = true;
+                    if (InputManager.IsButtonDown(Buttons.A)) jumpDown = true;
+                    if (InputManager.IsButtonReleased(Buttons.A)) jumpReleased = true;
+
+                    if (InputManager.IsButtonPressed(Buttons.Y)) signalPressed = true;
+                    #endregion
+                }
+                else if (playerIndex == PlayerObjectMode.Two)
+                {
+                    #region Player 2
+                    thumb = InputManager.GetLeftThumbstick2();
+
+                    if (InputManager.IsKeyDown(Keys.W) || InputManager.IsButtonDown2(Buttons.DPadUp) || thumb.Y > 0) upDown = true;
+                    if (InputManager.IsKeyDown(Keys.S) || InputManager.IsButtonDown2(Buttons.DPadDown) || thumb.Y < 0) downDown = true;
+
+
+                    thumb.X = -thumb.X;
+                    if (InputManager.IsButtonDown2(Buttons.DPadLeft) || InputManager.IsKeyDown(Keys.A)) rightDown = true;
+                    if (InputManager.IsButtonDown2(Buttons.DPadRight) || InputManager.IsKeyDown(Keys.D)) leftDown = true;
+                    if (InputManager.IsKeyUp(Keys.A) && InputManager.IsButtonUp2(Buttons.DPadLeft) && thumb.X >= 0) rightDown = false;
+                    if (InputManager.IsKeyUp(Keys.D) && InputManager.IsButtonUp2(Buttons.DPadRight) && thumb.X <= 0) leftDown = false;
+
+                    if (InputManager.IsKeyUp(Keys.W) && InputManager.IsButtonUp2(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
+                    if (InputManager.IsKeyUp(Keys.S) && InputManager.IsButtonUp2(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
+
+                    if ((InputManager.IsKeyDown(Keys.Down) || InputManager.IsButtonDown2(Buttons.X))) actionDown = true;
+                    if (InputManager.IsKeyPressed(Keys.Down) || InputManager.IsButtonPressed2(Buttons.X)) actionPressed = true;
+
+                    if ((InputManager.IsKeyPressed(Keys.Space) || InputManager.IsButtonPressed2(Buttons.A)) && state == PhysState.Grounded) jumpPressed = true;
+                    if (InputManager.IsKeyDown(Keys.Space) || InputManager.IsButtonDown2(Buttons.A)) jumpDown = true;
+                    if (InputManager.IsKeyReleased(Keys.Space) || InputManager.IsButtonReleased2(Buttons.A)) jumpReleased = true;
+
+                    if (InputManager.IsButtonPressed2(Buttons.Y) || InputManager.IsKeyPressed(Keys.Up)) signalPressed = true;
+                    #endregion
+                }
             }
-            if (InputManager.IsKeyUp(Keys.W) && InputManager.IsButtonUp(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
-            if (InputManager.IsKeyUp(Keys.S) && InputManager.IsButtonUp(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
-
-            if ((InputManager.IsKeyDown(Keys.Down) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
-            if (InputManager.IsKeyPressed(Keys.Down) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
-
-            if ((InputManager.IsKeyPressed(Keys.Space) || InputManager.IsButtonPressed(Buttons.A)) && state == PhysState.Grounded) jumpPressed = true;
-            if (InputManager.IsKeyDown(Keys.Space) || InputManager.IsButtonDown(Buttons.A)) jumpDown = true;
-            if (InputManager.IsKeyReleased(Keys.Space) || InputManager.IsButtonReleased(Buttons.A)) jumpReleased = true;
-
-            if (InputManager.IsButtonPressed(Buttons.Y) || InputManager.IsKeyPressed(Keys.Up)) signalPressed = true;
-
         }
 
         public override void nextCell() //Goes to the next cell, and loops based on your mins and maxes

@@ -26,7 +26,7 @@ namespace WorldsApart.Code.Gamestates
 
     class GameStateManager
     {
-        public bool isMultiplayer = false;
+        static public bool isMultiplayer = false;
         //public bool isNetwork = false;
         //public bool isHost = false;
 

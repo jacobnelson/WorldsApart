@@ -18,12 +18,17 @@ namespace WorldsApart.Code.Controllers
         static KeyboardState ksPrev;
         static MouseState msPrev;
 
-        public static void UpdateStates(GamePadState gpsNew, KeyboardState ksNew, MouseState msNew)
+        static GamePadState gps2;
+        static GamePadState gps2Prev;
+
+        public static void UpdateStates(GamePadState gpsNew, GamePadState gps2New, KeyboardState ksNew, MouseState msNew)
         {
             gpsPrev = gps;
+            gps2Prev = gps2;
             ksPrev = ks;
             msPrev = ms;
             gps = gpsNew;
+            gps2 = gps2New;
             ks = ksNew;
             ms = msNew;
         }
@@ -76,6 +81,36 @@ namespace WorldsApart.Code.Controllers
         public static Vector2 GetRightThumbstick()
         {
             return gps.ThumbSticks.Right;
+        }
+
+        public static bool IsButtonDown2(Buttons button)
+        {
+            return gps2.IsButtonDown(button);
+        }
+
+        public static bool IsButtonUp2(Buttons button)
+        {
+            return gps2.IsButtonUp(button);
+        }
+
+        public static bool IsButtonPressed2(Buttons button)
+        {
+            return gps2.IsButtonDown(button) && gps2Prev.IsButtonUp(button);
+        }
+
+        public static bool IsButtonReleased2(Buttons button)
+        {
+            return gps2.IsButtonUp(button) && gps2Prev.IsButtonDown(button);
+        }
+
+        public static Vector2 GetLeftThumbstick2()
+        {
+            return gps2.ThumbSticks.Left;
+        }
+
+        public static Vector2 GetRightThumbstick2()
+        {
+            return gps2.ThumbSticks.Right;
         }
 
         public static bool GetLeftMouseDown()
