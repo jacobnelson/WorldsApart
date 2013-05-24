@@ -20,8 +20,12 @@ namespace WorldsApart.Code.Graphics
         public float auraScaleMax = 1.3f;
         public bool auraScalingUp = true;
 
+        public bool screenCull = true;
+
         public bool selfIlluminating = false;
         public bool illuminatingAllTheTime = false;
+
+        protected float positionModifier = 1;
 
         public SpriteIMG(Texture2D texture, Vector2 position)
             : base(position)
@@ -58,17 +62,19 @@ namespace WorldsApart.Code.Graphics
         {
             if (!visible) return;
             base.Draw(spriteBatch);
-            if (auraTexture != null) spriteBatch.Draw(auraTexture, position * 2, Color.White);
-            if (texture != null) spriteBatch.Draw(texture, sPosition * 2, crop, color, rotation, origin, scale, spriteEffects, 0);
+            if (auraTexture != null) spriteBatch.Draw(auraTexture, position * positionModifier, Color.White);
+            if (texture != null) spriteBatch.Draw(texture, sPosition * positionModifier, crop, color, rotation, origin, scale, spriteEffects, 0);
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             Rectangle textureArea = new Rectangle((int)position.X - texture.Width / 2, (int)position.Y - texture.Width / 2, texture.Width, texture.Height);
 
-            if (textureArea.Intersects(camera.visibleArea))
+            if (textureArea.Intersects(camera.visibleArea) || !screenCull)
             {
+                positionModifier = 2;
                 Draw(spriteBatch);
+                positionModifier = 1;
             }
 
             //if (position.X * 2 - texture.Width > camera.visibleArea.Right || position.X * 2 + texture.Width < camera.visibleArea.Left || position.Y * 2 - texture.Height > camera.visibleArea.Bottom || position.Y * 2 + texture.Height < camera.visibleArea.Top)

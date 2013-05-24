@@ -53,6 +53,7 @@ namespace WorldsApart.Code.Entities
                 foreach (EventTrigger eventTrigger in triggerList)
                 {
                     eventTrigger.ActivateEvent(TriggerState.Triggered);
+                    
                 }
             }
             else

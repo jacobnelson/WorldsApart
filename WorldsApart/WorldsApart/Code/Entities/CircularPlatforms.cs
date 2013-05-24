@@ -61,8 +61,9 @@ namespace WorldsApart.Code.Entities
                     angle -= (float)Math.PI * 2;
                 }
 
-                SetPosition();
+                
             }
+            SetPosition();
         }
 
         public void SetPosition()

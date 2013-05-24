@@ -60,25 +60,21 @@ namespace WorldsApart.Code.Entities
         float runningSpeed = 6;
         float runningSpeedConst = 6;
 
-        bool signalPressed = false;
+       
         public bool isSignaling = false;
         float signalCounter = 0;
         float signalRate = 0;
 
-        bool rightDown = false;
-        //bool rightUp = false;
-        bool leftDown = false;
-        //bool leftUp = false;
-        bool upDown = false;
-        //bool upUp = false;
-        bool downDown = false;
-        //bool downUp = false;
-        bool jumpDown = false;
-        bool jumpPressed = false;
-        bool jumpReleased = false;
-        bool actionDown = false;
-        bool actionPressed = false;
-        //bool actionReleased = false;
+        public bool rightDown = false;
+        public bool leftDown = false;
+        public bool upDown = false;
+        public bool downDown = false;
+        public bool jumpDown = false;
+        public bool jumpPressed = false;
+        public bool jumpReleased = false;
+        public bool actionDown = false;
+        public bool actionPressed = false;
+        public bool signalPressed = false;
 
         bool ableToPressDrop = false;
         int dropCounter = 0;
@@ -89,12 +85,12 @@ namespace WorldsApart.Code.Entities
         //PlayerMode currentMode = PlayerMode.Idle;
         PlayerMode currentSet = PlayerMode.Idle;
 
-        Facing facing = Facing.Right;
+        public Facing facing = Facing.Right;
 
         public PickUpObj pickUp;
         public CollisionBox grabBox;
         bool holding = false;
-        bool grabbing = false;
+        public bool grabbing = false;
         Moveable pushTarget;
         public bool pressing = false;
         public bool pushing = false;

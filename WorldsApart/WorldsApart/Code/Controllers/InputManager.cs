@@ -11,7 +11,7 @@ namespace WorldsApart.Code.Controllers
     static class InputManager
     {
         static GamePadState gps;
-        static KeyboardState ks;
+        static public KeyboardState ks;
         static MouseState ms;
 
         static GamePadState gpsPrev;

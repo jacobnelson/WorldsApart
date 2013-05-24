@@ -130,8 +130,8 @@ namespace WorldsApart.Code.Graphics
 
             
             //And then we draw! 
-            if (auraTexture != null) theSpriteBatch.Draw(auraTexture, sPosition * 2, auraTexture.Bounds, Color.White, 0, new Vector2(auraTexture.Width / 2, auraTexture.Height / 2), 1, SpriteEffects.None, depth);
-            if (texture != null) theSpriteBatch.Draw(texture, sPosition * 2, crop, color, rotation, origin, scale, spriteEffects, depth);
+            if (auraTexture != null) theSpriteBatch.Draw(auraTexture, sPosition * positionModifier, auraTexture.Bounds, Color.White, 0, new Vector2(auraTexture.Width / 2, auraTexture.Height / 2), 1, SpriteEffects.None, depth);
+            if (texture != null) theSpriteBatch.Draw(texture, sPosition * positionModifier, crop, color, rotation, origin, scale, spriteEffects, depth);
             
         }
     }

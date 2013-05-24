@@ -102,7 +102,6 @@ namespace WorldsApart.Code.Levels
             CircularPlatform cp1 = gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(36, 45), 100, 240);
             gsPlay.AddSwitch(new EventTrigger(this, cp1), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(42, 48));
 
-            
 
 
             gsPlay.AddPointLight(gsPlay.LoadTexture("ShaderAssets/pointLight"), GridToPosition(30, 47), new Vector2(3));

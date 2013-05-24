@@ -17,10 +17,14 @@ using WorldsApart.Code.Graphics;
 using System.Diagnostics;
 using System.Threading;
 
+using Lidgren.Network;
+
 namespace WorldsApart.Code.Gamestates
 {
     class GSPlay : GameState
     {
+        
+
         private Thread backgroundThread;
         private bool isLoading = false;
         private bool okayToDraw = true;
@@ -534,6 +538,7 @@ namespace WorldsApart.Code.Gamestates
         {
             bool noMatches = true;
             img.position *= parallaxRatio;
+            img.screenCull = false;
             foreach (ParallaxLayer bg in bgLayerList)
             {
                 if (bg.parallaxRatio == parallaxRatio)
@@ -579,11 +584,13 @@ namespace WorldsApart.Code.Gamestates
 
         public void GetInput()
         {
-             if (InputManager.IsButtonPressed(Buttons.Back) || InputManager.IsKeyPressed(Keys.LeftShift))
+
+            if (InputManager.IsButtonPressed(Buttons.Back) || InputManager.IsKeyPressed(Keys.LeftShift))
             {
                 if (playerIndex == PlayerIndex.One) playerIndex = PlayerIndex.Two;
                 else playerIndex = PlayerIndex.One;
             }
+
 
             if (InputManager.IsKeyPressed(Keys.Y))
             {
@@ -607,7 +614,7 @@ namespace WorldsApart.Code.Gamestates
             base.Update(gameTime);
 
             GetInput();
-            
+
 
             switch (playerIndex)
             {
@@ -624,6 +631,7 @@ namespace WorldsApart.Code.Gamestates
                     player2.showingRegular = true;
                     break;
             }
+
 
             player1.Update();
             player2.Update();
@@ -770,7 +778,7 @@ namespace WorldsApart.Code.Gamestates
 
             if (playerIndex == PlayerIndex.One) alphaDot.position = player2.position;
             else alphaDot.position = player1.position;
-           
+            
 
             cameraPlayer1.Update();
             cameraPlayer2.Update();
@@ -1046,7 +1054,7 @@ namespace WorldsApart.Code.Gamestates
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, null, null, null, camera.transform);
                 foreach (SpriteIMG img in bg.imageList)
                 {
-                    img.Draw(spriteBatch);
+                    img.Draw(spriteBatch, camera);
                 }
                 spriteBatch.End();
             }

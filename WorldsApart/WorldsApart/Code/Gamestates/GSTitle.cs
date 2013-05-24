@@ -59,7 +59,7 @@ namespace WorldsApart.Code.Gamestates
 
             if (InputManager.IsButtonPressed(Buttons.Start) || InputManager.IsKeyPressed(Keys.Enter))
             {
-                gameStateManager.SwitchToGSPlay();
+                gameStateManager.SwitchToGSMenu();
             }
         }
 
