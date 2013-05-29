@@ -44,18 +44,27 @@ namespace WorldsApart.Code.Levels
         Door d8;
         Door d9;
         Door d10;
+        Door d12;
+        Door d13;
+        CircularPlatform c3;
+        CircularPlatform c4;
+        CircularPlatform c5;
+        CircularPlatform c6;
+        MovingPlatform p1;
+        MovingPlatform p2;
 
 
         public Level7(GSPlay gsPlay)
             : base(gsPlay)
         {
-
+           
             levelDataTexture = gsPlay.LoadTexture("Levels/level7Data");
-            player1Pos = GridToPosition(5, 270);
+            //player1Pos = GridToPosition(368, 122);
+            player1Pos = GridToPosition(376, 118);
             player2Pos = player1Pos;
 
-            portalPos = GridToPosition(211, 12);
-            pItemPos = GridToPosition(204, 12);
+            portalPos = GridToPosition(394, 51);
+            pItemPos = GridToPosition(441, 119);
 
             SetupLevel();
 
@@ -64,19 +73,23 @@ namespace WorldsApart.Code.Levels
 
             atmosphereLight = new Color(98, 102, 115);
 
-            gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(95, 280)), .8f);                      //box under backhoe
-            gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(161, 290)), .8f);                     //box in pit under platform
+            Moveable m1 = gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(95, 280)), .8f);                      //box under backhoe
+
+            Moveable m2 = gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(161, 290)), .8f);                     //box in pit under platform
+
             gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(153, 275)), Level.GridToPosition(new Point(153, 282)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(126, 265)));     //crane switch and platform
 
             gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(195, 278)), .8f);                     //box before saw machine
 
-            gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(235, 277)), Level.GridToPosition(new Point(246, 277)));       //platform over saw machine
+            gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(235, 277)), Level.GridToPosition(new Point(243, 277)));       //platform over saw machine
 
             gsPlay.AddBouncyBall(0, gsPlay.LoadTexture("TestSprites/pickUp"), Level.GridToPosition(new Point(307, 286)));                     //ball under building
 
-            gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(309, 283)), Level.GridToPosition(new Point(313, 283)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(314, 281)));     //first horiz door
+            FlipSwitch s1 = gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(309, 283)), Level.GridToPosition(new Point(313, 283)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(314, 281)));     //first horiz door
+            s1.SetPlayerMode(PlayerObjectMode.One);
 
-            gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(323, 283)), Level.GridToPosition(new Point(319, 283)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(322, 289)));     //2nd horiz door
+            FlipSwitch s2 = gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(323, 283)), Level.GridToPosition(new Point(319, 283)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(322, 289)));     //2nd horiz door
+            s2.SetPlayerMode(PlayerObjectMode.Two);
 
             gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(290, 282)), Level.GridToPosition(new Point(290, 209)));       //elevator
 
@@ -95,7 +108,7 @@ namespace WorldsApart.Code.Levels
             Door d4 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(384, 201)), OpenState.Closed);                        //ease of access
             gsPlay.AddSwitch(new EventTrigger(this, d4), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(384, 208)));
 
-            gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(384, 216)), Level.GridToPosition(new Point(360, 216)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(387, 214)));     //platform to crane 2 switch
+            gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(384, 216)), Level.GridToPosition(new Point(360, 216)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(393, 212)));     //platform to crane 2 switch
 
             gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(343, 198)), Level.GridToPosition(new Point(343, 206)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(349, 214)));     //crane 2 switch and platform
 
@@ -114,8 +127,74 @@ namespace WorldsApart.Code.Levels
             Door d11 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(333, 171)), OpenState.Closed);
             gsPlay.AddSwitch(new EventTrigger(this, d11), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(335, 178)));
 
+            gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(275, 145)), 128, 240);    //circular platform 1
+            CircularPlatform c1 = gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(271, 137)), 128, 240);    //circular platform 2
+            c1.increment = -c1.increment;
+            gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(275, 129)), 128, 240);    //circular platform 3
+
             gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(300, 126)), Level.GridToPosition(new Point(319, 126)));       //slide under wind
 
+            d12 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(341, 127)), OpenState.Closed);                               //fading platforms to portal item
+            d13 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(354, 127)), OpenState.Open);
+            FlipSwitch FS4 = gsPlay.AddSwitch(new EventTrigger(this, 4), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(347, 112)));
+
+            Door d14 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(356, 112)), OpenState.Closed);                               //ease of access
+            gsPlay.AddSwitch(new EventTrigger(this, d14), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(360, 124)));
+
+            gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(322, 95)), 256, 360);                         
+
+            CircularPlatform c2 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(300, 98)), 256, 360);
+            c2.increment = -c2.increment;
+            FlipSwitch FS5 = gsPlay.AddSwitch(new EventTrigger(this, c2), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(322, 95)));
+            gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(302, 97)), .8f);
+
+            c3 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(338, 98)), 256, 360);
+            c3.increment = -c3.increment;
+            c3.SetPlayerMode(PlayerObjectMode.Two);
+            c4 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(348, 98)), 256, 360);
+            c4.angle = (float)Math.PI;
+            c4.SetPlayerMode(PlayerObjectMode.One);
+
+            c5 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(343, 83)), 256, 360);
+            c5.increment = -c5.increment;
+            c5.SetPlayerMode(PlayerObjectMode.Two);
+            c6 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(343, 83)), 256, 360);
+            c5.angle = (float)Math.PI;
+            c6.SetPlayerMode(PlayerObjectMode.One);
+
+            Button b1 = gsPlay.AddButton(new EventTrigger(this, 5), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(287, 99)));
+
+            Door p4 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(366, 116)), Level.GridToPosition(new Point(366, 113)), OpenState.Closed);
+            gsPlay.AddBouncyBall(0, gsPlay.LoadTexture("TestSprites/pickUp"), Level.GridToPosition(new Point(366, 112)));
+
+            Door p5 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(368, 116)), Level.GridToPosition(new Point(368, 113)), OpenState.Closed);
+            gsPlay.AddBouncyBall(0, gsPlay.LoadTexture("TestSprites/pickUp"), Level.GridToPosition(new Point(368, 112)));
+
+            p1 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(376, 126)), Level.GridToPosition(new Point(422, 126)));
+            p1.SetPlayerMode(PlayerObjectMode.One);
+
+            p2 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(376, 120)), Level.GridToPosition(new Point(422, 120)));
+            p2.SetPlayerMode(PlayerObjectMode.Two);
+
+            Button b2 = gsPlay.AddButton(new EventTrigger(this, p1), 2, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(367, 115)));
+            b2.AddEvent(new EventTrigger(this, p2));
+
+
+            
+
+            FlipSwitch FS6 = gsPlay.AddSwitch(new EventTrigger(this, p4), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(376, 118)));
+            FS6.SetPlayerMode(PlayerObjectMode.Two);
+
+            
+
+            FlipSwitch FS7 = gsPlay.AddSwitch(new EventTrigger(this, p5), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(376, 124)));
+            FS7.SetPlayerMode(PlayerObjectMode.One);
+
+
+
+            MovingPlatform p3 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(380, 54)), Level.GridToPosition(new Point(359, 54)));
+            gsPlay.AddSwitch(new EventTrigger(this, p3), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(356, 52)));
+            
         }
 
         public override void ActivateEvent(int eventID, TriggerState triggerState)
@@ -164,6 +243,46 @@ namespace WorldsApart.Code.Levels
                         d8.ActivateEvent(TriggerState.Untriggered);
                         d10.ActivateEvent(TriggerState.Triggered);
                     }
+                    break;
+                case 4:
+                    if (triggerState == TriggerState.Triggered)
+                    {
+                        d12.ActivateEvent(TriggerState.Triggered);
+                        d13.ActivateEvent(TriggerState.Untriggered);
+                    }
+                    else
+                    {
+                        d12.ActivateEvent(TriggerState.Untriggered);
+                        d13.ActivateEvent(TriggerState.Triggered);
+                    }
+                    break;
+                case 5:
+                    if (triggerState == TriggerState.Triggered)
+                    {
+                        c3.ActivateEvent(TriggerState.Triggered);
+                        c4.ActivateEvent(TriggerState.Triggered);
+                        c5.ActivateEvent(TriggerState.Triggered);
+                        c6.ActivateEvent(TriggerState.Triggered);
+                    }
+                    else
+                    {
+                        c3.ActivateEvent(TriggerState.Untriggered);
+                        c4.ActivateEvent(TriggerState.Untriggered);
+                        c5.ActivateEvent(TriggerState.Untriggered);
+                        c6.ActivateEvent(TriggerState.Untriggered);
+                    }
+                    break;
+                case 6:
+                    //if (triggerState == TriggerState.Triggered)
+                    //{
+                    //    p1.ActivateEvent(TriggerState.Triggered);
+                    //    p2.ActivateEvent(TriggerState.Triggered);
+                    //}
+                    //else
+                    //{
+                    //    p1.ActivateEvent(TriggerState.Untriggered);
+                    //    p2.ActivateEvent(TriggerState.Untriggered);
+                    //}
                     break;
             }
 

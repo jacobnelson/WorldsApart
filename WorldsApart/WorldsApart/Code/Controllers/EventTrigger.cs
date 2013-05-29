@@ -22,6 +22,7 @@ namespace WorldsApart.Code.Controllers
         Level level;
         //EventObject eventObj;
         public List<EventObject> eventObjList = new List<EventObject>();
+        public LightningChain eventLightning;
         public TriggerState triggerState = TriggerState.Untriggered;
 
         public EventTrigger(Level level)
@@ -40,6 +41,12 @@ namespace WorldsApart.Code.Controllers
         {
             this.eventID = eventID;
         }
+
+        public EventTrigger(Level level, LightningChain lightningChain)
+        {
+            this.eventLightning = lightningChain;
+        }
+
 
         public void ActivateEvent()
         {
@@ -71,6 +78,11 @@ namespace WorldsApart.Code.Controllers
                 }
                 
             }
+
+            if (eventLightning != null)
+            {
+                eventLightning.isActive = !eventLightning.isActive;
+            }
         }
 
         public void ActivateEvent(TriggerState ts)
@@ -87,6 +99,17 @@ namespace WorldsApart.Code.Controllers
             {
                 triggerState = ts;
                 level.ActivateEvent(eventID, ts);
+            }
+            if (eventLightning != null)
+            {
+                if (ts == TriggerState.Triggered)
+                {
+                    eventLightning.isActive = true;
+                }
+                else
+                {
+                    eventLightning.isActive = false;
+                }
             }
         }
     }

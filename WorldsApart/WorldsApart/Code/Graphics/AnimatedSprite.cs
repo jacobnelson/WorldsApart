@@ -110,12 +110,12 @@ namespace WorldsApart.Code.Graphics
 
         public override void DrawAura(SpriteBatch spriteBatch, Vector2 screenOrigin)
         {
-            //int x = cellW * (currentCellCol - 1);
-            //int y = cellH * (currentCellRow - 1);
+            int x = cellW * (currentCellCol - 1);
+            int y = cellH * (currentCellRow - 1);
 
-            //crop = new Rectangle(x, y, cellW, cellH); //Set the size
+            crop = new Rectangle(x, y, cellW, cellH); //Set the size
 
-            if (texture != null) spriteBatch.Draw(texture, screenOrigin, crop, Color.White, rotation, origin, auraScale, spriteEffects, depth);
+            if (texture != null) spriteBatch.Draw(texture, screenOrigin, crop, Color.White, rotation, origin, scale, spriteEffects, depth);
         }
 
         public override void Draw(SpriteBatch theSpriteBatch) //This draws the stuffs. And it's more complex than just the Sprite version.

@@ -7,12 +7,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using WorldsApart.Code.Gamestates;
+using WorldsApart.Code.Graphics;
 
 namespace WorldsApart.Code.Entities
 {
     class Particle : PhysObj
     {
         GSPlay gsPlay;
+
+        public Sprite target;
 
         public int life = 15;
         int lifeCounter = 0;
@@ -46,6 +49,10 @@ namespace WorldsApart.Code.Entities
             if (lifeCounter >= life)
             {
                 Die();
+            }
+            if (target != null)
+            {
+                position = target.position;
             }
         }
 

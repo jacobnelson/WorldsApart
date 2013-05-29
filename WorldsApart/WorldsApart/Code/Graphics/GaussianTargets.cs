@@ -13,6 +13,7 @@ namespace WorldsApart.Code.Graphics
 
         public RenderTarget2D blurX;
         public RenderTarget2D blurY;
+        public RenderTarget2D warpTarget;
         public RenderTarget2D target;
         public Vector2 auraTargetOrigin = Vector2.Zero;
 
@@ -27,6 +28,7 @@ namespace WorldsApart.Code.Graphics
                 Game1.screenWidth, Game1.screenHeight, false,
                 gd.PresentationParameters.BackBufferFormat,
                 DepthFormat.None);
+            warpTarget = new RenderTarget2D(gd, Game1.screenWidth, Game1.screenHeight);
             auraTargetOrigin = new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2);
         }
     }

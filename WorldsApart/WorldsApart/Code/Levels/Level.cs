@@ -219,10 +219,10 @@ namespace WorldsApart.Code.Levels
                 }
             }
 
-            gsPlay.player1 = new Player(PlayerObjectMode.One, gsPlay.LoadTexture("player1"), player1Pos);
+            gsPlay.player1 = new Player(gsPlay, PlayerObjectMode.One, gsPlay.LoadTexture("player1"), player1Pos);
             gsPlay.player1.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player1.SetCollisionBox(48, 96, Vector2.Zero);
-            gsPlay.player2 = new Player(PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), player2Pos);
+            gsPlay.player2 = new Player(gsPlay, PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), player2Pos);
             gsPlay.player2.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player2.SetCollisionBox(48, 96, Vector2.Zero);
 

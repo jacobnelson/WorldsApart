@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+using WorldsApart.Code.Gamestates;
 using WorldsApart.Code.Graphics;
 
 namespace WorldsApart.Code.Controllers
@@ -43,6 +44,8 @@ namespace WorldsApart.Code.Controllers
             AddTarget(secondaryTarget);
             this.offset = offset;
             visibleArea = new Rectangle();
+
+            
         }
 
         public void AddTarget(Sprite t)
@@ -52,6 +55,9 @@ namespace WorldsApart.Code.Controllers
 
         public void Update()
         {
+            if (GameStateManager.isMultiplayer) scaleConstant = .4f;
+            else scaleConstant = .6f;
+
             Sprite secondaryTarget = targetList[0];
             float distance = Vector2.Distance(target.position, secondaryTarget.position);
 
@@ -91,7 +97,11 @@ namespace WorldsApart.Code.Controllers
             position += (targetPosition - position) / shiftRate;
             scaleValue += (targetScale - scaleValue) / shiftRate;
 
-            visibleArea = new Rectangle((int)position.X - Game1.screenWidth / 2, (int)position.Y - Game1.screenHeight / 2, Game1.screenWidth, Game1.screenHeight);
+            
+            if (GameStateManager.isMultiplayer)
+                visibleArea = new Rectangle((int)position.X - Game1.screenWidth / 2, (int)position.Y - Game1.screenHeight, Game1.screenWidth, Game1.screenHeight * 2);
+            else
+                visibleArea = new Rectangle((int)position.X - Game1.screenWidth / 2, (int)position.Y - Game1.screenHeight / 2, Game1.screenWidth, Game1.screenHeight);
 
 
             UpdateMatrixValues();

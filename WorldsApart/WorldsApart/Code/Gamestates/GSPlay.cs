@@ -23,6 +23,8 @@ namespace WorldsApart.Code.Gamestates
 {
     class GSPlay : GameState
     {
+        SpriteIMG verticalDivide;
+
         Viewport mainViewport;
         Viewport player1Viewport;
         Viewport player2Viewport;
@@ -43,6 +45,7 @@ namespace WorldsApart.Code.Gamestates
         Effect lightingShader;
         Effect colorShader;
         Effect glowShader;
+        Effect warpShader;
         RenderTarget2D alphaMask;
         RenderTarget2D lightMask;
         RenderTarget2D renderTarget;
@@ -52,16 +55,17 @@ namespace WorldsApart.Code.Gamestates
         RenderTarget2D nonAlphaPlayer;
         RenderTarget2D finalTarget;
         RenderTarget2D bgTarget;
+        RenderTarget2D lightningTarget;
 
-        RenderTarget2D alphaMask2;
-        RenderTarget2D lightMask2;
-        RenderTarget2D renderTarget2;
-        RenderTarget2D player1Objects2;
-        RenderTarget2D player2Objects2;
-        RenderTarget2D alphaPlayer2;
-        RenderTarget2D nonAlphaPlayer2;
-        RenderTarget2D finalTarget2;
-        RenderTarget2D bgTarget2;
+        //RenderTarget2D alphaMask2;
+        //RenderTarget2D lightMask2;
+        //RenderTarget2D renderTarget2;
+        //RenderTarget2D player1Objects2;
+        //RenderTarget2D player2Objects2;
+        //RenderTarget2D alphaPlayer2;
+        //RenderTarget2D nonAlphaPlayer2;
+        //RenderTarget2D finalTarget2;
+        //RenderTarget2D bgTarget2;
 
         RenderTarget2D multiFinalTarget1;
         RenderTarget2D multiFinalTarget2;
@@ -76,8 +80,11 @@ namespace WorldsApart.Code.Gamestates
         RenderTarget2D player2Aura;
         RenderTarget2D blurX2;
         RenderTarget2D blurY2;
+        RenderTarget2D warpTarget;
+        RenderTarget2D warpTarget2;
 
         SpriteIMG loadingScreen;
+        Texture2D signalTexture;
 
 
         public Player player1;
@@ -100,6 +107,7 @@ namespace WorldsApart.Code.Gamestates
         public List<PointLight> lightList = new List<PointLight>();
         public List<LightConsole> consoleList = new List<LightConsole>();
         public List<Portal> portalList = new List<Portal>();
+        public List<LightningChain> lightningList = new List<LightningChain>();
 
         public GSPlay(GameStateManager gsm, int levelIndex)
             : base(gsm)
@@ -127,6 +135,9 @@ namespace WorldsApart.Code.Gamestates
                 player2Viewport.Width = player2Viewport.Width / 2;
                 player1Viewport.X = 0;
                 player2Viewport.X = player1Viewport.Width;
+
+                verticalDivide = new SpriteIMG(LoadTexture("blackLine"), new Vector2(mainViewport.Width / 2, mainViewport.Height / 2));
+                verticalDivide.scale = new Vector2(1, 32);
             }
 
             switch (levelIndex)
@@ -171,26 +182,30 @@ namespace WorldsApart.Code.Gamestates
             nonAlphaPlayer = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             finalTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
 
-            alphaMask2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            renderTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            player1Objects2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            player2Objects2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            alphaPlayer2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            nonAlphaPlayer2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            finalTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            lightMask2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
-            bgTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //alphaMask2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //renderTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //player1Objects2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //player2Objects2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //alphaPlayer2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //nonAlphaPlayer2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //finalTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //lightMask2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            //bgTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             multiFinalTarget1 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             multiFinalTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             alphaShader = LoadEffect("ShaderAssets/AlphaMapping");
             lightingShader = LoadEffect("ShaderAssets/Lighting");
             colorShader = LoadEffect("ShaderAssets/ColorTransform");
             glowShader = LoadEffect("ShaderAssets/StrokeGlow");
+            warpShader = LoadEffect("ShaderAssets/Warp");
             lightMask = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             auraTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             auraTargetOrigin = new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2);
             player2Aura = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             bgTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            lightningTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            warpTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            warpTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
 
             gaussianBlur = new GaussianBlur(gameStateManager.game);
             gaussianBlur.ComputeKernel(BLUR_RADIUS, BLUR_AMOUNT);
@@ -282,6 +297,11 @@ namespace WorldsApart.Code.Gamestates
             player1.showingRegular = true;
             player2.showingRegular = true;
 
+            signalTexture = LoadTexture("signal");
+
+            Art.lineEnd = LoadTexture("ShaderAssets/lineEndRight");
+            Art.lineMiddle = LoadTexture("ShaderAssets/lineMiddle");
+
             
             //if (gameStateManager.goodness < 0)
             //{
@@ -306,59 +326,43 @@ namespace WorldsApart.Code.Gamestates
 
             switch (gameStateManager.goodness)
             {
-                case 0:
-                    player1.indicatorAlpha = 255;
-                    player2.indicatorAlpha = 255;
-                    break;
                 case -1:
-                    player1.indicatorAlpha = 229;
-                    player2.indicatorAlpha = 229;
-                    break;
-                case 1:
-                    player1.indicatorAlpha = 26;
-                    player2.indicatorAlpha = 26;
+                    player1.indicatorAlpha = 204;
+                    player2.indicatorAlpha = 204;
                     break;
                 case -2:
-                    player1.indicatorAlpha = 191;
-                    player2.indicatorAlpha = 191;
-                    break;
-                case 2:
-                    player1.indicatorAlpha = 64;
-                    player2.indicatorAlpha = 64;
-                    break;
-                case -3:
                     player1.indicatorAlpha = 153;
                     player2.indicatorAlpha = 153;
                     break;
-                case 3:
+                case -3:
                     player1.indicatorAlpha = 102;
                     player2.indicatorAlpha = 102;
                     break;
                 case -4:
-                case 4:
-                    player1.indicatorAlpha = 115;
-                    player2.indicatorAlpha = 115;
+                    player1.indicatorAlpha = 51;
+                    player2.indicatorAlpha = 51;
                     break;
                 case -5:
-                case 5:
-                    player1.indicatorAlpha = 77;
-                    player2.indicatorAlpha = 77;
+                    player1.indicatorAlpha = 0;
+                    player2.indicatorAlpha = 0;
                     break;
                 case -6:
-                case 6:
                     player1.indicatorAlpha = 38;
                     player2.indicatorAlpha = 38;
                     break;
                 case -7:
-                case 7:
                     player1.indicatorAlpha = 0;
                     player2.indicatorAlpha = 0;
                     break;
+                default:
+                    player1.indicatorAlpha = 255;
+                    player2.indicatorAlpha = 255;
+                    break;
             }
 
-            RenderIdealTextures(player1Textures, player1.indicatorAlpha);
+            //RenderIdealTextures(player1Textures, player1.indicatorAlpha);
 
-            RenderIdealTextures(player2Textures, player2.indicatorAlpha);
+            //RenderIdealTextures(player2Textures, player2.indicatorAlpha);
         }
 
         //public void DrawLoadingScreen(SpriteBatch spriteBatch)
@@ -389,13 +393,13 @@ namespace WorldsApart.Code.Gamestates
                 if (gameStateManager.goodness > 0 && gameStateManager.goodness < 4)
                 {
                     gameStateManager.game.spriteBatch.Draw(set.idealTexture, Vector2.Zero, Color.White);
-                    gameStateManager.game.spriteBatch.Draw(set.texture, Vector2.Zero, new Color(0, 0, 0, playerAlpha));
+                    //gameStateManager.game.spriteBatch.Draw(set.texture, Vector2.Zero, new Color(0, 0, 0, playerAlpha));
 
                 }
                 else if (gameStateManager.goodness >= 4)
                 {
-                    gameStateManager.game.spriteBatch.Draw(set.texture, Vector2.Zero, Color.White);
-                    gameStateManager.game.spriteBatch.Draw(set.idealTexture, Vector2.Zero, new Color(0, 0, 0, playerAlpha));
+                    //gameStateManager.game.spriteBatch.Draw(set.texture, Vector2.Zero, Color.White);
+                    gameStateManager.game.spriteBatch.Draw(set.idealTexture, Vector2.Zero, Color.White);
                 }
                 else if (gameStateManager.goodness <= 0)
                 {
@@ -560,6 +564,27 @@ namespace WorldsApart.Code.Gamestates
             return p;
         }
 
+        public Particle AddSignal(Player player)
+        {
+            Particle p = new Particle(this, signalTexture, player.position);
+            p.startScale = .2f;
+            p.endScale = 4;
+            p.startAlpha = 255;
+            p.endAlpha = 0;
+            p.target = player;
+            p.life = 60;
+            p.StartParticleSystems();
+            particleList.Add(p);
+            return p;
+        }
+
+        public LightningChain AddLightning(Vector2 start, Vector2 end, Color color)
+        {
+            LightningChain l = new LightningChain(start, end, color);
+            lightningList.Add(l);
+            return l;
+        }
+
         public ParticleEmitter AddEmitter(AnimatedSprite image, Vector2 position)
         {
             ParticleEmitter emitter = new ParticleEmitter(this, image, position);
@@ -672,6 +697,11 @@ namespace WorldsApart.Code.Gamestates
                         player2.stopInput = false;
                         break;
                 }
+            }
+            else
+            {
+                player1.stopInput = false;
+                player2.stopInput = false;
             }
 
 
@@ -815,6 +845,10 @@ namespace WorldsApart.Code.Gamestates
                     bg.Update();
                 }
             }
+            foreach (LightningChain lightning in lightningList)
+            {
+                lightning.Update();
+            }
 
             #endregion
 
@@ -828,44 +862,59 @@ namespace WorldsApart.Code.Gamestates
         public void DrawWithCamera(SpriteBatch spriteBatch, Camera camera)
         {
 
+            #region Set Regular Showing
+            if (playerIndex == PlayerIndex.One)
+            {
+                player1.showingRegular = true;
+                player2.showingRegular = false;
+            }
+            else
+            {
+                player1.showingRegular = false;
+                player2.showingRegular = true;
+            }
+            #endregion
+
             #region Create Alpha Mask
             if (playerIndex == PlayerIndex.One) alphaDot.position = player2.position;
             else alphaDot.position = player1.position;
 
-            if (playerIndex == PlayerIndex.One) gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaMask);
-            else gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaMask2);
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaMask);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaMask2);
             gameStateManager.game.GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.transform);
-            alphaDot.Draw(spriteBatch);
+            alphaDot.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
 
             #region Create Light pass
-            if (playerIndex == PlayerIndex.One) gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask);
-            else gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask2);
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask2);
             gameStateManager.game.GraphicsDevice.Clear(level.atmosphereLight);
             //spriteBatch.Begin();
             ////spriteBatch.Draw(blackSquare, new Vector2(0, 0), new Rectangle(0, 0, Game1.screenWidth, Game1.screenHeight), Color.White);
             //spriteBatch.End();
             colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
-            if (player1.selfIlluminating) player1.Draw(spriteBatch);
+            if (player1.selfIlluminating) player1.Draw(spriteBatch, camera);
             else
             {
                 colorShader.Parameters["DestColor"].SetValue(new Color(50,50,50).ToVector4());
-                player1.Draw(spriteBatch);
+                player1.Draw(spriteBatch, camera);
                 colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
 
             }
-            if (player2.selfIlluminating) player2.Draw(spriteBatch);
+            if (player2.selfIlluminating) player2.Draw(spriteBatch, camera);
             else
             {
                 colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
-                player2.Draw(spriteBatch);
+                player2.Draw(spriteBatch, camera);
                 colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
 
             }
-            foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.None) light.Draw(spriteBatch);
+            foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.None) light.Draw(spriteBatch, camera);
             if (playerIndex == PlayerIndex.One)
             {
                 foreach (SpriteIMG tile in tileList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
@@ -905,24 +954,59 @@ namespace WorldsApart.Code.Gamestates
             gameStateManager.game.GraphicsDevice.SetRenderTarget(auraTarget);
             if (player1.psyHold)
             {
-                gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
                 colorShader.Parameters["DestColor"].SetValue(player1.auraColor.ToVector4());
+                gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
                 player1.DrawAura(spriteBatch, auraTargetOrigin);
                 spriteBatch.End();
+
+                //warpShader.Parameters["resolution"].SetValue(new Vector2(500, 500));
+                //warpShader.Parameters["ringSize"].SetValue(1);
+                warpShader.Parameters["magnitude"].SetValue(.02f);
+                warpShader.Parameters["scale"].SetValue(player2.auraScale);
+
                 player1.auraTexture = gaussianBlur.PerformGaussianBlur(auraTarget, blurX, blurY, spriteBatch);
+                
+                gameStateManager.game.GraphicsDevice.SetRenderTarget(warpTarget);
+                gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, warpShader);
+                spriteBatch.Draw(player1.auraTexture, Vector2.Zero, Color.White);
+                spriteBatch.End();
+
+                player1.auraTexture = warpTarget;
+                //gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+                //colorShader.Parameters["DestColor"].SetValue(player1.auraColor.ToVector4());
+                //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
+                //player1.DrawAura(spriteBatch, auraTargetOrigin);
+                //spriteBatch.End();
+                //player1.auraTexture = gaussianBlur.PerformGaussianBlur(auraTarget, blurX, blurY, spriteBatch);
             }
             else player1.auraTexture = null;
 
             gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Aura);
             if (player2.psyHold)
             {
+                
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
                 colorShader.Parameters["DestColor"].SetValue(player2.auraColor.ToVector4());
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
                 player2.DrawAura(spriteBatch, auraTargetOrigin);
                 spriteBatch.End();
+
+                //warpShader.Parameters["resolution"].SetValue(new Vector2(500, 500));
+                //warpShader.Parameters["ringSize"].SetValue(1);
+                warpShader.Parameters["magnitude"].SetValue(.02f);
+                warpShader.Parameters["scale"].SetValue(player2.auraScale);
+
                 player2.auraTexture = gaussianBlur.PerformGaussianBlur(player2Aura, blurX2, blurY2, spriteBatch);
+
+                gameStateManager.game.GraphicsDevice.SetRenderTarget(warpTarget2);
+                gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, warpShader);
+                spriteBatch.Draw(player2.auraTexture, Vector2.Zero, Color.White);
+                spriteBatch.End();
+
+                player2.auraTexture = warpTarget2;
             }
             else player2.auraTexture = null;
             foreach (PickUpObj pickUp in pickUpList)
@@ -936,7 +1020,21 @@ namespace WorldsApart.Code.Gamestates
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
                     pickUp.DrawAura(spriteBatch, auraTargetOrigin);
                     spriteBatch.End();
+
+                    //warpShader.Parameters["resolution"].SetValue(new Vector2(500, 500));
+                    //warpShader.Parameters["ringSize"].SetValue(1);
+                    warpShader.Parameters["magnitude"].SetValue(.02f);
+                    warpShader.Parameters["scale"].SetValue(pickUp.auraScale);
+
                     pickUp.auraTexture = gaussianBlur.PerformGaussianBlur(aurTex.target, aurTex.blurX, aurTex.blurY, spriteBatch);
+
+                    gameStateManager.game.GraphicsDevice.SetRenderTarget(aurTex.warpTarget);
+                    gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, warpShader);
+                    spriteBatch.Draw(pickUp.auraTexture, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+
+                    pickUp.auraTexture = aurTex.warpTarget;
                 }
                 else pickUp.auraTexture = null;
             }
@@ -952,24 +1050,61 @@ namespace WorldsApart.Code.Gamestates
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
                     move.DrawAura(spriteBatch, auraTargetOrigin);
                     spriteBatch.End();
+
+                    //warpShader.Parameters["resolution"].SetValue(new Vector2(500, 500));
+                    //warpShader.Parameters["ringSize"].SetValue(1);
+                    warpShader.Parameters["magnitude"].SetValue(.02f);
+                    warpShader.Parameters["scale"].SetValue(move.auraScale);
+
                     move.auraTexture = gaussianBlur.PerformGaussianBlur(aurTex.target, aurTex.blurX, aurTex.blurY, spriteBatch);
+
+                    gameStateManager.game.GraphicsDevice.SetRenderTarget(aurTex.warpTarget);
+                    gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, warpShader);
+                    spriteBatch.Draw(move.auraTexture, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+
+                    move.auraTexture = aurTex.warpTarget;
                     
                 }
                 else move.auraTexture = null;
             }
             #endregion
 
+            #region Lightning drawing
+
+            //gameStateManager.game.GraphicsDevice.SetRenderTarget(lightningTarget);
+            //gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+
+            //spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
+
+            //foreach (Lightning lightning in lightningList)
+            //{
+            //    lightning.Draw(spriteBatch);
+            //}
+
+            //spriteBatch.End();
+
+            #endregion
+
             #region Player neutral drawing
-            if (playerIndex == PlayerIndex.One) gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget);
-            else gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget2);
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget2);
             gameStateManager.game.GraphicsDevice.Clear(Color.SlateBlue); //TODO: change here for background color
             spriteBatch.Begin();
-            if (playerIndex == PlayerIndex.One) spriteBatch.Draw(bgTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            else spriteBatch.Draw(bgTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //if (playerIndex == PlayerIndex.One) 
+            spriteBatch.Draw(bgTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //else spriteBatch.Draw(bgTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
             //colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in tileList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
+            foreach (LightningChain lightning in lightningList) lightning.Draw(spriteBatch);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.None) s.Draw(spriteBatch, camera);
             foreach (Button button in buttonList) if (button.playerVisible == PlayerObjectMode.None) button.Draw(spriteBatch, camera);
             foreach (TriggerArea area in areaList) if (area.playerVisible == PlayerObjectMode.None) area.Draw(spriteBatch, camera);
@@ -998,8 +1133,9 @@ namespace WorldsApart.Code.Gamestates
 
             #region Player 1 Objects
 
-            if (playerIndex == PlayerIndex.One) gameStateManager.game.GraphicsDevice.SetRenderTarget(player1Objects);
-            else gameStateManager.game.GraphicsDevice.SetRenderTarget(player1Objects2);
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(player1Objects);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(player1Objects2);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in tileList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
@@ -1016,8 +1152,9 @@ namespace WorldsApart.Code.Gamestates
             #endregion
 
             #region Player 2 Objects
-            if (playerIndex == PlayerIndex.One) gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Objects);
-            else gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Objects2);
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Objects);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Objects2);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in tileList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
@@ -1052,37 +1189,38 @@ namespace WorldsApart.Code.Gamestates
             }
             else
             {
-                gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaPlayer2);
+                gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaPlayer);
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, alphaShader);
-                spriteBatch.Draw(player1Objects2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(player1Objects, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.End();
 
-                gameStateManager.game.GraphicsDevice.SetRenderTarget(nonAlphaPlayer2);
+                gameStateManager.game.GraphicsDevice.SetRenderTarget(nonAlphaPlayer);
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Begin();
-                spriteBatch.Draw(player2Objects2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(player2Objects, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
             #endregion
 
 
             #region Objects Composite
-            if (playerIndex == PlayerIndex.One) gameStateManager.game.GraphicsDevice.SetRenderTarget(finalTarget);
-            else gameStateManager.game.GraphicsDevice.SetRenderTarget(finalTarget2);
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(finalTarget);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(finalTarget2);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            if (playerIndex == PlayerIndex.One)
-            {
+            //if (playerIndex == PlayerIndex.One)
+            //{
                 spriteBatch.Draw(renderTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(alphaPlayer, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(nonAlphaPlayer, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            }
-            else
-            {
-                spriteBatch.Draw(renderTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                spriteBatch.Draw(alphaPlayer2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                spriteBatch.Draw(nonAlphaPlayer2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            }
+            //}
+            //else
+            //{
+            //    spriteBatch.Draw(renderTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //    spriteBatch.Draw(alphaPlayer2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //    spriteBatch.Draw(nonAlphaPlayer2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            //}
             spriteBatch.End();
             #endregion
 
@@ -1106,8 +1244,9 @@ namespace WorldsApart.Code.Gamestates
            
 
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
-            if (playerIndex == PlayerIndex.One) lightingShader.Parameters["lightMask"].SetValue(lightMask);
-            else lightingShader.Parameters["lightMask"].SetValue(lightMask2);
+            //if (playerIndex == PlayerIndex.One) 
+            lightingShader.Parameters["lightMask"].SetValue(lightMask);
+            //else lightingShader.Parameters["lightMask"].SetValue(lightMask2);
             lightingShader.CurrentTechnique.Passes[0].Apply();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, lightingShader);
@@ -1126,16 +1265,18 @@ namespace WorldsApart.Code.Gamestates
                 
             }
 
-            if (playerIndex == PlayerIndex.One) spriteBatch.Draw(finalTarget, drawPos, null, Color.White, 0, Vector2.Zero, 1, mirror, 0);
-            else spriteBatch.Draw(finalTarget2, drawPos, null, Color.White, 0, Vector2.Zero, 1, mirror, 0);
+            //if (playerIndex == PlayerIndex.One) 
+            spriteBatch.Draw(finalTarget, drawPos, null, Color.White, 0, Vector2.Zero, 1, mirror, 0);
+            //else spriteBatch.Draw(finalTarget2, drawPos, null, Color.White, 0, Vector2.Zero, 1, mirror, 0);
             spriteBatch.End();
             #endregion
         }
 
         public void DrawParallaxLayers(SpriteBatch spriteBatch, Camera camera)
         {
-            if (playerIndex == PlayerIndex.One) gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget);
-            else gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget2);
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget2);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
             foreach (ParallaxLayer bg in bgLayerList)
             {
@@ -1200,6 +1341,7 @@ namespace WorldsApart.Code.Gamestates
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 spriteBatch.Draw(multiFinalTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(multiFinalTarget1, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                verticalDivide.Draw(spriteBatch);
                 spriteBatch.End();
 
                 

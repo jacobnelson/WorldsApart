@@ -125,6 +125,7 @@
     <Compile Include="Code\Entities\Door.cs" />
     <Compile Include="Code\Entities\EventObject.cs" />
     <Compile Include="Code\Entities\LightConsole.cs" />
+    <Compile Include="Code\Entities\LightningChain.cs" />
     <Compile Include="Code\Entities\Moveable.cs" />
     <Compile Include="Code\Entities\MovingPlatform.cs" />
     <Compile Include="Code\Entities\Particle.cs" />
@@ -143,10 +144,13 @@
     <Compile Include="Code\Gamestates\GSWin.cs" />
     <Compile Include="Code\Graphics\AnimatedSprite.cs" />
     <Compile Include="Code\Graphics\AnimationSet.cs" />
+    <Compile Include="Code\Graphics\Art.cs" />
     <Compile Include="Code\Graphics\FadingBackground.cs" />
     <Compile Include="Code\Graphics\GaussianBlur.cs" />
     <Compile Include="Code\Graphics\GaussianTargets.cs" />
     <Compile Include="Code\Graphics\IdealAnimationSet.cs" />
+    <Compile Include="Code\Graphics\Lightning.cs" />
+    <Compile Include="Code\Graphics\Line.cs" />
     <Compile Include="Code\Graphics\ParallaxLayer.cs" />
     <Compile Include="Code\Graphics\PointLight.cs" />
     <Compile Include="Code\Graphics\RandomScrollingBackground.cs" />

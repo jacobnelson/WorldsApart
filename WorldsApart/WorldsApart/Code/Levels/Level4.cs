@@ -228,7 +228,7 @@ namespace WorldsApart.Code.Levels
                         }
                         if (isGood) gsPlay.gameStateManager.goodness++;
                         else gsPlay.gameStateManager.goodness--;
-                        gsPlay.gameStateManager.currentLevel = 6;
+                        gsPlay.gameStateManager.currentLevel = 7;
                         gsPlay.gameStateManager.SwitchToGSPlay();
                     }
                     break;

@@ -110,7 +110,7 @@ namespace WorldsApart.Code.Entities
             {
                 if (auraScalingUp)
                 {
-                    auraScale += .01f;
+                    auraScale += auraIncrement;
                     if (auraScale >= auraScaleMax)
                     {
                         auraScalingUp = false;
@@ -118,7 +118,7 @@ namespace WorldsApart.Code.Entities
                 }
                 else
                 {
-                    auraScale -= .01f;
+                    auraScale -= auraIncrement;
                     if (auraScale <= auraScaleMin)
                     {
                         auraScalingUp = true;

@@ -15,10 +15,11 @@ namespace WorldsApart.Code.Graphics
         public Texture2D texture;
         public Texture2D auraTexture;
         public Color auraColor = Color.Red;
-        public float auraScale = 1.1f;
-        public float auraScaleMin = 1.1f;
-        public float auraScaleMax = 1.3f;
+        public float auraScale = 1f;
+        public float auraScaleMin = 20;
+        public float auraScaleMax = 40;
         public bool auraScalingUp = true;
+        public float auraIncrement = .25f;
 
         public bool screenCull = true;
 
@@ -55,7 +56,7 @@ namespace WorldsApart.Code.Graphics
         public virtual void DrawAura(SpriteBatch spriteBatch, Vector2 screenOrigin)
         {
             if (texture != null)
-                spriteBatch.Draw(texture, screenOrigin, crop, color, rotation, origin, auraScale, spriteEffects, 0);
+                spriteBatch.Draw(texture, screenOrigin, crop, color, rotation, origin, scale, spriteEffects, 0);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

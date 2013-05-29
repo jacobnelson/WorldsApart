@@ -39,9 +39,9 @@ namespace WorldsApart.Code.Entities
 
     class Player : PhysObj
     {
-
+        GSPlay gsPlay;
         public bool showingRegular = true;
-
+        
         public Texture2D indicatorTexture;
         public byte indicatorAlpha = 255;
 
@@ -111,9 +111,10 @@ namespace WorldsApart.Code.Entities
         public IdealAnimationSet DyingSet;
         public IdealAnimationSet RevivingSet;
 
-        public Player(PlayerObjectMode playerIndex, Texture2D texture, Vector2 position)
+        public Player(GSPlay gsPlay, PlayerObjectMode playerIndex, Texture2D texture, Vector2 position)
             : base(texture, position)
         {
+            this.gsPlay = gsPlay;
             regularTexture = texture;
             this.playerIndex = playerIndex;
             playerTangible = playerIndex;
@@ -342,7 +343,13 @@ namespace WorldsApart.Code.Entities
         {
             isSignaling = true;
             signalCounter = 0;
-            //TODO: create signal particle
+            gsPlay.AddSignal(this);
+        }
+
+        public void DeactivateSignal()
+        {
+            isSignaling = false;
+            signalCounter = 0;
         }
 
         public override void AdjustCollision(PhysObj obj)
@@ -597,14 +604,7 @@ namespace WorldsApart.Code.Entities
             }
 
 
-            if (showingRegular)
-            {
-                texture = regularTexture;
-            }
-            else
-            {
-                texture = indicatorTexture;
-            }
+           
             //animationRate = 5;
             //if (currentSet == PlayerMode.Running) animationRate = 8;
             //if (currentSet == PlayerMode.Idle) animationRate = 8;
@@ -791,13 +791,23 @@ namespace WorldsApart.Code.Entities
             }
         }
 
-        public override void DrawAura(SpriteBatch spriteBatch, Vector2 screenOrigin)
-        {
-            base.DrawAura(spriteBatch, screenOrigin);
-        }
+        //public override void DrawAura(SpriteBatch spriteBatch, Vector2 screenOrigin)
+        //{
+        //    base.DrawAura(spriteBatch, screenOrigin);
+        //}
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (showingRegular)
+            {
+                texture = regularTexture;
+                color = Color.White;
+            }
+            else
+            {
+                texture = indicatorTexture;
+                color = new Color(indicatorAlpha, indicatorAlpha, indicatorAlpha);
+            }
             base.Draw(spriteBatch);
         }
     }

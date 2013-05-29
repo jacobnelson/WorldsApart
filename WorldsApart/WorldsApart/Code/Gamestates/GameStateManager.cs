@@ -50,7 +50,7 @@ namespace WorldsApart.Code.Gamestates
         public GameStateManager(Game1 game)
         {
             this.game = game;
-            
+
             SwitchToGSTitle();
         }
 
