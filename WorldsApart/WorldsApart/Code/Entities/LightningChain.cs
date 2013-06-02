@@ -17,6 +17,8 @@ namespace WorldsApart.Code.Entities
         public bool isActive = false;
 
         public List<Lightning> lightningList = new List<Lightning>();
+        public Vector2 lastVertex = Vector2.Zero;
+
         public List<Vector2> vertexList = new List<Vector2>();
 
         public Color color = Color.White;
@@ -24,9 +26,10 @@ namespace WorldsApart.Code.Entities
         public LightningChain(Vector2 vertex1, Vector2 vertex2, Color color)
         {
             Lightning lightning = new Lightning(vertex1, vertex2);
+            this.color = color;
             lightning.color = color;
-            lightning.isActive = true;
             lightningList.Add(lightning);
+            lastVertex = vertex2;
             //vertexList.Add(vertex1);
             //vertexList.Add(vertex2);
         }
@@ -34,10 +37,11 @@ namespace WorldsApart.Code.Entities
         public void AddVertex(Vector2 vertex)
         {
             Lightning lastLightning = lightningList[lightningList.Count - 1];
-            Lightning lightning = new Lightning(lastLightning.end, vertex);
+            Lightning lightning = new Lightning(lastVertex, vertex);
             if (lastLightning.target2 != null) lightning.target1 = lastLightning.target2;
-            lightning.isActive = true;
+            lightning.color = color;
             lightningList.Add(lightning);
+            lastVertex = vertex;
         }
 
         public void ConvertEndPointToTarget(Sprite target)
@@ -45,19 +49,27 @@ namespace WorldsApart.Code.Entities
             lightningList[lightningList.Count - 1].target2 = target;
         }
 
+        public void SetActive(bool isActive)
+        {
+            this.isActive = isActive;
+            foreach (Lightning lightning in lightningList)
+            {
+                lightning.isActive = isActive;
+                lightning.redrawCounter = lightning.redrawRate;
+            }
+        }
+
         public void Update()
         {
-            if (isActive)
-                foreach (Lightning lightning in lightningList)
-                {
-                    lightning.Update();
-                }
+            foreach (Lightning lightning in lightningList)
+            {
+                lightning.Update();
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isActive)
-                foreach (Lightning lightning in lightningList) lightning.Draw(spriteBatch);
+            foreach (Lightning lightning in lightningList) lightning.Draw(spriteBatch);
         }
 
 

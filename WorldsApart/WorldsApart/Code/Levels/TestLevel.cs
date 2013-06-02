@@ -54,7 +54,9 @@ namespace WorldsApart.Code.Levels
             SetupLevel();
 
             LightningChain bolt = gsPlay.AddLightning(GridToPosition(24, 42), GridToPosition(27, 42), Color.White);
-            bolt.isActive = true;
+            bolt.AddVertex(GridToPosition(27, 38));
+            bolt.SetActive(true);
+
 
             SpriteIMG bg = new SpriteIMG(gsPlay.LoadTexture("TestSprites/testWash1"), new Vector2(levelWidth/2, levelHeight/2));
             gsPlay.AddParallax(bg, .5f);
@@ -95,17 +97,21 @@ namespace WorldsApart.Code.Levels
             //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(157, 15));
             //pe.speed = new Vector2(1, 0);
 
-            //atmosphereLight = new Color(100, 100, 100);
+            atmosphereLight = new Color(100, 100, 100);
 
             Door dooor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(36, 30), GridToPosition(36, 34), OpenState.Closed);
-            gsPlay.AddSwitch(new EventTrigger(this, dooor), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(29, 35));
+            FlipSwitch fs1 = gsPlay.AddSwitch(new EventTrigger(this, dooor), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(29, 35));
+            LightningChain lc1 = gsPlay.AddLightning(GridToPosition(29, 35), dooor.position, Color.Green);
+            lc1.ConvertEndPointToTarget(dooor);
+            fs1.AddEvent(new EventTrigger(this, lc1));
+
 
             CircularPlatform cp1 = gsPlay.AddCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(36, 45), 100, 240);
             gsPlay.AddSwitch(new EventTrigger(this, cp1), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(42, 48));
            // LightningChain lc2 = new LightningChain(GridToPosition(42, 48), Vector2.Zero, Color.Green);
             LightningChain lc2 = gsPlay.AddLightning(GridToPosition(42, 48), Vector2.Zero, Color.Green);
             lc2.ConvertEndPointToTarget(cp1);
-            lc2.isActive = true;
+            lc2.SetActive(true);
 
 
             gsPlay.AddPointLight(gsPlay.LoadTexture("ShaderAssets/pointLight"), GridToPosition(30, 47), new Vector2(3));
@@ -127,8 +133,12 @@ namespace WorldsApart.Code.Levels
             
             MovingPlatform m1 = gsPlay.AddActivatePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(94, 44)), Level.GridToPosition(new Point(112, 44)));
             m1.duration = 480;
-            
-            gsPlay.AddButton(new EventTrigger(this, m1), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(88, 45)));
+            Button bb1 = gsPlay.AddButton(new EventTrigger(this, m1), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(88, 45)));
+            LightningChain lc3 = gsPlay.AddLightning(GridToPosition(88, 45), GridToPosition(88, 46) + new Vector2(0, 16), Color.Green);
+            lc3.AddVertex(GridToPosition(103, 46) + new Vector2(0, 16));
+            lc3.AddVertex(Vector2.Zero);
+            lc3.ConvertEndPointToTarget(m1);
+            bb1.AddEvent(new EventTrigger(this, lc3));
 
             Door d1 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(new Point(152, 41)) + new Vector2(16, 16), GridToPosition(new Point(149, 41)) + new Vector2(16, 16), OpenState.Closed);
             

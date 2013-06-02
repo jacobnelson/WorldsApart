@@ -12,5 +12,7 @@ namespace WorldsApart.Code.Graphics
     {
         public static Texture2D lineEnd;
         public static Texture2D lineMiddle;
+        public static Texture2D smoke;
+        public static Texture2D barrier;
     }
 }

@@ -31,6 +31,14 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            Sprite cameraTarget = new Sprite(GridToPosition(137, 86));
+            gsPlay.cameraPlayer1.AddTarget(cameraTarget);
+            gsPlay.cameraPlayer2.AddTarget(cameraTarget);
+
+            cameraTarget = new Sprite(GridToPosition(201, 83));
+            gsPlay.cameraPlayer1.AddTarget(cameraTarget);
+            gsPlay.cameraPlayer2.AddTarget(cameraTarget);
+
             atmosphereLight = new Color(150, 150, 150);
 
             //puzzle 1

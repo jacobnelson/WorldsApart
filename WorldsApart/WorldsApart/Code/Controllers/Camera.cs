@@ -98,10 +98,10 @@ namespace WorldsApart.Code.Controllers
             scaleValue += (targetScale - scaleValue) / shiftRate;
 
             
-            if (GameStateManager.isMultiplayer)
+            //if (GameStateManager.isMultiplayer)
                 visibleArea = new Rectangle((int)position.X - Game1.screenWidth / 2, (int)position.Y - Game1.screenHeight, Game1.screenWidth, Game1.screenHeight * 2);
-            else
-                visibleArea = new Rectangle((int)position.X - Game1.screenWidth / 2, (int)position.Y - Game1.screenHeight / 2, Game1.screenWidth, Game1.screenHeight);
+            //else
+            //    visibleArea = new Rectangle((int)position.X - Game1.screenWidth / 2, (int)position.Y - Game1.screenHeight, Game1.screenWidth, Game1.screenHeight * 2);
 
 
             UpdateMatrixValues();

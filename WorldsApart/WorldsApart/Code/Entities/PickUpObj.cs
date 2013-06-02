@@ -13,7 +13,7 @@ namespace WorldsApart.Code.Entities
     class PickUpObj : PhysObj
     {
 
-        PhysObj parent;
+        public PhysObj parent;
         Vector2 pickUpOffset = Vector2.Zero;
 
         float angle = 0;

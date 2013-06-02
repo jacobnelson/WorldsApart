@@ -81,7 +81,7 @@ namespace WorldsApart.Code.Controllers
 
             if (eventLightning != null)
             {
-                eventLightning.isActive = !eventLightning.isActive;
+                eventLightning.SetActive(!eventLightning.isActive);
             }
         }
 
@@ -95,20 +95,23 @@ namespace WorldsApart.Code.Controllers
                     eventObj.ActivateEvent(ts);
                 }
             }
+
             if (eventID != -1)
             {
                 triggerState = ts;
                 level.ActivateEvent(eventID, ts);
             }
+
             if (eventLightning != null)
             {
                 if (ts == TriggerState.Triggered)
                 {
-                    eventLightning.isActive = true;
+                    Trace.WriteLine("Barf!");
+                    eventLightning.SetActive(true);
                 }
                 else
                 {
-                    eventLightning.isActive = false;
+                    eventLightning.SetActive(false);
                 }
             }
         }

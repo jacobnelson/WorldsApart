@@ -13,7 +13,6 @@ namespace WorldsApart.Code.Entities
 {
     class Particle : PhysObj
     {
-        GSPlay gsPlay;
 
         public Sprite target;
 
@@ -28,11 +27,10 @@ namespace WorldsApart.Code.Entities
         public float endScale = 1.2f;
 
 
-        public Particle(GSPlay gsPlay, Texture2D texture, Vector2 position) : base(texture, position)
+        public Particle(Texture2D texture, Vector2 position) : base(texture, position)
         {
-            this.gsPlay = gsPlay;
             isSolidEnvironment = false;
-            rotation = (float)Mathness.RandomNumber(0, 100) / 100 * (float)Math.PI * 2;
+            //rotation = (float)Mathness.RandomNumber(0, 100) / 100 * (float)Math.PI * 2;
         }
 
         public void StartParticleSystems()

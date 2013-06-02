@@ -61,7 +61,7 @@ namespace WorldsApart.Code.Entities
         float runningSpeed = 6;
         float runningSpeedConst = 6;
 
-       
+        
         public bool isSignaling = false;
         float signalCounter = 0;
         float signalRate = 0;
@@ -170,7 +170,7 @@ namespace WorldsApart.Code.Entities
 
         public void ChangeAnimationSet(IdealAnimationSet set)
         {
-            texture = set.texture;
+            regularTexture = set.texture;
             indicatorTexture = set.idealTexture;
             SetPlayerAnimationStuff(set.minRow, set.minCol, set.rows, set.cols, cellW, cellH, set.frames, set.animationRate);
         }
@@ -368,6 +368,14 @@ namespace WorldsApart.Code.Entities
             }
         }
 
+        public void Respawn()
+        {
+            position = new Vector2(checkpoint.X, checkpoint.Y);
+            hitBox.SetPosition(position);
+            speed = Vector2.Zero;
+            nextForce = Vector2.Zero;
+        }
+
         public void GetInput()
         {
             if (stopInput) return;
@@ -499,7 +507,7 @@ namespace WorldsApart.Code.Entities
                 {
                     ChangeCurrentSet(PlayerMode.Reviving);
                     am.pauseMovement = false;
-                    base.Die();
+                    Respawn();
                     
                 }
                 return;
@@ -648,6 +656,7 @@ namespace WorldsApart.Code.Entities
             if (hitBox.CheckCollision(obj.hitBox))
             {
                 if (CheckForAlreadyHeld()) return;
+                if (obj.parent != null) return;
                 if (grabbing)
                 {
                     obj.GetPickedUp(this);
@@ -795,6 +804,21 @@ namespace WorldsApart.Code.Entities
         //{
         //    base.DrawAura(spriteBatch, screenOrigin);
         //}
+
+        public override void DrawAura(SpriteBatch spriteBatch, Vector2 screenOrigin)
+        {
+            if (showingRegular)
+            {
+                texture = regularTexture;
+                color = Color.White;
+            }
+            else
+            {
+                texture = indicatorTexture;
+                color = new Color(indicatorAlpha, indicatorAlpha, indicatorAlpha);
+            }
+            base.DrawAura(spriteBatch, screenOrigin);
+        }
 
         public override void Draw(SpriteBatch spriteBatch)
         {

@@ -58,7 +58,7 @@ namespace WorldsApart.Code.Entities
 
                 if (angle >= Math.PI * 2)
                 {
-                    angle -= (float)Math.PI * 2;
+                    angle = 0;
                 }
 
                 

@@ -19,6 +19,8 @@ namespace WorldsApart.Code.Entities
         public Vector2 randomDisplacement = Vector2.Zero;
         public AnimatedSprite particle;
         public float rotationSpeed = .01f;
+        public float startRotation = 0;
+        public bool randomRotation = false;
         public Vector2 speed = Vector2.Zero;
 
         public byte startAlpha = 128;
@@ -44,8 +46,10 @@ namespace WorldsApart.Code.Entities
             if (spawnCounter >= spawnRate)
             {
                 Vector2 spawnPos = position + new Vector2(Mathness.RandomNumber((int)-randomDisplacement.X, (int)randomDisplacement.X), Mathness.RandomNumber((int)-randomDisplacement.Y, (int)randomDisplacement.Y));
-                Particle p = gsPlay.AddParticle(particle, spawnPos, speed);
+                Particle p = gsPlay.AddAnimatedParticle(particle, spawnPos, speed);
                 p.rotationSpeed = rotationSpeed;
+                if (randomRotation) p.rotation = (float)Mathness.RandomNumber(0, 100) / 100 * (float)Math.PI * 2;
+                else p.rotation = startRotation;
                 p.life = life;
                 p.startScale = startScale;
                 p.endScale = endScale;

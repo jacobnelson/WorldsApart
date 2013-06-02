@@ -89,7 +89,8 @@ namespace WorldsApart.Code.Gamestates
 
         public Player player1;
         public Player player2;
-        public List<SpriteIMG> tileList = new List<SpriteIMG>();
+        public List<SpriteIMG> backFGList = new List<SpriteIMG>();
+        public List<SpriteIMG> frontFGList = new List<SpriteIMG>();
         public List<PickUpObj> pickUpList = new List<PickUpObj>();
         public List<GaussianTargets> pickUpAuras = new List<GaussianTargets>();
         public List<Button> buttonList = new List<Button>();
@@ -101,7 +102,7 @@ namespace WorldsApart.Code.Gamestates
         public List<CircularPlatform> cPlatformList = new List<CircularPlatform>();
         public List<TriggerArea> areaList = new List<TriggerArea>();
         public List<TimerObject> timerList = new List<TimerObject>();
-        public List<Particle> particleList = new List<Particle>();
+        static public List<Particle> particleList = new List<Particle>();
         public List<ParticleEmitter> emitterList = new List<ParticleEmitter>();
         public List<ParallaxLayer> bgLayerList = new List<ParallaxLayer>();
         public List<PointLight> lightList = new List<PointLight>();
@@ -165,6 +166,9 @@ namespace WorldsApart.Code.Gamestates
                     break;
                 case 7:
                     level = new Level7(this);
+                    break;
+                case 50:
+                    level = new theBridge(this);
                     break;
                 default:
                     level = new TestLevel(this);
@@ -301,6 +305,8 @@ namespace WorldsApart.Code.Gamestates
 
             Art.lineEnd = LoadTexture("ShaderAssets/lineEndRight");
             Art.lineMiddle = LoadTexture("ShaderAssets/lineMiddle");
+            Art.smoke = LoadTexture("TestSprites/puff");
+            Art.barrier = LoadTexture("ShaderAssets/barrier");
 
             
             //if (gameStateManager.goodness < 0)
@@ -418,8 +424,22 @@ namespace WorldsApart.Code.Gamestates
         public void AddGroundTile(Vector2 tilePosition)
         {
             SpriteIMG tile = new SpriteIMG(LoadTexture("TestSprites/tile"), tilePosition);
-            tileList.Add(tile);
+            backFGList.Add(tile);
 
+        }
+
+        public SpriteIMG AddFrontFGTile(Texture2D texture, Vector2 position)
+        {
+            SpriteIMG tile = new SpriteIMG(texture, position);
+            frontFGList.Add(tile);
+            return tile;
+        }
+
+        public SpriteIMG AddBackBGTile(Texture2D texture, Vector2 position)
+        {
+            SpriteIMG tile = new SpriteIMG(texture, position);
+            backFGList.Add(tile);
+            return tile;
         }
 
         public void AddPickUp(Texture2D texture, Vector2 position, PlayerObjectMode playerMode)
@@ -555,18 +575,41 @@ namespace WorldsApart.Code.Gamestates
             return portal;
         }
 
-        public Particle AddParticle(AnimatedSprite image, Vector2 position, Vector2 speed)
+        public Particle AddAnimatedParticle(AnimatedSprite image, Vector2 position, Vector2 speed)
         {
-            Particle p = new Particle(this, image.texture, position);
+            Particle p = new Particle(image.texture, position);
             p.SetAnimationStuff(image.minRow, image.minCol, image.rows, image.cols, image.cellW, image.cellH, image.frames, image.animationCounter);
             p.speed = speed;
             particleList.Add(p);
             return p;
         }
 
+        public Particle AddParticle(Texture2D texture, Vector2 position)
+        {
+            Particle p = new Particle(texture, position);
+            particleList.Add(p);
+            return p;
+        }
+
+        static public void AddObjectDeath(Vector2 position)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Particle p = new Particle(Art.smoke, position);
+                p.life = 30;
+                p.speed = new Vector2(Mathness.RandomNumber(-1.5f, 1.5f), Mathness.RandomNumber(-1.5f, 1.5f));
+                p.startAlpha = 255;
+                p.endAlpha = 0;
+                p.startScale = Mathness.RandomNumber(.8f, 1.2f);
+                p.endScale = Mathness.RandomNumber(1.8f, 2.2f);
+                p.StartParticleSystems();
+                particleList.Add(p);
+            }
+        }
+
         public Particle AddSignal(Player player)
         {
-            Particle p = new Particle(this, signalTexture, player.position);
+            Particle p = new Particle(signalTexture, player.position);
             p.startScale = .2f;
             p.endScale = 4;
             p.startAlpha = 255;
@@ -647,6 +690,8 @@ namespace WorldsApart.Code.Gamestates
         }
 
         #endregion
+
+
 
         public void GetInput()
         {
@@ -888,68 +933,6 @@ namespace WorldsApart.Code.Gamestates
             spriteBatch.End();
             #endregion
 
-            #region Create Light pass
-            //if (playerIndex == PlayerIndex.One) 
-            gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask);
-            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask2);
-            gameStateManager.game.GraphicsDevice.Clear(level.atmosphereLight);
-            //spriteBatch.Begin();
-            ////spriteBatch.Draw(blackSquare, new Vector2(0, 0), new Rectangle(0, 0, Game1.screenWidth, Game1.screenHeight), Color.White);
-            //spriteBatch.End();
-            colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
-            if (player1.selfIlluminating) player1.Draw(spriteBatch, camera);
-            else
-            {
-                colorShader.Parameters["DestColor"].SetValue(new Color(50,50,50).ToVector4());
-                player1.Draw(spriteBatch, camera);
-                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-
-            }
-            if (player2.selfIlluminating) player2.Draw(spriteBatch, camera);
-            else
-            {
-                colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
-                player2.Draw(spriteBatch, camera);
-                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-
-            }
-            foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.None) light.Draw(spriteBatch, camera);
-            if (playerIndex == PlayerIndex.One)
-            {
-                foreach (SpriteIMG tile in tileList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
-                foreach (FlipSwitch s in switchList) if (s.selfIlluminating && (s.playerVisible == PlayerObjectMode.None || s.playerVisible == PlayerObjectMode.One)) s.Draw(spriteBatch, camera);
-                foreach (Button button in buttonList) if (button.selfIlluminating && (button.playerVisible == PlayerObjectMode.None || button.playerVisible == PlayerObjectMode.One)) button.Draw(spriteBatch, camera);
-                foreach (TriggerArea area in areaList) if (area.selfIlluminating && (area.playerVisible == PlayerObjectMode.None || area.playerVisible == PlayerObjectMode.One)) area.Draw(spriteBatch, camera);
-                foreach (LightConsole console in consoleList) if (console.selfIlluminating && (console.playerVisible == PlayerObjectMode.None || console.playerVisible == PlayerObjectMode.One)) console.Draw(spriteBatch, camera);
-                foreach (Door door in doorList) if (door.selfIlluminating && (door.playerVisible == PlayerObjectMode.None || door.playerVisible == PlayerObjectMode.One)) door.Draw(spriteBatch, camera);
-                foreach (MovingPlatform platform in platformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.One)) platform.Draw(spriteBatch, camera);
-                foreach (CircularPlatform platform in cPlatformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.One)) platform.Draw(spriteBatch, camera);
-                foreach (Moveable move in moveList) if (move.selfIlluminating && (move.playerVisible == PlayerObjectMode.None || move.playerVisible == PlayerObjectMode.One)) move.Draw(spriteBatch, camera);
-                foreach (PickUpObj pickUp in pickUpList) if (pickUp.selfIlluminating && (pickUp.playerVisible == PlayerObjectMode.None || pickUp.playerVisible == PlayerObjectMode.One)) pickUp.Draw(spriteBatch, camera);
-                foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.One)) portal.Draw(spriteBatch, camera);
-                foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.One) light.Draw(spriteBatch, camera);
-                
-            }
-            else
-            {
-                foreach (SpriteIMG tile in tileList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.Two)) tile.Draw(spriteBatch, camera);
-                foreach (FlipSwitch s in switchList) if (s.selfIlluminating && (s.playerVisible == PlayerObjectMode.None || s.playerVisible == PlayerObjectMode.Two)) s.Draw(spriteBatch, camera);
-                foreach (Button button in buttonList) if (button.selfIlluminating && (button.playerVisible == PlayerObjectMode.None && button.playerVisible == PlayerObjectMode.Two)) button.Draw(spriteBatch, camera);
-                foreach (TriggerArea area in areaList) if (area.selfIlluminating && (area.playerVisible == PlayerObjectMode.None || area.playerVisible == PlayerObjectMode.Two)) area.Draw(spriteBatch, camera);
-                foreach (LightConsole console in consoleList) if (console.selfIlluminating && (console.playerVisible == PlayerObjectMode.None || console.playerVisible == PlayerObjectMode.Two)) console.Draw(spriteBatch, camera);
-                foreach (Door door in doorList) if (door.selfIlluminating && (door.playerVisible == PlayerObjectMode.None || door.playerVisible == PlayerObjectMode.Two)) door.Draw(spriteBatch, camera);
-                foreach (MovingPlatform platform in platformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.Two)) platform.Draw(spriteBatch, camera);
-                foreach (CircularPlatform platform in cPlatformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.Two)) platform.Draw(spriteBatch, camera);
-                foreach (Moveable move in moveList) if (move.selfIlluminating && (move.playerVisible == PlayerObjectMode.None || move.playerVisible == PlayerObjectMode.Two)) move.Draw(spriteBatch, camera);
-                foreach (PickUpObj pickUp in pickUpList) if (pickUp.selfIlluminating && (pickUp.playerVisible == PlayerObjectMode.None || pickUp.playerVisible == PlayerObjectMode.Two)) pickUp.Draw(spriteBatch, camera);
-                foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.Two)) portal.Draw(spriteBatch, camera);
-                foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch);
-            }
-            spriteBatch.End();
-            #endregion
-
-
             #region Aura drawing
             gameStateManager.game.GraphicsDevice.SetRenderTarget(auraTarget);
             if (player1.psyHold)
@@ -963,10 +946,10 @@ namespace WorldsApart.Code.Gamestates
                 //warpShader.Parameters["resolution"].SetValue(new Vector2(500, 500));
                 //warpShader.Parameters["ringSize"].SetValue(1);
                 warpShader.Parameters["magnitude"].SetValue(.02f);
-                warpShader.Parameters["scale"].SetValue(player2.auraScale);
+                warpShader.Parameters["scale"].SetValue(player1.auraScale);
 
                 player1.auraTexture = gaussianBlur.PerformGaussianBlur(auraTarget, blurX, blurY, spriteBatch);
-                
+
                 gameStateManager.game.GraphicsDevice.SetRenderTarget(warpTarget);
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, warpShader);
@@ -986,7 +969,7 @@ namespace WorldsApart.Code.Gamestates
             gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Aura);
             if (player2.psyHold)
             {
-                
+
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
                 colorShader.Parameters["DestColor"].SetValue(player2.auraColor.ToVector4());
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader);
@@ -1009,6 +992,8 @@ namespace WorldsApart.Code.Gamestates
                 player2.auraTexture = warpTarget2;
             }
             else player2.auraTexture = null;
+
+
             foreach (PickUpObj pickUp in pickUpList)
             {
                 if (pickUp.psyHold)
@@ -1065,10 +1050,76 @@ namespace WorldsApart.Code.Gamestates
                     spriteBatch.End();
 
                     move.auraTexture = aurTex.warpTarget;
-                    
+
                 }
                 else move.auraTexture = null;
             }
+            #endregion
+
+            #region Create Light pass
+            //if (playerIndex == PlayerIndex.One) 
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(lightMask2);
+            gameStateManager.game.GraphicsDevice.Clear(level.atmosphereLight);
+            //spriteBatch.Begin();
+            ////spriteBatch.Draw(blackSquare, new Vector2(0, 0), new Rectangle(0, 0, Game1.screenWidth, Game1.screenHeight), Color.White);
+            //spriteBatch.End();
+            colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+            if (player1.selfIlluminating) player1.Draw(spriteBatch, camera);
+            else
+            {
+                colorShader.Parameters["DestColor"].SetValue(new Color(50,50,50).ToVector4());
+                player1.Draw(spriteBatch, camera);
+                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+
+            }
+            if (player2.selfIlluminating) player2.Draw(spriteBatch, camera);
+            else
+            {
+                colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
+                player2.Draw(spriteBatch, camera);
+                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+
+            }
+            foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.None) light.Draw(spriteBatch, camera);
+            if (playerIndex == PlayerIndex.One)
+            {
+                foreach (SpriteIMG tile in backFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
+                foreach (FlipSwitch s in switchList) if (s.selfIlluminating && (s.playerVisible == PlayerObjectMode.None || s.playerVisible == PlayerObjectMode.One)) s.Draw(spriteBatch, camera);
+                foreach (Button button in buttonList) if (button.selfIlluminating && (button.playerVisible == PlayerObjectMode.None || button.playerVisible == PlayerObjectMode.One)) button.Draw(spriteBatch, camera);
+                foreach (TriggerArea area in areaList) if (area.selfIlluminating && (area.playerVisible == PlayerObjectMode.None || area.playerVisible == PlayerObjectMode.One)) area.Draw(spriteBatch, camera);
+                foreach (LightConsole console in consoleList) if (console.selfIlluminating && (console.playerVisible == PlayerObjectMode.None || console.playerVisible == PlayerObjectMode.One)) console.Draw(spriteBatch, camera);
+                foreach (Door door in doorList) if (door.selfIlluminating && (door.playerVisible == PlayerObjectMode.None || door.playerVisible == PlayerObjectMode.One)) door.Draw(spriteBatch, camera);
+                foreach (MovingPlatform platform in platformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.One)) platform.Draw(spriteBatch, camera);
+                foreach (CircularPlatform platform in cPlatformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.One)) platform.Draw(spriteBatch, camera);
+                foreach (Moveable move in moveList) if (move.selfIlluminating && (move.playerVisible == PlayerObjectMode.None || move.playerVisible == PlayerObjectMode.One)) move.Draw(spriteBatch, camera);
+                foreach (PickUpObj pickUp in pickUpList) if (pickUp.selfIlluminating && (pickUp.playerVisible == PlayerObjectMode.None || pickUp.playerVisible == PlayerObjectMode.One)) pickUp.Draw(spriteBatch, camera);
+                foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.One)) portal.Draw(spriteBatch, camera);
+                foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
+                foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.One) light.Draw(spriteBatch, camera);
+
+            }
+            else
+            {
+                foreach (SpriteIMG tile in backFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.Two)) tile.Draw(spriteBatch, camera);
+                foreach (FlipSwitch s in switchList) if (s.selfIlluminating && (s.playerVisible == PlayerObjectMode.None || s.playerVisible == PlayerObjectMode.Two)) s.Draw(spriteBatch, camera);
+                foreach (Button button in buttonList) if (button.selfIlluminating && (button.playerVisible == PlayerObjectMode.None && button.playerVisible == PlayerObjectMode.Two)) button.Draw(spriteBatch, camera);
+                foreach (TriggerArea area in areaList) if (area.selfIlluminating && (area.playerVisible == PlayerObjectMode.None || area.playerVisible == PlayerObjectMode.Two)) area.Draw(spriteBatch, camera);
+                foreach (LightConsole console in consoleList) if (console.selfIlluminating && (console.playerVisible == PlayerObjectMode.None || console.playerVisible == PlayerObjectMode.Two)) console.Draw(spriteBatch, camera);
+                foreach (Door door in doorList) if (door.selfIlluminating && (door.playerVisible == PlayerObjectMode.None || door.playerVisible == PlayerObjectMode.Two)) door.Draw(spriteBatch, camera);
+                foreach (MovingPlatform platform in platformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.Two)) platform.Draw(spriteBatch, camera);
+                foreach (CircularPlatform platform in cPlatformList) if (platform.selfIlluminating && (platform.playerVisible == PlayerObjectMode.None || platform.playerVisible == PlayerObjectMode.Two)) platform.Draw(spriteBatch, camera);
+                foreach (Moveable move in moveList) if (move.selfIlluminating && (move.playerVisible == PlayerObjectMode.None || move.playerVisible == PlayerObjectMode.Two)) move.Draw(spriteBatch, camera);
+                foreach (PickUpObj pickUp in pickUpList) if (pickUp.selfIlluminating && (pickUp.playerVisible == PlayerObjectMode.None || pickUp.playerVisible == PlayerObjectMode.Two)) pickUp.Draw(spriteBatch, camera);
+                foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.Two)) portal.Draw(spriteBatch, camera);
+                foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.Two)) tile.Draw(spriteBatch, camera);
+                foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch);
+            }
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
+            foreach (LightningChain lightning in lightningList) lightning.Draw(spriteBatch);
+            spriteBatch.End();
             #endregion
 
             #region Lightning drawing
@@ -1099,7 +1150,7 @@ namespace WorldsApart.Code.Gamestates
             spriteBatch.End();
             //colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
-            foreach (SpriteIMG tile in tileList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);
+            foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
             foreach (LightningChain lightning in lightningList) lightning.Draw(spriteBatch);
@@ -1108,7 +1159,22 @@ namespace WorldsApart.Code.Gamestates
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.None) s.Draw(spriteBatch, camera);
             foreach (Button button in buttonList) if (button.playerVisible == PlayerObjectMode.None) button.Draw(spriteBatch, camera);
             foreach (TriggerArea area in areaList) if (area.playerVisible == PlayerObjectMode.None) area.Draw(spriteBatch, camera);
-            foreach (LightConsole console in consoleList) if (console.playerVisible == PlayerObjectMode.None) console.Draw(spriteBatch, camera);
+            foreach (LightConsole console in consoleList)
+            {
+                if (console.playerVisible == PlayerObjectMode.None)
+                {
+                    if (console.light == null) console.Draw(spriteBatch, camera);
+                    else
+                    {
+                        spriteBatch.End();
+                        colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader, camera.transform);
+                        console.Draw(spriteBatch, camera);
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+                    }
+                }
+            }
             foreach (Door door in doorList) if (door.playerVisible == PlayerObjectMode.None) door.Draw(spriteBatch, camera);
             foreach (MovingPlatform platform in platformList) if (platform.playerVisible == PlayerObjectMode.None) platform.Draw(spriteBatch, camera);
             foreach (CircularPlatform platform in cPlatformList) if (platform.playerVisible == PlayerObjectMode.None) platform.Draw(spriteBatch, camera);
@@ -1116,20 +1182,50 @@ namespace WorldsApart.Code.Gamestates
             foreach (Portal portal in portalList) if (portal.playerVisible == PlayerObjectMode.None) portal.Draw(spriteBatch, camera);
             foreach (Particle particle in particleList) if (particle.playerVisible == PlayerObjectMode.None) particle.Draw(spriteBatch, camera);
 
-            if (playerIndex == PlayerIndex.One) player2.Draw(spriteBatch, camera);
-            //spriteBatch.End();
+            if (playerIndex == PlayerIndex.One)
+            {
+                if (player2.light == null) player2.Draw(spriteBatch, camera); 
+                else
+                {
+                    spriteBatch.End();
+                    colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader, camera.transform);
+                    player2.Draw(spriteBatch, camera);
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
 
-            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            //spriteBatch.Draw(player1BlurTex, new Rectangle(0, 0, Game1.screenWidth, Game1.screenHeight), Color.White);
-            //spriteBatch.End();
+                }
+            }
 
-            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
-            player1.Draw(spriteBatch, camera);
-            if (playerIndex == PlayerIndex.Two) player2.Draw(spriteBatch, camera);
+            if (player1.light == null) player1.Draw(spriteBatch, camera);
+            else
+            {
+                spriteBatch.End();
+                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader, camera.transform);
+                player1.Draw(spriteBatch, camera);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+            }
+
+            if (playerIndex == PlayerIndex.Two)
+            {
+                if (player2.light == null) player2.Draw(spriteBatch, camera);
+                else
+                {
+                    spriteBatch.End();
+                    colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader, camera.transform);
+                    player2.Draw(spriteBatch, camera);
+                    spriteBatch.End();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+                }
+            }
+
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.None) pickUp.Draw(spriteBatch, camera);
+            foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
-
 
             #region Player 1 Objects
 
@@ -1138,16 +1234,32 @@ namespace WorldsApart.Code.Gamestates
             //else gameStateManager.game.GraphicsDevice.SetRenderTarget(player1Objects2);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
-            foreach (SpriteIMG tile in tileList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
+            foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.One) s.Draw(spriteBatch, camera);
             foreach (Button button in buttonList) if (button.playerVisible == PlayerObjectMode.One) button.Draw(spriteBatch, camera);
             foreach (TriggerArea area in areaList) if (area.playerVisible == PlayerObjectMode.One) area.Draw(spriteBatch, camera);
-            foreach (LightConsole console in consoleList) if (console.playerVisible == PlayerObjectMode.One) console.Draw(spriteBatch, camera);
+            foreach (LightConsole console in consoleList)
+            {
+                if (console.playerVisible == PlayerObjectMode.One)
+                {
+                    if (console.light == null) console.Draw(spriteBatch, camera);
+                    else
+                    {
+                        spriteBatch.End();
+                        colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader, camera.transform);
+                        console.Draw(spriteBatch, camera);
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+                    }
+                }
+            }
             foreach (Door door in doorList) if (door.playerVisible == PlayerObjectMode.One) door.Draw(spriteBatch, camera);
             foreach (MovingPlatform platform in platformList) if (platform.playerVisible == PlayerObjectMode.One) platform.Draw(spriteBatch, camera);
             foreach (CircularPlatform platform in cPlatformList) if (platform.playerVisible == PlayerObjectMode.One) platform.Draw(spriteBatch, camera);
             foreach (Moveable move in moveList) if (move.playerVisible == PlayerObjectMode.One) move.Draw(spriteBatch, camera);
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.One) pickUp.Draw(spriteBatch, camera);
+            foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
 
@@ -1157,16 +1269,32 @@ namespace WorldsApart.Code.Gamestates
             //else gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Objects2);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
-            foreach (SpriteIMG tile in tileList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
+            foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.Two) s.Draw(spriteBatch, camera);
             foreach (Button button in buttonList) if (button.playerVisible == PlayerObjectMode.Two) button.Draw(spriteBatch, camera);
             foreach (TriggerArea area in areaList) if (area.playerVisible == PlayerObjectMode.Two) area.Draw(spriteBatch, camera);
-            foreach (LightConsole console in consoleList) if (console.playerVisible == PlayerObjectMode.Two) console.Draw(spriteBatch, camera);
+            foreach (LightConsole console in consoleList)
+            {
+                if (console.playerVisible == PlayerObjectMode.Two)
+                {
+                    if (console.light == null) console.Draw(spriteBatch, camera);
+                    else
+                    {
+                        spriteBatch.End();
+                        colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, colorShader, camera.transform);
+                        console.Draw(spriteBatch, camera);
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+                    }
+                }
+            }
             foreach (Door door in doorList) if (door.playerVisible == PlayerObjectMode.Two) door.Draw(spriteBatch, camera);
             foreach (MovingPlatform platform in platformList) if (platform.playerVisible == PlayerObjectMode.Two) platform.Draw(spriteBatch, camera);
             foreach (CircularPlatform platform in cPlatformList) if (platform.playerVisible == PlayerObjectMode.Two) platform.Draw(spriteBatch, camera);
             foreach (Moveable move in moveList) if (move.playerVisible == PlayerObjectMode.Two) move.Draw(spriteBatch, camera);
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.Two) pickUp.Draw(spriteBatch, camera);
+            foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
 
@@ -1202,7 +1330,6 @@ namespace WorldsApart.Code.Gamestates
                 spriteBatch.End();
             }
             #endregion
-
 
             #region Objects Composite
             //if (playerIndex == PlayerIndex.One) 

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using WorldsApart.Code.Graphics;
 using WorldsApart.Code.Controllers;
 using WorldsApart.Code.Levels;
+using WorldsApart.Code.Gamestates;
 
 using System.Diagnostics;
 
@@ -193,6 +194,7 @@ namespace WorldsApart.Code.Entities
 
         public virtual void Die()
         {
+            GSPlay.AddObjectDeath(position);
             position = new Vector2(checkpoint.X, checkpoint.Y);
             hitBox.SetPosition(position);
             speed = Vector2.Zero;

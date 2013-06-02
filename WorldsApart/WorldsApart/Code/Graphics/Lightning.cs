@@ -13,6 +13,7 @@ namespace WorldsApart.Code.Graphics
     class Lightning
     {
         public bool isActive = false;
+        public bool canDraw = false;
         public List<Line> boltList = new List<Line>();
 
         public Sprite target1;
@@ -20,6 +21,8 @@ namespace WorldsApart.Code.Graphics
 
         public Vector2 start = Vector2.Zero;
         public Vector2 end = Vector2.Zero;
+        public Vector2 prevStart = Vector2.Zero;
+        public Vector2 prevEnd = Vector2.Zero;
 
         public Color color = Color.White;
 
@@ -54,12 +57,20 @@ namespace WorldsApart.Code.Graphics
                     boltList = CreateBolt(start, end, 1);
                     redrawCounter = 0;
                 }
+                //boltList = CreateBolt(start, end, 1);
+                canDraw = true;
             }
+            else canDraw = false;
+
+            //prevStart = start;
+            //prevEnd = end;
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isActive)
+
+            if (canDraw)
             {
                 foreach (Line line in boltList)
                 {

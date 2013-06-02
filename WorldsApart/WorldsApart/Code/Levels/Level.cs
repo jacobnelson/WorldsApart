@@ -35,6 +35,9 @@ namespace WorldsApart.Code.Levels
 
         static public float deathHeight = 0;
 
+        Portal glados;
+        public bool hasPortal = true;
+
         public Level(GSPlay gsPlay)
         {
             this.gsPlay = gsPlay;
@@ -63,7 +66,7 @@ namespace WorldsApart.Code.Levels
                         environmentData[x, y] = new EnvironmentData(true);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tile"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                         gsPlay.AddGroundTile(GridToPosition(new Point(x, y)) + new Vector2(16, 16));
                     }
                     else if (colorData[x, y] == new Color(0, 0, 255))
@@ -72,121 +75,125 @@ namespace WorldsApart.Code.Levels
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tile"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
                         tile.color = new Color(0, 0, 255);
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(0, 255, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(0, -1f));
-                        //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, 16));
-                        //pe.speed = new Vector2(0, -2);
-                        //pe.randomDisplacement.X = 16;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentUp"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        tile.alpha = 128;
-                        gsPlay.tileList.Add(tile);
+                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, 16));
+                        pe.speed = new Vector2(0, -2);
+                        pe.randomRotation = true;
+                        pe.randomDisplacement.X = 16;
+                        //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentUp"), GridToPosition(new Point(x, y)));
+                        //tile.origin = Vector2.Zero;
+                        //tile.alpha = 128;
+                        //gsPlay.tileList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 0, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(0, 1f));
-                        //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, -16));
-                        //pe.speed = new Vector2(0, 2);
-                        //pe.randomDisplacement.X = 16;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentDown"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        tile.alpha = 128;
-                        gsPlay.tileList.Add(tile);
+                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, -16));
+                        pe.speed = new Vector2(0, 2);
+                        pe.randomRotation = true;
+                        pe.randomDisplacement.X = 16;
+                        //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentDown"), GridToPosition(new Point(x, y)));
+                        //tile.origin = Vector2.Zero;
+                        //tile.alpha = 128;
+                        //gsPlay.tileList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(4, 0));
-                        //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(-16, 0));
-                        //pe.speed = new Vector2(2, 0);
-                        //pe.randomDisplacement.Y = 16;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentRight"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        tile.alpha = 128;
-                        gsPlay.tileList.Add(tile);
+                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(-16, 0));
+                        pe.speed = new Vector2(2, 0);
+                        pe.randomRotation = true;
+                        pe.randomDisplacement.Y = 16;
+                        //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentRight"), GridToPosition(new Point(x, y)));
+                        //tile.origin = Vector2.Zero;
+                        //tile.alpha = 128;
+                        //gsPlay.tileList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(0, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(-4, 0));
-                        //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(16,0));
-                        //pe.speed = new Vector2(-2, 0);
-                        //pe.randomDisplacement.Y = 16;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentLeft"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        tile.alpha = 128;
-                        gsPlay.tileList.Add(tile);
+                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(16, 0));
+                        pe.speed = new Vector2(-2, 0);
+                        pe.randomRotation = true;
+                        pe.randomDisplacement.Y = 16;
+                        //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentLeft"), GridToPosition(new Point(x, y)));
+                        //tile.origin = Vector2.Zero;
+                        //tile.alpha = 128;
+                        //gsPlay.tileList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 150))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileRight1, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight1"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 100))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileRight2, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight2"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 50))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileRight3, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight3"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(50, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileLeft1, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft1"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(100, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileLeft2, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft2"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(150, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileLeft3, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft3"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(64, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileLeft1, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoLeft1"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(128, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileLeft2, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoLeft2"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 128))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileRight1, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoRight1"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 64))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileRight2, FrictionType.Normal);
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoRight2"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(50, 50, 50))
                     {
@@ -194,7 +201,7 @@ namespace WorldsApart.Code.Levels
                         environmentData[x, y].oneWayPlatform = true;
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/jumpThru"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 128, 255))
                     {
@@ -202,7 +209,7 @@ namespace WorldsApart.Code.Levels
                         environmentData[x, y].checkpoint = true;
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/checkpoint"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 128, 0))
                     {
@@ -210,7 +217,7 @@ namespace WorldsApart.Code.Levels
                         environmentData[x, y].killZone = true;
                         SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/killZone"), GridToPosition(new Point(x, y)));
                         tile.origin = Vector2.Zero;
-                        gsPlay.tileList.Add(tile);
+                        gsPlay.backFGList.Add(tile);
                     }
                     else
                     {
@@ -226,18 +233,26 @@ namespace WorldsApart.Code.Levels
             gsPlay.player2.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player2.SetCollisionBox(48, 96, Vector2.Zero);
 
-            Portal glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), portalPos);
-            glados.SetAnimationStuff(1, 2, 1, 2, 96, 192, 2, 5);
-            glados.isAnimating = false;
-            Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), pItemPos);
-            goody.selfIlluminating = true;
-            goody.SetAnimationStuff(1, 1, 1, 2, 128, 128, 2, 10);
-            goody.SetCollisionBox(32, 32, Vector2.Zero);
+            
+            if (hasPortal)
+            {
+                glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), portalPos);
+                glados.SetAnimationStuff(1, 2, 1, 2, 96, 192, 2, 5);
+                glados.isAnimating = false;
+                Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), pItemPos);
+                goody.selfIlluminating = true;
+                goody.SetAnimationStuff(1, 1, 1, 2, 128, 128, 2, 10);
+                goody.SetCollisionBox(32, 32, Vector2.Zero);
+            }
 
             gsPlay.cameraPlayer1 = new Camera(gsPlay.player1, gsPlay.player2, Vector2.Zero);
             gsPlay.cameraPlayer2 = new Camera(gsPlay.player2, gsPlay.player1, Vector2.Zero);
-            gsPlay.cameraPlayer1.AddTarget(glados);
-            gsPlay.cameraPlayer2.AddTarget(glados);
+
+            if (glados != null)
+            {
+                gsPlay.cameraPlayer1.AddTarget(glados);
+                gsPlay.cameraPlayer2.AddTarget(glados);
+            }
         }
 
         public virtual void ActivateEvent(int eventID, TriggerState triggerState)
