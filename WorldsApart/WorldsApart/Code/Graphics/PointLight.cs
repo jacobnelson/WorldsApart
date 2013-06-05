@@ -62,6 +62,10 @@ namespace WorldsApart.Code.Graphics
             }
         }
 
+        public override void Die()
+        {
+        }
+
         public override void ActivateEvent(TriggerState triggerState)
         {
             base.ActivateEvent(triggerState);

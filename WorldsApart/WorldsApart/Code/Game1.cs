@@ -31,6 +31,8 @@ namespace WorldsApart.Code
 
         GameStateManager gsm;
 
+        static public GraphicsDevice gd;
+
         static public int screenWidth = 800;
         static public int screenHeight = 600;
 
@@ -73,6 +75,7 @@ namespace WorldsApart.Code
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             gsm = new GameStateManager(this);
+            gd = GraphicsDevice;
             // TDO: use this.Content to load your game content here
         }
 

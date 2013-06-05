@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
-using Lidgren.Network;
+//using Lidgren.Network;
 
 using WorldsApart.Code.Graphics;
 using WorldsApart.Code.Entities;
@@ -43,8 +43,8 @@ namespace WorldsApart.Code.Gamestates
         public int currentLevel = 0;
         public int goodness = 0;
 
-        NetServer server;
-        NetClient client;
+        //NetServer server;
+        //NetClient client;
 
 
         public GameStateManager(Game1 game)

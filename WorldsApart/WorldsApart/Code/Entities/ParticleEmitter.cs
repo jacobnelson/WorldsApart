@@ -23,8 +23,10 @@ namespace WorldsApart.Code.Entities
         public bool randomRotation = false;
         public Vector2 speed = Vector2.Zero;
 
-        public byte startAlpha = 128;
-        public byte endAlpha = 64;
+        public bool fadeInOut = false;
+
+        public byte startAlpha = 0;
+        public byte endAlpha = 255;
         public float startScale = .5f;
         public float endScale = .8f;
 
@@ -55,6 +57,7 @@ namespace WorldsApart.Code.Entities
                 p.endScale = endScale;
                 p.startAlpha = startAlpha;
                 p.endAlpha = endAlpha;
+                p.fadeInOut = fadeInOut;
                 p.StartParticleSystems();
                 spawnCounter = Mathness.RandomNumber(-2,2);
             }

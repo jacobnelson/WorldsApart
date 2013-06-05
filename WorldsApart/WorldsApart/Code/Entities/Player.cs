@@ -122,8 +122,8 @@ namespace WorldsApart.Code.Entities
             gravity = new Vector2(0, .5f);
             grabBox = new CollisionBox(this, new Vector2(halfWidth * 2, halfHeight * 2));
 
-            if (playerIndex == PlayerObjectMode.One) auraColor = new Color(255, 128, 0);
-            else auraColor = new Color(0, 128, 255);
+            if (playerIndex == PlayerObjectMode.One) auraColor = new Color(255, 240, 64);
+            else auraColor = new Color(64, 240, 255);
         }
 
         public void ChangeCurrentSet(PlayerMode currentSet)

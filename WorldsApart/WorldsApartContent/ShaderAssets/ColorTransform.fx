@@ -11,6 +11,7 @@ sampler2D ColorMapSampler = sampler_state
 struct PixelShaderInput
 {
     float2 TexCoord : TEXCOORD0;
+	float4 color : COLOR0;
 };
 
 float4 PixelShaderFunction(PixelShaderInput input) : COLOR0
@@ -26,6 +27,7 @@ float4 PixelShaderFunction(PixelShaderInput input) : COLOR0
 
     //float4 finalRGBA = srcRGBA - (deltaDestColor * delta);
 	float4 finalRGBA = srcRGBA;
+	finalRGBA.a = input.color.a * srcRGBA.a;
 	finalRGBA.rgb = DestColor.rgb;
 
     return finalRGBA;

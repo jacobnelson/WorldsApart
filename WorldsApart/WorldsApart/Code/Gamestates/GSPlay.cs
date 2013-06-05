@@ -17,7 +17,7 @@ using WorldsApart.Code.Graphics;
 using System.Diagnostics;
 using System.Threading;
 
-using Lidgren.Network;
+//using Lidgren.Network;
 
 namespace WorldsApart.Code.Gamestates
 {
@@ -110,6 +110,10 @@ namespace WorldsApart.Code.Gamestates
         public List<Portal> portalList = new List<Portal>();
         public List<LightningChain> lightningList = new List<LightningChain>();
 
+
+        public float dreamParticleCounter = 0;
+        public float dreamParticleRate = .5f;
+
         public GSPlay(GameStateManager gsm, int levelIndex)
             : base(gsm)
         {
@@ -126,6 +130,13 @@ namespace WorldsApart.Code.Gamestates
 
         public void LoadTheStuffs(int levelIndex)
         {
+            Art.lineEnd = LoadTexture("ShaderAssets/lineEndRight");
+            Art.lineMiddle = LoadTexture("ShaderAssets/lineMiddle");
+            Art.smoke = LoadTexture("TestSprites/puff");
+            Art.barrier = LoadTexture("ShaderAssets/barrier");
+            Art.sparkle = LoadTexture("ShaderAssets/sparkle");
+            Art.rain = LoadTexture("ShaderAssets/rain");
+
             mainViewport = gameStateManager.game.GraphicsDevice.Viewport;
             player1Viewport = mainViewport;
             player2Viewport = mainViewport;
@@ -303,10 +314,7 @@ namespace WorldsApart.Code.Gamestates
 
             signalTexture = LoadTexture("signal");
 
-            Art.lineEnd = LoadTexture("ShaderAssets/lineEndRight");
-            Art.lineMiddle = LoadTexture("ShaderAssets/lineMiddle");
-            Art.smoke = LoadTexture("TestSprites/puff");
-            Art.barrier = LoadTexture("ShaderAssets/barrier");
+            
 
             
             //if (gameStateManager.goodness < 0)
@@ -542,6 +550,12 @@ namespace WorldsApart.Code.Gamestates
         public FlipSwitch AddSwitch(EventTrigger eventTrigger, Texture2D texture, Vector2 position)
         {
             FlipSwitch s = new FlipSwitch(eventTrigger, texture, position);
+            PointLight light = AddPointLight(LoadTexture("ShaderAssets/pointLight"), s.position, new Vector2(.1f));
+            light.SetGlowing(.1f, .2f, 60);
+            light.target = s;
+            light.color = Color.Green;
+            s.light = light;
+            s.LightsOff();
             switchList.Add(s);
             return s;
         }
@@ -591,6 +605,64 @@ namespace WorldsApart.Code.Gamestates
             return p;
         }
 
+        public Particle AddRain(bool isPlayer1)
+        {
+            Vector2 position = Vector2.Zero;
+
+            Player player = player1;
+            if (!isPlayer1) player = player2;
+
+            position = new Vector2(player.position.X + Mathness.RandomNumber(-Game1.screenWidth * 2, Game1.screenWidth * 2), player.position.Y - Game1.screenHeight);
+
+            Particle p = new Particle(Art.rain, position);
+
+            if (isPlayer1) p.SetPlayerMode(PlayerObjectMode.One);
+            else p.SetPlayerMode(PlayerObjectMode.Two);
+
+            p.speed = new Vector2(0, 12);
+            p.scale = new Vector2(2);
+            p.life = 240;
+            particleList.Add(p);
+            return p;
+
+        }
+
+        public Particle AddDreamSparkle(bool isPlayer1)
+        {
+            Particle p = new Particle(Art.sparkle, Vector2.Zero);
+            p.speed = new Vector2(Mathness.RandomNumber(-2f, 2f), Mathness.RandomNumber(-2f, 2f));
+            p.startScale = Mathness.RandomNumber(.5f, .8f);
+            p.endScale = Mathness.RandomNumber(.8f, 1f);
+            //p.startScale = 1;
+            //p.endScale = 1;
+            p.fadeInOut = true;
+            p.startAlpha = 0;
+            p.endAlpha = 255;
+            p.life = Mathness.RandomNumber(360, 480);
+            p.alpha = 0;
+            p.randomMinForce = new Vector2(-.1f);
+            p.randomMaxForce = new Vector2(.1f);
+            p.illuminatingAllTheTime = true;
+            if (isPlayer1)
+            {
+                p.color = new Color(255, Mathness.RandomNumber(0, 100), Mathness.RandomNumber(0, 100));
+                p.position = new Vector2(player1.position.X + Mathness.RandomNumber(-Game1.screenWidth / 2, Game1.screenWidth / 2), player1.position.Y + Mathness.RandomNumber(-Game1.screenHeight / 2, Game1.screenHeight / 2));
+                p.SetPlayerMode(PlayerObjectMode.One);
+            }
+            else
+            {
+                p.color = new Color(Mathness.RandomNumber(0, 100), Mathness.RandomNumber(0, 100), 255);
+                p.position = new Vector2(player2.position.X + Mathness.RandomNumber(-Game1.screenWidth / 2, Game1.screenWidth / 2), player2.position.Y + Mathness.RandomNumber(-Game1.screenHeight / 2, Game1.screenHeight / 2));
+                p.SetPlayerMode(PlayerObjectMode.Two);
+            }
+
+            p.StartParticleSystems();
+
+            particleList.Add(p);
+            return p;
+
+        }
+
         static public void AddObjectDeath(Vector2 position)
         {
             for (int i = 0; i < 8; i++)
@@ -616,6 +688,8 @@ namespace WorldsApart.Code.Gamestates
             p.endAlpha = 0;
             p.target = player;
             p.life = 60;
+            p.color = player.auraColor;
+            p.illuminatingAllTheTime = true;
             p.StartParticleSystems();
             particleList.Add(p);
             return p;
@@ -897,6 +971,17 @@ namespace WorldsApart.Code.Gamestates
 
             #endregion
 
+
+            dreamParticleCounter += Time.GetSeconds();
+
+            if (dreamParticleCounter >= dreamParticleRate)
+            {
+                AddDreamSparkle(true);
+                AddDreamSparkle(false);
+                dreamParticleCounter = 0;
+            }
+
+
             
             
 
@@ -1066,23 +1151,46 @@ namespace WorldsApart.Code.Gamestates
             //spriteBatch.End();
             colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
-            if (player1.selfIlluminating) player1.Draw(spriteBatch, camera);
-            else
+            if (player1.selfIlluminating)
             {
-                colorShader.Parameters["DestColor"].SetValue(new Color(50,50,50).ToVector4());
+                spriteBatch.End();
+                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
                 player1.Draw(spriteBatch, camera);
-                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-
             }
-            if (player2.selfIlluminating) player2.Draw(spriteBatch, camera);
             else
             {
+                spriteBatch.End();
                 colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
-                player2.Draw(spriteBatch, camera);
-                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                player1.Draw(spriteBatch, camera);
 
             }
-            foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.None) light.Draw(spriteBatch, camera);
+            if (player2.selfIlluminating)
+            {
+                spriteBatch.End();
+                colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                player2.Draw(spriteBatch, camera);
+            }
+            else
+            {
+                spriteBatch.End();
+                colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                player2.Draw(spriteBatch, camera);
+
+            }
+            foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.None)
+            {
+                spriteBatch.End();
+                colorShader.Parameters["DestColor"].SetValue(light.color.ToVector4());
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                light.Draw(spriteBatch, camera);
+            }
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+            colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             if (playerIndex == PlayerIndex.One)
             {
                 foreach (SpriteIMG tile in backFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
@@ -1098,6 +1206,7 @@ namespace WorldsApart.Code.Gamestates
                 foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.One)) portal.Draw(spriteBatch, camera);
                 foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.One) light.Draw(spriteBatch, camera);
+                foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.One || particle.playerVisible == PlayerObjectMode.None)) particle.Draw(spriteBatch, camera);
 
             }
             else
@@ -1115,6 +1224,7 @@ namespace WorldsApart.Code.Gamestates
                 foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.Two)) portal.Draw(spriteBatch, camera);
                 foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.Two)) tile.Draw(spriteBatch, camera);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch);
+                foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.Two || particle.playerVisible == PlayerObjectMode.None)) particle.Draw(spriteBatch, camera);
             }
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
@@ -1149,7 +1259,7 @@ namespace WorldsApart.Code.Gamestates
             //else spriteBatch.Draw(bgTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
             //colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
@@ -1260,6 +1370,7 @@ namespace WorldsApart.Code.Gamestates
             foreach (Moveable move in moveList) if (move.playerVisible == PlayerObjectMode.One) move.Draw(spriteBatch, camera);
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.One) pickUp.Draw(spriteBatch, camera);
             foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
+            foreach (Particle particle in particleList) if (particle.playerVisible == PlayerObjectMode.One) particle.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
 
@@ -1295,6 +1406,7 @@ namespace WorldsApart.Code.Gamestates
             foreach (Moveable move in moveList) if (move.playerVisible == PlayerObjectMode.Two) move.Draw(spriteBatch, camera);
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.Two) pickUp.Draw(spriteBatch, camera);
             foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
+            foreach (Particle particle in particleList) if (particle.playerVisible == PlayerObjectMode.Two) particle.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
 
@@ -1319,7 +1431,7 @@ namespace WorldsApart.Code.Gamestates
             {
                 gameStateManager.game.GraphicsDevice.SetRenderTarget(alphaPlayer);
                 gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, alphaShader);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, alphaShader); 
                 spriteBatch.Draw(player1Objects, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.End();
 
@@ -1376,7 +1488,7 @@ namespace WorldsApart.Code.Gamestates
             //else lightingShader.Parameters["lightMask"].SetValue(lightMask2);
             lightingShader.CurrentTechnique.Passes[0].Apply();
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, lightingShader);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, null, null, lightingShader); //Alpha testing
             SpriteEffects mirror = SpriteEffects.None;
             if (playerIndex == PlayerIndex.Two) mirror = SpriteEffects.FlipHorizontally;
 

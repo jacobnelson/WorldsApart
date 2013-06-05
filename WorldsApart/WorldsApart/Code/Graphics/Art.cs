@@ -14,5 +14,7 @@ namespace WorldsApart.Code.Graphics
         public static Texture2D lineMiddle;
         public static Texture2D smoke;
         public static Texture2D barrier;
+        public static Texture2D sparkle;
+        public static Texture2D rain;
     }
 }

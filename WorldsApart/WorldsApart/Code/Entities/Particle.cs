@@ -16,6 +16,8 @@ namespace WorldsApart.Code.Entities
 
         public Sprite target;
 
+        public bool fadeInOut = false;
+
         public int life = 15;
         int lifeCounter = 0;
 
@@ -26,6 +28,9 @@ namespace WorldsApart.Code.Entities
         public float startScale = 1;
         public float endScale = 1.2f;
 
+        public Vector2 randomMinForce = Vector2.Zero;
+        public Vector2 randomMaxForce = Vector2.Zero;
+
 
         public Particle(Texture2D texture, Vector2 position) : base(texture, position)
         {
@@ -35,19 +40,33 @@ namespace WorldsApart.Code.Entities
 
         public void StartParticleSystems()
         {
-            am.StartFade(life, startAlpha, endAlpha);
+            if (fadeInOut)
+            {
+                am.StartFade(life / 2, startAlpha, endAlpha);
+            }
+            else
+            {
+                am.StartFade(life, startAlpha, endAlpha);
+            }
             am.StartScale(life, new Vector2(startScale), new Vector2(endScale));
             
         }
 
         public override void Update()
         {
+            force = new Vector2(Mathness.RandomNumber(randomMinForce.X, randomMaxForce.X), Mathness.RandomNumber(randomMinForce.Y, randomMaxForce.Y));
             base.Update();
             lifeCounter++;
             if (lifeCounter >= life)
             {
                 Die();
             }
+
+            if (lifeCounter == life / 2)
+            {
+                am.StartFade(life / 2, endAlpha, startAlpha);
+            }
+
             if (target != null)
             {
                 position = target.position;

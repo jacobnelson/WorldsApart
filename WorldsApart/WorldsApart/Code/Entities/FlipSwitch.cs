@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using WorldsApart.Code.Controllers;
+using WorldsApart.Code.Graphics;
 
 namespace WorldsApart.Code.Entities
 {
@@ -15,12 +16,29 @@ namespace WorldsApart.Code.Entities
         public bool pressureCooker = false;
         public bool touching = false;
 
+        public PointLight light;
+
         public FlipSwitch(EventTrigger eventTrigger, Texture2D texture, Vector2 position)
             : base(texture, position)
         {
             triggerList.Add(eventTrigger);
-            SetAnimationStuff(1, 1, 1, 2, texture.Width / 2, texture.Height, 1, 5);
+            //SetAnimationStuff(1, 1, 1, 2, texture.Width / 2, texture.Height, 1, 5);
             isAnimating = false;
+            
+        }
+
+        public void LightsOn()
+        {
+            color = Color.Green;
+            selfIlluminating = true;
+            light.visible = true;
+        }
+
+        public void LightsOff()
+        {
+            color = Color.Red;
+            selfIlluminating = false;
+            light.visible = false;
         }
 
         public override void Update()
@@ -47,9 +65,10 @@ namespace WorldsApart.Code.Entities
         {
             if (onlyTriggered && triggerState == TriggerState.Triggered) return;
 
-            if (currentCellCol == 1)
+            if (triggerState == TriggerState.Untriggered)
             {
-                currentCellCol = 2;
+                triggerState = TriggerState.Triggered;
+                LightsOn();
                 foreach (EventTrigger eventTrigger in triggerList)
                 {
                     eventTrigger.ActivateEvent(TriggerState.Triggered);
@@ -58,7 +77,8 @@ namespace WorldsApart.Code.Entities
             }
             else
             {
-                currentCellCol = 1;
+                triggerState = TriggerState.Untriggered;
+                LightsOff();
                 foreach (EventTrigger eventTrigger in triggerList)
                 {
                     eventTrigger.ActivateEvent(TriggerState.Untriggered);

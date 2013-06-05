@@ -53,6 +53,9 @@ namespace WorldsApart.Code.Levels
         MovingPlatform p1;
         MovingPlatform p2;
 
+        float thunderCounter = 0;
+        float thunderRate = 7;
+
 
         public Level7(GSPlay gsPlay)
             : base(gsPlay)
@@ -67,6 +70,9 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            TriggerArea update = gsPlay.AddTriggerArea(new EventTrigger(this, 99), Art.smoke, Vector2.Zero);
+            update.visible = false;
+
             Sprite cameraTarget = new Sprite(GridToPosition(239, 278));
             gsPlay.cameraPlayer1.AddTarget(cameraTarget);
             gsPlay.cameraPlayer2.AddTarget(cameraTarget);
@@ -74,7 +80,7 @@ namespace WorldsApart.Code.Levels
             SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(levelWidth / 2, levelHeight / 2));
             gsPlay.AddParallax(s, .5f);
 
-            atmosphereLight = new Color(98, 102, 115);
+            atmosphereLight = new Color(100, 100, 100);
 
             Moveable m1 = gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(95, 280)), .8f);                      //box under backhoe
 
@@ -297,6 +303,37 @@ namespace WorldsApart.Code.Levels
                     //    p1.ActivateEvent(TriggerState.Untriggered);
                     //    p2.ActivateEvent(TriggerState.Untriggered);
                     //}
+                    break;
+                case 99:
+
+                    for (int i = 0; i < 2; i++)
+                    {
+                        gsPlay.AddRain(true);
+                        gsPlay.AddRain(false);
+                    }
+
+                    if (atmosphereLight != new Color(100, 100, 100))
+                    {
+                        if (atmosphereLight.R > 100) atmosphereLight.R -= 2;
+                        if (atmosphereLight.G > 100) atmosphereLight.G -= 2;
+                        if (atmosphereLight.B > 100) atmosphereLight.B -= 2;
+
+                        if (atmosphereLight.R < 100) atmosphereLight.R = 100;
+                        if (atmosphereLight.G < 100) atmosphereLight.G = 100;
+                        if (atmosphereLight.B < 100) atmosphereLight.B = 100;
+                    }
+                    else
+                    {
+                        thunderCounter += Time.GetSeconds();
+                    }
+
+                    
+                    if (thunderCounter >= thunderRate)
+                    {
+                        atmosphereLight = Color.White;
+                        thunderCounter = Mathness.RandomNumber(-1f, 1f);
+                    }
+
                     break;
             }
 

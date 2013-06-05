@@ -19,6 +19,14 @@ namespace WorldsApart.Code.Gamestates
 {
     class GSMenu : GameState
     {
+        int menuIndex;
+
+        SpriteIMG singlePlayer;
+        SpriteIMG multiPlayer;
+        SpriteIMG exit;
+
+        SpriteIMG backdrop;
+
         public GSMenu(GameStateManager gsm)
             : base(gsm)
         {

@@ -25,7 +25,7 @@ namespace WorldsApart.Code
 
         static public float RandomNumber(float minValue, float maxValue)
         {
-            return (float)random.Next((int)minValue * 1000, (int)maxValue * 1000) / 1000f;
+            return (float)random.Next((int)(minValue * 1000), (int)(maxValue * 1000)) / 1000f;
         }
 
         static public Vector2 VectorToTarget(Vector2 targetPosition, Vector2 thisPosition, float innerDistance)

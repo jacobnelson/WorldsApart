@@ -97,7 +97,7 @@ namespace WorldsApart.Code.Levels
             //ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(157, 15));
             //pe.speed = new Vector2(1, 0);
 
-            atmosphereLight = new Color(100, 100, 100);
+            atmosphereLight = new Color(150, 150, 150);
 
             Door dooor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(36, 30), GridToPosition(36, 34), OpenState.Closed);
             FlipSwitch fs1 = gsPlay.AddSwitch(new EventTrigger(this, dooor), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(29, 35));

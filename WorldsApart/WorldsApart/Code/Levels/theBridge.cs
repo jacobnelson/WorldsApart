@@ -46,8 +46,10 @@ namespace WorldsApart.Code.Levels
             SetupLevel();
 
             barrier = gsPlay.AddTriggerArea(new EventTrigger(this, 1), gsPlay.LoadTexture("bridgeBarrier"), GridToPosition(67, 7) + new Vector2(16, 16));
+            barrier.visible = false;
             breaker = gsPlay.AddTriggerArea(new EventTrigger(this, 2), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 14) + new Vector2(16, 0));
-            gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 67) + new Vector2(16, 0));
+            breaker.visible = false;
+            gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 67) + new Vector2(16, 0)).visible = false;
         }
 
         public override void ActivateEvent(int eventID, TriggerState triggerState)

@@ -60,9 +60,6 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network">
-      <HintPath>C:\Users\Jacob the Awesome\Desktop\Barf\Lib\Lidgren.Network.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -124,6 +121,7 @@
     <Compile Include="Code\Entities\Collectible.cs" />
     <Compile Include="Code\Entities\Door.cs" />
     <Compile Include="Code\Entities\EventObject.cs" />
+    <Compile Include="Code\Entities\InteractiveParticle.cs" />
     <Compile Include="Code\Entities\LightConsole.cs" />
     <Compile Include="Code\Entities\LightningChain.cs" />
     <Compile Include="Code\Entities\Moveable.cs" />
@@ -149,6 +147,7 @@
     <Compile Include="Code\Graphics\GaussianBlur.cs" />
     <Compile Include="Code\Graphics\GaussianTargets.cs" />
     <Compile Include="Code\Graphics\IdealAnimationSet.cs" />
+    <Compile Include="Code\Entities\InteractiveParticleSet.cs" />
     <Compile Include="Code\Graphics\Lightning.cs" />
     <Compile Include="Code\Graphics\Line.cs" />
     <Compile Include="Code\Graphics\ParallaxLayer.cs" />

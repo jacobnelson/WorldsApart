@@ -83,6 +83,7 @@ namespace WorldsApart.Code.Levels
                         ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, 16));
                         pe.speed = new Vector2(0, -2);
                         pe.randomRotation = true;
+                        pe.fadeInOut = true;
                         pe.randomDisplacement.X = 16;
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentUp"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
@@ -95,6 +96,7 @@ namespace WorldsApart.Code.Levels
                         ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, -16));
                         pe.speed = new Vector2(0, 2);
                         pe.randomRotation = true;
+                        pe.fadeInOut = true;
                         pe.randomDisplacement.X = 16;
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentDown"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
@@ -107,6 +109,7 @@ namespace WorldsApart.Code.Levels
                         ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(-16, 0));
                         pe.speed = new Vector2(2, 0);
                         pe.randomRotation = true;
+                        pe.fadeInOut = true;
                         pe.randomDisplacement.Y = 16;
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentRight"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
@@ -119,6 +122,7 @@ namespace WorldsApart.Code.Levels
                         ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(16, 0));
                         pe.speed = new Vector2(-2, 0);
                         pe.randomRotation = true;
+                        pe.fadeInOut = true;
                         pe.randomDisplacement.Y = 16;
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentLeft"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
@@ -232,7 +236,6 @@ namespace WorldsApart.Code.Levels
             gsPlay.player2 = new Player(gsPlay, PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), player2Pos);
             gsPlay.player2.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player2.SetCollisionBox(48, 96, Vector2.Zero);
-
             
             if (hasPortal)
             {
