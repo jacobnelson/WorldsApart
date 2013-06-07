@@ -36,5 +36,9 @@ namespace WorldsApart.Code.Entities
             if (triggerState == this.triggerState) return;
             this.triggerState = triggerState;
         }
+
+        public override void CollisionEnvironmentResponse()
+        {
+        }
     }
 }

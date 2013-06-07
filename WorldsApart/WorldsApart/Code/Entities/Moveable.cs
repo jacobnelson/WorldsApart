@@ -11,7 +11,7 @@ using WorldsApart.Code.Levels;
 
 namespace WorldsApart.Code.Entities
 {
-    class Moveable : EventObject
+    class Moveable : PhysObj
     {
         public float moveModifier = .5f;
         public bool moveCollided = false;
