@@ -27,6 +27,12 @@ namespace WorldsApart.Code.Entities
             
         }
 
+        public override void SetPlayerMode(PlayerObjectMode pi)
+        {
+            base.SetPlayerMode(pi);
+            light.SetPlayerMode(pi);
+        }
+
         public void LightsOn()
         {
             color = Color.Green;
