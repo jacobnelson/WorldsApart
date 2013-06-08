@@ -47,7 +47,7 @@ namespace WorldsApart.Code.Entities
 
         public Texture2D regularTexture;
 
-        PlayerObjectMode playerIndex = PlayerObjectMode.One;
+        PlayerObjectMode playerObjectMode = PlayerObjectMode.One;
         public bool stopInput = false;
 
         bool isJumping = false;
@@ -116,7 +116,7 @@ namespace WorldsApart.Code.Entities
         {
             this.gsPlay = gsPlay;
             regularTexture = texture;
-            this.playerIndex = playerIndex;
+            this.playerObjectMode = playerIndex;
             playerTangible = playerIndex;
             playerVisible = playerIndex;
             gravity = new Vector2(0, .5f);
@@ -363,8 +363,9 @@ namespace WorldsApart.Code.Entities
             if (currentSet != PlayerMode.Dying)
             {
                 am.Pause();
-                ChangeAnimationBounds(5, 1, 4);
-                currentSet = PlayerMode.Dying;
+                ChangeCurrentSet(PlayerMode.Dying);
+                //ChangeAnimationBounds(5, 1, 4);
+                //currentSet = PlayerMode.Dying;
             }
         }
 
@@ -388,14 +389,14 @@ namespace WorldsApart.Code.Entities
                 if (InputManager.IsKeyDown(Keys.W) || InputManager.IsButtonDown(Buttons.DPadUp) || thumb.Y > 0) upDown = true;
                 if (InputManager.IsKeyDown(Keys.S) || InputManager.IsButtonDown(Buttons.DPadDown) || thumb.Y < 0) downDown = true;
 
-                if (playerIndex == PlayerObjectMode.One)
+                if (playerObjectMode == PlayerObjectMode.One)
                 {
                     if (InputManager.IsButtonDown(Buttons.DPadLeft) || InputManager.IsKeyDown(Keys.A)) leftDown = true;
                     if (InputManager.IsButtonDown(Buttons.DPadRight) || InputManager.IsKeyDown(Keys.D)) rightDown = true;
                     if (InputManager.IsKeyUp(Keys.A) && InputManager.IsButtonUp(Buttons.DPadLeft) && thumb.X >= 0) leftDown = false;
                     if (InputManager.IsKeyUp(Keys.D) && InputManager.IsButtonUp(Buttons.DPadRight) && thumb.X <= 0) rightDown = false;
                 }
-                else if (playerIndex == PlayerObjectMode.Two)
+                else if (playerObjectMode == PlayerObjectMode.Two)
                 {
                     thumb.X = -thumb.X;
                     if (InputManager.IsButtonDown(Buttons.DPadLeft) || InputManager.IsKeyDown(Keys.A)) rightDown = true;
@@ -418,7 +419,7 @@ namespace WorldsApart.Code.Entities
             }
             else
             {
-                if (playerIndex == PlayerObjectMode.One)
+                if (playerObjectMode == PlayerObjectMode.One)
                 {
                     #region Player 1 
                     thumb = InputManager.GetLeftThumbstick();
@@ -445,7 +446,7 @@ namespace WorldsApart.Code.Entities
                     if (InputManager.IsButtonPressed(Buttons.Y)) signalPressed = true;
                     #endregion
                 }
-                else if (playerIndex == PlayerObjectMode.Two)
+                else if (playerObjectMode == PlayerObjectMode.Two)
                 {
                     #region Player 2
                     thumb = InputManager.GetLeftThumbstick2();
@@ -502,6 +503,10 @@ namespace WorldsApart.Code.Entities
 
             if (currentSet == PlayerMode.Dying)
             {
+                if (playerObjectMode == PlayerObjectMode.One)
+                {
+                    Trace.WriteLine(frameCounter);
+                }
                 stopInput = true;
                 if (CheckForFrameStop(DyingSet))
                 {

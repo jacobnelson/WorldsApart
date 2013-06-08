@@ -501,20 +501,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="playerRunTest.png">
-      <Name>playerRunTest</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="playerRunTest2.png">
-      <Name>playerRunTest2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="ShaderAssets\StrokeGlow.fx">
       <Name>StrokeGlow</Name>
       <Importer>EffectImporter</Importer>
