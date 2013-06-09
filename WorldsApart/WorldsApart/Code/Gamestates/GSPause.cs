@@ -6,30 +6,22 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
-//using Microsoft.Xna.Framework.Net;
-//using Microsoft.Xna.Framework.GamerServices;
 
 using WorldsApart.Code.Graphics;
 using WorldsApart.Code.Controllers;
 
-using System.Diagnostics;
-
 namespace WorldsApart.Code.Gamestates
 {
-    class GSMenu : GameState
+    class GSPause : GameState
     {
-        int menuIndex = 0;
-
-        SpriteIMG logo;
-
-        SpriteIMG singlePlayer;
-        SpriteIMG multiPlayer;
-        SpriteIMG exit;
-
         SpriteIMG backdrop;
 
+        SpriteIMG resume;
+        SpriteIMG mainMenu;
+
         bool firstBit = true;
+
+        public int menuIndex = 0;
 
         public bool ableToThumbUp = false;
         public bool ableToThumbDown = false;
@@ -40,17 +32,13 @@ namespace WorldsApart.Code.Gamestates
         byte selectAlpha = 255;
         byte unselectAlpha = 128;
 
-        public GSMenu(GameStateManager gsm)
-            : base(gsm)
+        public GSPause(GameStateManager gsm) : base(gsm)
         {
-            logo = new SpriteIMG(LoadTexture("TitleAssets/logoWorldsApart"), Game1.GetScreenCenter() + new Vector2(0, -200));
-            singlePlayer = new SpriteIMG(LoadTexture("TitleAssets/multiPlayer"), Game1.GetScreenCenter() + new Vector2(0, 0));
-            multiPlayer = new SpriteIMG(LoadTexture("TitleAssets/singlePlayer"), Game1.GetScreenCenter() + new Vector2(0, 100));
-            exit = new SpriteIMG(LoadTexture("TitleAssets/exit"), Game1.GetScreenCenter() + new Vector2(0, 200));
+            resume = new SpriteIMG(LoadTexture("TitleAssets/resume"), Game1.GetScreenCenter() + new Vector2(0, -50));
+            mainMenu = new SpriteIMG(LoadTexture("TitleAssets/mainMenu"), Game1.GetScreenCenter() + new Vector2(0, 50));
 
+            backdrop = new SpriteIMG(LoadTexture("TitleAssets/pauseBG"), Game1.GetScreenCenter());
 
-            multiPlayer.alpha = 128;
-            exit.alpha = 128;
         }
 
         public void MenuUp()
@@ -62,29 +50,27 @@ namespace WorldsApart.Code.Gamestates
         public void MenuDown()
         {
             menuIndex++;
-            if (menuIndex > 2) menuIndex = 2;
+            if (menuIndex > 1) menuIndex = 1;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
+            resume.Update();
+            mainMenu.Update();
 
-            singlePlayer.Update();
-            multiPlayer.Update();
-            exit.Update();
-
-            if (InputManager.IsButtonPressed(Buttons.DPadUp) || InputManager.IsKeyPressed(Keys.W) || InputManager.IsKeyPressed(Keys.Up))
+            if (InputManager.IsButtonPressed(Buttons.DPadUp) || InputManager.IsKeyPressed(Keys.W) || InputManager.IsKeyPressed(Keys.Up) || InputManager.IsButtonPressed2(Buttons.DPadUp))
             {
                 MenuUp();
             }
 
-            if (InputManager.IsButtonPressed(Buttons.DPadDown) || InputManager.IsKeyPressed(Keys.S) || InputManager.IsKeyPressed(Keys.Down))
+            if (InputManager.IsButtonPressed(Buttons.DPadDown) || InputManager.IsKeyPressed(Keys.S) || InputManager.IsKeyPressed(Keys.Down) || InputManager.IsButtonPressed2(Buttons.DPadDown))
             {
                 MenuDown();
             }
 
-            if (InputManager.GetLeftThumbstick().Y > .5f)
+            if (InputManager.GetLeftThumbstick().Y > .5f || InputManager.GetLeftThumbstick2().Y > .5f)
             {
                 if (ableToThumbDown)
                 {
@@ -97,7 +83,7 @@ namespace WorldsApart.Code.Gamestates
                 ableToThumbDown = true;
             }
 
-            if (InputManager.GetLeftThumbstick().Y > -.5f)
+            if (InputManager.GetLeftThumbstick().Y > -.5f || InputManager.GetLeftThumbstick2().Y < - .5f)
             {
                 if (ableToThumbUp)
                 {
@@ -111,7 +97,7 @@ namespace WorldsApart.Code.Gamestates
             }
 
             bool startPressed = false;
-            if (InputManager.IsButtonPressed(Buttons.A) || InputManager.IsButtonPressed(Buttons.Start) || InputManager.IsKeyPressed(Keys.Enter))
+            if (InputManager.IsButtonPressed(Buttons.A) || InputManager.IsButtonPressed(Buttons.Start) || InputManager.IsKeyPressed(Keys.Enter) || InputManager.IsButtonPressed2(Buttons.Start) || InputManager.IsButtonPressed2(Buttons.A))
             {
                 startPressed = true;
             }
@@ -125,33 +111,16 @@ namespace WorldsApart.Code.Gamestates
             switch (menuIndex)
             {
                 case 0:
-                    ActivateItem(singlePlayer);
-                    DeactivateItem(multiPlayer);
-                    DeactivateItem(exit);
+                    ActivateItem(resume);
+                    DeactivateItem(mainMenu);
                     if (startPressed)
-                    {
-                        GameStateManager.isMultiplayer = false;
                         gameStateManager.SwitchToGSPlay();
-                    }
                     break;
                 case 1:
-                    DeactivateItem(singlePlayer);
-                    ActivateItem(multiPlayer);
-                    DeactivateItem(exit);
+                    DeactivateItem(resume);
+                    ActivateItem(mainMenu);
                     if (startPressed)
-                    {
-                        GameStateManager.isMultiplayer = true;
-                        gameStateManager.SwitchToGSPlay();
-                    }
-                    break;
-                case 2:
-                    DeactivateItem(singlePlayer);
-                    DeactivateItem(multiPlayer);
-                    ActivateItem(exit);
-                    if (startPressed)
-                    {
-                        gameStateManager.game.Exit();
-                    }
+                        gameStateManager.SwitchToGSMenu();
                     break;
             }
         }
@@ -180,28 +149,18 @@ namespace WorldsApart.Code.Gamestates
             }
         }
 
-        public void DimAll()
-        {
-            singlePlayer.alpha = 128;
-            singlePlayer.alpha = 128;
-            singlePlayer.alpha = 128;
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
 
-            gameStateManager.game.GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
-            logo.Draw(spriteBatch);
-            singlePlayer.Draw(spriteBatch);
-            multiPlayer.Draw(spriteBatch);
-            exit.Draw(spriteBatch);
+            backdrop.Draw(spriteBatch);
+            resume.Draw(spriteBatch);
+            mainMenu.Draw(spriteBatch);
+
 
             spriteBatch.End();
         }
-       
-
     }
 }

@@ -33,11 +33,12 @@ namespace WorldsApart.Code.Gamestates
 
         public virtual void Update(GameTime gameTime)
         {
+            if (paused) return;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-
+            if (!visible) return;
         }
 
         public Texture2D LoadTexture(string stringPath)

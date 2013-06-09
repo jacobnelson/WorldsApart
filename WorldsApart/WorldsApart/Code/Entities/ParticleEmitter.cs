@@ -40,6 +40,7 @@ namespace WorldsApart.Code.Entities
             this.gsPlay = gsPlay;
             this.particle = particle;
             this.position = position;
+            spawnCounter = Mathness.RandomNumber(0, spawnRate);
         }
 
         public void Update()

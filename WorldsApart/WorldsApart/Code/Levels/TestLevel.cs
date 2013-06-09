@@ -101,6 +101,7 @@ namespace WorldsApart.Code.Levels
 
             Door dooor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(36, 30), GridToPosition(36, 34), OpenState.Closed);
             FlipSwitch fs1 = gsPlay.AddSwitch(new EventTrigger(this, dooor), gsPlay.LoadTexture("TestSprites/switch"), GridToPosition(29, 35));
+            fs1.SetPlayerMode(PlayerObjectMode.Two);
             LightningChain lc1 = gsPlay.AddLightning(GridToPosition(29, 35), dooor.position, Color.Green);
             lc1.ConvertEndPointToTarget(dooor);
             fs1.AddEvent(new EventTrigger(this, lc1));

@@ -39,6 +39,7 @@ namespace WorldsApart.Code.Gamestates
         GSMenu gsMenu;
         GSPlay gsPlay;
         GSWin gsWin;
+        GSPause gsPause;
 
         public int currentLevel = 0;
         public int goodness = 0;
@@ -57,6 +58,7 @@ namespace WorldsApart.Code.Gamestates
         public void Update(GameTime gameTime)
         {
             if (gsPlay != null) gsPlay.Update(gameTime);
+            if (gsPause != null) gsPause.Update(gameTime);
             if (gsMenu != null) gsMenu.Update(gameTime);
             if (gsTitle != null) gsTitle.Update(gameTime);
             if (gsWin != null) gsWin.Update(gameTime);
@@ -84,7 +86,15 @@ namespace WorldsApart.Code.Gamestates
 
         public void SwitchToGSPlay()
         {
-            gsPlay = new GSPlay(this, currentLevel);
+            if (gsPlay != null && gsPlay.paused)
+            {
+                gsPlay.paused = false;
+            }
+            else
+            {
+                gsPlay = new GSPlay(this, currentLevel);
+            }
+            gsPause = null;
             gsTitle = null;
             gsWin = null;
             gsMenu = null;
@@ -96,6 +106,7 @@ namespace WorldsApart.Code.Gamestates
             gsTitle = null;
             gsWin = null;
             gsMenu = new GSMenu(this);
+            gsPause = null;
         }
 
         public void SwitchToGSTitle()
@@ -120,10 +131,22 @@ namespace WorldsApart.Code.Gamestates
             gsMenu = null;
         }
 
+        public void SwitchToGSPause()
+        {
+            if (gsPause == null)
+            {
+                gsPause = new GSPause(this);
+            }
+            gsPlay.paused = true;
+            gsTitle = null;
+            gsMenu = null;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             
             if (gsPlay != null) gsPlay.Draw(spriteBatch);
+            if (gsPause != null) gsPause.Draw(spriteBatch);
             if (gsTitle != null) gsTitle.Draw(spriteBatch);
             if (gsMenu != null) gsMenu.Draw(spriteBatch);
             if (gsWin != null) gsWin.Draw(spriteBatch);

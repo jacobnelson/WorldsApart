@@ -22,7 +22,7 @@ namespace WorldsApart.Code.Entities
             : base(texture, position)
         {
             triggerList.Add(eventTrigger);
-            //SetAnimationStuff(1, 1, 1, 2, texture.Width / 2, texture.Height, 1, 5);
+            SetAnimationStuff(1, 4, 1, 4, 64, 64, 4, 5);
             isAnimating = false;
             
         }
@@ -35,14 +35,27 @@ namespace WorldsApart.Code.Entities
 
         public void LightsOn()
         {
-            color = Color.Green;
+            //color = Color.Green;
+            switch (playerVisible)
+            {
+                case PlayerObjectMode.One:
+                    currentCellCol = 2;
+                    break;
+                case PlayerObjectMode.Two:
+                    currentCellCol = 3;
+                    break;
+                case PlayerObjectMode.None:
+                    currentCellCol = 1;
+                    break;
+            }
             selfIlluminating = true;
             light.visible = true;
         }
 
         public void LightsOff()
         {
-            color = Color.Red;
+            //color = Color.Red;
+            currentCellCol = 4;
             selfIlluminating = false;
             light.visible = false;
         }

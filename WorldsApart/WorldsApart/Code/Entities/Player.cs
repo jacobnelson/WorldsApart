@@ -267,23 +267,21 @@ namespace WorldsApart.Code.Entities
                 }
             }
 
-            
-            if (dropCounter >= dropRate)
+            if (ableToPressDrop)
             {
-                ignoreOneWay = false;
-            }
-            else dropCounter++;
-
-            if (downDown)
-            {
-                if (ableToPressDrop)
+                if (dropCounter >= dropRate)
                 {
-                    ignoreOneWay = true;
-                    ableToPressDrop = false;
-                    dropCounter = 0;
+                    ignoreOneWay = false;
                 }
+                else dropCounter++;
             }
-            else ableToPressDrop = true;
+
+            if (downDown && jumpDown)
+            {
+                    ignoreOneWay = true;
+                    ableToPressDrop = true;
+                    dropCounter = 0;
+            }
 
 
 
@@ -305,7 +303,7 @@ namespace WorldsApart.Code.Entities
                 }
             }
 
-            if (jumpPressed && state == PhysState.Grounded)
+            if (jumpPressed && state == PhysState.Grounded && !downDown)
             {
                 force.Y += jumpForce;
                 isJumping = true;
@@ -503,10 +501,6 @@ namespace WorldsApart.Code.Entities
 
             if (currentSet == PlayerMode.Dying)
             {
-                if (playerObjectMode == PlayerObjectMode.One)
-                {
-                    Trace.WriteLine(frameCounter);
-                }
                 stopInput = true;
                 if (CheckForFrameStop(DyingSet))
                 {

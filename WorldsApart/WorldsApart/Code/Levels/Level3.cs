@@ -21,7 +21,8 @@ namespace WorldsApart.Code.Levels
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level3Data");
 
-            player1Pos = GridToPosition(23, 150);
+            //player1Pos = GridToPosition(23, 150);
+            player1Pos = GridToPosition(500, 30);
             //player2Pos = player1Pos;
             player2Pos = GridToPosition(20, 150);
 
@@ -148,7 +149,7 @@ namespace WorldsApart.Code.Levels
                         }
                         if (isGood) gsPlay.gameStateManager.goodness++;
                         else gsPlay.gameStateManager.goodness--;
-                        gsPlay.gameStateManager.currentLevel = 4;
+                        gsPlay.gameStateManager.currentLevel = 50;
                         gsPlay.gameStateManager.SwitchToGSPlay();
                     }
                     break;

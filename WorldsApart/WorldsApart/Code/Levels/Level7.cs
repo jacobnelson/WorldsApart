@@ -62,7 +62,8 @@ namespace WorldsApart.Code.Levels
         {
            
             levelDataTexture = gsPlay.LoadTexture("Levels/level7Data");
-            player1Pos = GridToPosition(5, 280);
+           // player1Pos = GridToPosition(5, 280);
+            player1Pos = GridToPosition(284, 148);
             player2Pos = player1Pos;
 
             portalPos = GridToPosition(394, 41);
@@ -164,6 +165,7 @@ namespace WorldsApart.Code.Levels
             c3.SetPlayerMode(PlayerObjectMode.Two);
             c4 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(348, 98)), 256, 360);
             c4.angle = (float)Math.PI;
+            c4.startAngle = c4.angle;
             c4.SetPlayerMode(PlayerObjectMode.One);
 
             c5 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(343, 78)), 256, 360);
@@ -171,6 +173,7 @@ namespace WorldsApart.Code.Levels
             c5.SetPlayerMode(PlayerObjectMode.Two);
             c6 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(343, 78)), 256, 360);
             c5.angle = (float)Math.PI;
+            c5.startAngle = c5.angle;
             c6.SetPlayerMode(PlayerObjectMode.One);
 
             Button b1 = gsPlay.AddButton(new EventTrigger(this, 5), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(287, 99)));

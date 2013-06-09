@@ -612,7 +612,7 @@ namespace WorldsApart.Code.Gamestates
             Player player = player1;
             if (!isPlayer1) player = player2;
 
-            position = new Vector2(player.position.X + Mathness.RandomNumber(-Game1.screenWidth * 2, Game1.screenWidth * 2), player.position.Y - Game1.screenHeight);
+            position = new Vector2(player.position.X + Mathness.RandomNumber(-Game1.screenWidth * 2, Game1.screenWidth * 2), player.position.Y - Game1.screenHeight + Mathness.RandomNumber(-100f, 100f));
 
             Particle p = new Particle(Art.rain, position);
 
@@ -784,20 +784,35 @@ namespace WorldsApart.Code.Gamestates
                 level.ActivateEvent(0, TriggerState.Triggered);
             }
 
-            if (InputManager.IsKeyPressed(Keys.P))
+            //if (InputManager.IsKeyPressed(Keys.P))
+            //{
+            //    if (player1.am.pauseMovement)
+            //        player1.am.pauseMovement = false;
+            //    else
+            //        player1.am.Pause();
+            //}
+
+            if (InputManager.IsKeyPressed(Keys.Enter) || InputManager.IsButtonPressed(Buttons.Start))
             {
-                if (player1.am.pauseMovement)
-                    player1.am.pauseMovement = false;
-                else
-                    player1.am.Pause();
+                gameStateManager.SwitchToGSPause();
             }
 
             
         }
 
+        public void Pause()
+        {
+        }
+
+        public void Unpause()
+        {
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (isLoading) return;
+            if (paused) return;
+
             base.Update(gameTime);
 
             GetInput();
@@ -1223,7 +1238,7 @@ namespace WorldsApart.Code.Gamestates
                 foreach (PickUpObj pickUp in pickUpList) if (pickUp.selfIlluminating && (pickUp.playerVisible == PlayerObjectMode.None || pickUp.playerVisible == PlayerObjectMode.Two)) pickUp.Draw(spriteBatch, camera);
                 foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.Two)) portal.Draw(spriteBatch, camera);
                 foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.Two)) tile.Draw(spriteBatch, camera);
-                foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch);
+                foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch, camera);
                 foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.Two || particle.playerVisible == PlayerObjectMode.None)) particle.Draw(spriteBatch, camera);
             }
             spriteBatch.End();

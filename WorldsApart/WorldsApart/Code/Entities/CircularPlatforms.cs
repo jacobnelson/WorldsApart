@@ -18,7 +18,9 @@ namespace WorldsApart.Code.Entities
         public float duration = 120;
         public float increment = 0;
         public float angle = 0;
+        public float startAngle = 0;
         public float radius = 100;
+        public float durationCounter = 0;
         public Vector2 centerPosition = Vector2.Zero;
 
         public bool moving = true;
@@ -56,11 +58,13 @@ namespace WorldsApart.Code.Entities
             {
                 angle += increment;
 
-                if (angle >= Math.PI * 2)
-                {
-                    angle = 0;
-                }
 
+                durationCounter++;
+                if (durationCounter >= duration)
+                {
+                    durationCounter = 0;
+                    angle = startAngle;
+                }
                 
             }
             SetPosition();
