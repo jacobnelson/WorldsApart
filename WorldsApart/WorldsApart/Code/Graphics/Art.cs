@@ -16,5 +16,13 @@ namespace WorldsApart.Code.Graphics
         public static Texture2D barrier;
         public static Texture2D sparkle;
         public static Texture2D rain;
+        public static Texture2D cutscenePlayers;
+        public static Texture2D whitePixel;
+        public static Texture2D words1;
+        public static Texture2D words2;
+        public static Texture2D words3;
+        public static Texture2D words4;
+        public static Texture2D words5;
+        public static Texture2D words6;
     }
 }

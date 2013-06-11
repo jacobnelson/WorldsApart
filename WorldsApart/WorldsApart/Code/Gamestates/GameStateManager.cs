@@ -15,6 +15,8 @@ using WorldsApart.Code.Entities;
 using WorldsApart.Code.Controllers;
 using WorldsApart.Code.Levels;
 
+using System.Diagnostics;
+
 namespace WorldsApart.Code.Gamestates
 {
     public enum ServerPacketType
@@ -22,6 +24,13 @@ namespace WorldsApart.Code.Gamestates
         NONE,
         USERID,
         WORLD
+    }
+
+    public enum GameStateType
+    {
+        GSTitle,
+        GSMenu,
+        GSPlay,
     }
 
     class GameStateManager
@@ -40,8 +49,14 @@ namespace WorldsApart.Code.Gamestates
         GSPlay gsPlay;
         GSWin gsWin;
         GSPause gsPause;
+        GSOverlay gsOverlay;
 
-        public int currentLevel = 0;
+        public bool screenTransition = false;
+        public int screenTransitionCounter = 0;
+        public int screenTransitionRate = 60;
+        public GameStateType transitionType;
+
+        public int currentLevel = 1;
         public int goodness = 0;
 
         //NetServer server;
@@ -52,11 +67,59 @@ namespace WorldsApart.Code.Gamestates
         {
             this.game = game;
 
+            Art.lineEnd = game.Content.Load<Texture2D>("ShaderAssets/lineEndRight");
+            Art.lineMiddle = game.Content.Load<Texture2D>("ShaderAssets/lineMiddle");
+            Art.smoke = game.Content.Load<Texture2D>("TestSprites/puff");
+            Art.barrier = game.Content.Load<Texture2D>("ShaderAssets/barrier");
+            Art.sparkle = game.Content.Load<Texture2D>("ShaderAssets/sparkle");
+            Art.rain = game.Content.Load<Texture2D>("ShaderAssets/rain");
+            Art.cutscenePlayers = game.Content.Load<Texture2D>("Cutscene/cutscenePlayers");
+            Art.whitePixel = game.Content.Load<Texture2D>("whitePixel");
+            Art.words1 = game.Content.Load<Texture2D>("Cutscene/words1");
+            Art.words2 = game.Content.Load<Texture2D>("Cutscene/words2");
+            Art.words3 = game.Content.Load<Texture2D>("Cutscene/words3");
+            Art.words4 = game.Content.Load<Texture2D>("Cutscene/words4");
+            Art.words5 = game.Content.Load<Texture2D>("Cutscene/words5");
+            Art.words6 = game.Content.Load<Texture2D>("Cutscene/words6");
+
+
+            GSOverlay.InitializeGSOverlay(this);
+
             SwitchToGSTitle();
         }
 
         public void Update(GameTime gameTime)
         {
+            if (screenTransition)
+            {
+                screenTransitionCounter++;
+                if (screenTransitionCounter >= screenTransitionRate)
+                {
+                    screenTransition = false;
+                    screenTransitionCounter = 0;
+                    switch (transitionType)
+                    {
+                        case GameStateType.GSMenu:
+                            GSOverlay.fadeOverlay.alpha = 255;
+                            SwitchToGSMenu();
+                            GSOverlay.FadeOut(30);
+                            break;
+                        case GameStateType.GSPlay:
+                            GSOverlay.fadeOverlay.alpha = 255;
+                            SwitchToGSPlay();
+                            Trace.WriteLine(2);
+                            GSOverlay.FadeOut(30);
+                            break;
+                        case GameStateType.GSTitle:
+                            GSOverlay.fadeOverlay.alpha = 255;
+                            SwitchToGSTitle();
+                            GSOverlay.FadeOut(30);
+                            break;
+                    }
+                }
+            }
+
+            GSOverlay.Update(gameTime);
             if (gsPlay != null) gsPlay.Update(gameTime);
             if (gsPause != null) gsPause.Update(gameTime);
             if (gsMenu != null) gsMenu.Update(gameTime);
@@ -79,6 +142,15 @@ namespace WorldsApart.Code.Gamestates
             //}
         }
 
+        public void TransitionToGameState(GameState current, GameStateType type, int duration)
+        {
+            GSOverlay.FadeIn(duration - 5, Color.Black);
+            current.stopInput = true;
+            screenTransition = true;
+            screenTransitionRate = duration;
+            transitionType = type;
+        }
+
         public void SwitchToLevel(int levelID)
         {
 
@@ -94,6 +166,7 @@ namespace WorldsApart.Code.Gamestates
             {
                 gsPlay = new GSPlay(this, currentLevel);
             }
+            Trace.WriteLine(1);
             gsPause = null;
             gsTitle = null;
             gsWin = null;
@@ -150,6 +223,8 @@ namespace WorldsApart.Code.Gamestates
             if (gsTitle != null) gsTitle.Draw(spriteBatch);
             if (gsMenu != null) gsMenu.Draw(spriteBatch);
             if (gsWin != null) gsWin.Draw(spriteBatch);
+            game.GraphicsDevice.SetRenderTarget(null);
+            GSOverlay.Draw(spriteBatch);
         }
 
         public ContentManager NewContentManager()

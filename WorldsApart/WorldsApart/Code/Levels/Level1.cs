@@ -17,6 +17,13 @@ namespace WorldsApart.Code.Levels
 {
     class Level1 : Level
     {
+        int introCounter = 0;
+        bool introScene = true;
+        AnimatedSprite player1Intro;
+        AnimatedSprite player2Intro;
+        SpriteIMG fadeOut;
+
+
         Door doubleButtonDoor;
         bool buttonOneDown = false;
         bool buttonTwoDown = false;
@@ -29,13 +36,19 @@ namespace WorldsApart.Code.Levels
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level1Data");
 
-            player1Pos = GridToPosition(41, 25);
-            player2Pos = GridToPosition(41, 25);
+            player1Pos = GridToPosition(42, 25);
+            player2Pos = GridToPosition(40, 25);
 
             portalPos = GridToPosition(681, 20);
             pItemPos = GridToPosition(672, 11);
 
             SetupLevel();
+
+
+            //Deactivate players for intro scene:
+            StartIntro();
+
+            TriggerArea update = gsPlay.AddTriggerArea(new EventTrigger(this, 99), Art.barrier, Vector2.Zero);
 
             atmosphereLight = new Color(255, 255, 255);
 
@@ -97,12 +110,119 @@ namespace WorldsApart.Code.Levels
 
         }
 
+        public void StartIntro()
+        {
+            gsPlay.player1.superStopInput = true;
+            gsPlay.player2.superStopInput = true;
+            gsPlay.player1.visible = false;
+            gsPlay.player2.visible = false;
+
+            Vector2 introPos = GridToPosition(41, 25) + new Vector2(0, 20);
+            player1Intro = new AnimatedSprite(gsPlay.LoadTexture("Cutscene/cutscenePlayers"), introPos);
+            player2Intro = new AnimatedSprite(gsPlay.LoadTexture("Cutscene/cutscenePlayers"), introPos);
+
+            player1Intro.SetAnimationStuff(1, 1, 3, 8, 256, 256, 4, 12);
+            player2Intro.SetAnimationStuff(1, 5, 3, 8, 256, 256, 4, 12);
+
+            player1Intro.SetPlayerMode(PlayerObjectMode.One);
+            player2Intro.SetPlayerMode(PlayerObjectMode.Two);
+
+            gsPlay.frontFGList.Add(player1Intro);
+            gsPlay.frontFGList.Add(player2Intro);
+        }
+
+
+
         public override void ActivateEvent(int eventID, TriggerState triggerState)
         {
             base.ActivateEvent(eventID, triggerState);
 
             switch (eventID)
             {
+                case 99:
+                    //UPDATE METHOD
+
+
+                    
+                    if (introScene)
+                    {
+                        introCounter++;
+
+                        if (introCounter == 30)
+                        {
+                            GSOverlay.words1.am.StartFade(30, 0, 255);
+                        }
+                        if (introCounter == 300)
+                        {
+                            GSOverlay.words1.am.StartFade(30, 255, 0);
+                            GSOverlay.words2.am.StartFade(30, 0, 255);
+                        }
+                        if (introCounter == 600)
+                        {
+                            GSOverlay.FadeIn(30, Color.White);
+                        }
+                        if (introCounter == 630)
+                        {
+                            player1Intro.ChangeAnimationBounds(2, 1, 4);
+                            player2Intro.ChangeAnimationBounds(2, 5, 4);
+                            GSOverlay.words1.visible = false;
+                            GSOverlay.words2.visible = false;
+                            GSOverlay.FadeOut(30);
+                        }
+                        if (introCounter == 660)
+                        {
+                            GSOverlay.words3.am.StartFade(30, 0, 255);
+                        }
+                        if (introCounter == 900)
+                        {
+                            GSOverlay.words3.am.StartFade(30, 255, 0);
+                            GSOverlay.words4.am.StartFade(30, 0, 255);
+                        }
+                        if (introCounter == 1200)
+                        {
+                            GSOverlay.FadeIn(30, Color.White);
+                        }
+                        if (introCounter == 1230)
+                        {
+                            player1Intro.ChangeAnimationBounds(3, 1, 4);
+                            player2Intro.ChangeAnimationBounds(3, 5, 4);
+                            GSOverlay.words3.visible = false;
+                            GSOverlay.words4.visible = false;
+                            GSOverlay.FadeOut(30);
+                        }
+                        if (introCounter == 1260)
+                        {
+                            GSOverlay.words5.am.StartFade(30, 0, 255);
+                        }
+                        if (introCounter == 1500)
+                        {
+                            GSOverlay.words5.am.StartFade(30, 255, 0);
+                            GSOverlay.words6.am.StartFade(30, 0, 255);
+                        }
+                        if (introCounter == 1800)
+                        {
+                            GSOverlay.FadeIn(30, Color.White);
+                        }
+                        if (introCounter == 1830)
+                        {
+                            GSOverlay.FadeOut(30);
+                            player1Intro.visible = false;
+                            player2Intro.visible = false;
+                            GSOverlay.words5.visible = false;
+                            GSOverlay.words6.visible = false;
+
+                            gsPlay.player1.superStopInput = false;
+                            gsPlay.player2.superStopInput = false;
+                            gsPlay.player1.visible = true;
+                            gsPlay.player2.visible = true;
+                        }
+
+                    }
+
+
+                    break;
+
+
                 case 0:
                     if (triggerState == TriggerState.Triggered)
                     {
@@ -114,7 +234,8 @@ namespace WorldsApart.Code.Levels
                         if (isGood) gsPlay.gameStateManager.goodness++;
                         else gsPlay.gameStateManager.goodness--;
                         gsPlay.gameStateManager.currentLevel = 2;
-                        gsPlay.gameStateManager.SwitchToGSPlay();
+                        gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);
+                        //gsPlay.gameStateManager.SwitchToGSPlay();
                     }
                     break;
                 case 1:

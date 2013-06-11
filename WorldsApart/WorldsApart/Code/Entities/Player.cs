@@ -49,6 +49,7 @@ namespace WorldsApart.Code.Entities
 
         PlayerObjectMode playerObjectMode = PlayerObjectMode.One;
         public bool stopInput = false;
+        public bool superStopInput = false;
 
         bool isJumping = false;
         float maxJumpForce = -2;
@@ -377,7 +378,7 @@ namespace WorldsApart.Code.Entities
 
         public void GetInput()
         {
-            if (stopInput) return;
+            if (stopInput || superStopInput) return;
 
             if (!GameStateManager.isMultiplayer)
             {

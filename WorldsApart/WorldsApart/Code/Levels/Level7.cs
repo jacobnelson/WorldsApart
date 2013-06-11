@@ -227,8 +227,9 @@ namespace WorldsApart.Code.Levels
                 case 0:
                     if (triggerState == TriggerState.Triggered)
                     {
-                        gsPlay.gameStateManager.currentLevel = 1;
-                        gsPlay.gameStateManager.SwitchToGSPlay();
+                        gsPlay.gameStateManager.currentLevel = 0;
+                        //gsPlay.gameStateManager.SwitchToGSPlay();
+                        gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);
                     }
                     break;
                 case 1:

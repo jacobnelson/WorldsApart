@@ -29,6 +29,7 @@ namespace WorldsApart.Code.Gamestates
 
         SpriteIMG backdrop;
 
+        bool startPressed = false;
         bool firstBit = true;
 
         public bool ableToThumbUp = false;
@@ -65,14 +66,9 @@ namespace WorldsApart.Code.Gamestates
             if (menuIndex > 2) menuIndex = 2;
         }
 
-        public override void Update(GameTime gameTime)
+        public void GetInput()
         {
-            base.Update(gameTime);
-
-
-            singlePlayer.Update();
-            multiPlayer.Update();
-            exit.Update();
+            if (stopInput) return;
 
             if (InputManager.IsButtonPressed(Buttons.DPadUp) || InputManager.IsKeyPressed(Keys.W) || InputManager.IsKeyPressed(Keys.Up))
             {
@@ -110,11 +106,24 @@ namespace WorldsApart.Code.Gamestates
                 ableToThumbUp = true;
             }
 
-            bool startPressed = false;
             if (InputManager.IsButtonPressed(Buttons.A) || InputManager.IsButtonPressed(Buttons.Start) || InputManager.IsKeyPressed(Keys.Enter))
             {
                 startPressed = true;
             }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+
+            singlePlayer.Update();
+            multiPlayer.Update();
+            exit.Update();
+
+            startPressed = false;
+
+            GetInput();
 
             if (firstBit)
             {
@@ -131,7 +140,8 @@ namespace WorldsApart.Code.Gamestates
                     if (startPressed)
                     {
                         GameStateManager.isMultiplayer = false;
-                        gameStateManager.SwitchToGSPlay();
+                        //gameStateManager.SwitchToGSPlay();
+                        gameStateManager.TransitionToGameState(this, GameStateType.GSPlay, 30);
                     }
                     break;
                 case 1:
@@ -141,7 +151,8 @@ namespace WorldsApart.Code.Gamestates
                     if (startPressed)
                     {
                         GameStateManager.isMultiplayer = true;
-                        gameStateManager.SwitchToGSPlay();
+                        //gameStateManager.SwitchToGSPlay();
+                        gameStateManager.TransitionToGameState(this, GameStateType.GSPlay, 30);
                     }
                     break;
                 case 2:

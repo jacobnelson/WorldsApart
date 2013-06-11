@@ -130,12 +130,6 @@ namespace WorldsApart.Code.Gamestates
 
         public void LoadTheStuffs(int levelIndex)
         {
-            Art.lineEnd = LoadTexture("ShaderAssets/lineEndRight");
-            Art.lineMiddle = LoadTexture("ShaderAssets/lineMiddle");
-            Art.smoke = LoadTexture("TestSprites/puff");
-            Art.barrier = LoadTexture("ShaderAssets/barrier");
-            Art.sparkle = LoadTexture("ShaderAssets/sparkle");
-            Art.rain = LoadTexture("ShaderAssets/rain");
 
             mainViewport = gameStateManager.game.GraphicsDevice.Viewport;
             player1Viewport = mainViewport;
@@ -189,6 +183,7 @@ namespace WorldsApart.Code.Gamestates
             
             
             alphaDot = new SpriteIMG(LoadTexture("ShaderAssets/playerAlphaMask"));
+            alphaDot.scale = new Vector2(2);
             alphaMask = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             renderTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             player1Objects = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
@@ -769,6 +764,13 @@ namespace WorldsApart.Code.Gamestates
 
         public void GetInput()
         {
+            if (stopInput)
+            {
+                player1.superStopInput = true;
+                player2.superStopInput = true;
+                return;
+            }
+
             if (!GameStateManager.isMultiplayer)
             {
                 if (InputManager.IsButtonPressed(Buttons.Back) || InputManager.IsKeyPressed(Keys.LeftShift))
@@ -983,6 +985,7 @@ namespace WorldsApart.Code.Gamestates
             {
                 lightning.Update();
             }
+            foreach (SpriteIMG img in frontFGList) img.Update();
 
             #endregion
 

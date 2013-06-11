@@ -30,6 +30,8 @@ namespace WorldsApart.Code.Gamestates
         public GSTitle(GameStateManager gsm)
             : base(gsm)
         {
+
+
             titleScreen = new SpriteIMG(LoadTexture("TitleAssets/TitleScreen"), new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2));
             title = new SpriteIMG(LoadTexture("TitleAssets/title"), new Vector2(1500, 100));
             start = new SpriteIMG(LoadTexture("TitleAssets/start"), new Vector2(Game1.screenWidth / 2, 500));
@@ -40,6 +42,17 @@ namespace WorldsApart.Code.Gamestates
             title.am.StartNewAnimation(AnimationType.EaseOutQuart, new Vector2(1500, 100), new Vector2(Game1.screenWidth / 2, 100), 120);
             blob.am.StartNewAnimation(AnimationType.EaseOutQuart, new Vector2(-500, 300), new Vector2(Game1.screenWidth / 2, 300), 120);
 
+        }
+
+        public void GetInput()
+        {
+            if (stopInput) return;
+
+            if (InputManager.IsButtonPressed(Buttons.Start) || InputManager.IsKeyPressed(Keys.Enter))
+            {
+                //gameStateManager.SwitchToGSMenu();
+                gameStateManager.TransitionToGameState(this, GameStateType.GSMenu, 30);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -57,10 +70,7 @@ namespace WorldsApart.Code.Gamestates
             title.Update();
             blob.Update();
 
-            if (InputManager.IsButtonPressed(Buttons.Start) || InputManager.IsKeyPressed(Keys.Enter))
-            {
-                gameStateManager.SwitchToGSMenu();
-            }
+            GetInput();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

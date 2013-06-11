@@ -62,7 +62,8 @@ namespace WorldsApart.Code.Levels
                     if (triggerState == TriggerState.Triggered)
                     {
                         gsPlay.gameStateManager.currentLevel = 4;
-                        gsPlay.gameStateManager.SwitchToGSPlay();
+                        //gsPlay.gameStateManager.SwitchToGSPlay();
+                        gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);
                     }
                     break;
                 case 1:

@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Controllers\AnimationManager.cs" />
+    <Compile Include="Code\Controllers\AudioManager.cs" />
     <Compile Include="Code\Controllers\Camera.cs" />
     <Compile Include="Code\Controllers\CollisionBox.cs" />
     <Compile Include="Code\Controllers\EventTrigger.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Code\Gamestates\GameState.cs" />
     <Compile Include="Code\Gamestates\GameStateManager.cs" />
     <Compile Include="Code\Gamestates\GSMenu.cs" />
+    <Compile Include="Code\Gamestates\GSOverlay.cs" />
     <Compile Include="Code\Gamestates\GSPause.cs" />
     <Compile Include="Code\Gamestates\GSPlay.cs" />
     <Compile Include="Code\Gamestates\GSTitle.cs" />
