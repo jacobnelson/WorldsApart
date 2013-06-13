@@ -59,8 +59,8 @@ namespace WorldsApart.Code.Entities
         int jumpCounter = 0;
         int jumpRate = 10;
 
-        float runningSpeed = 6;
-        float runningSpeedConst = 6;
+        float runningSpeed = 5;
+        float runningSpeedConst = 5;
 
         
         public bool isSignaling = false;
@@ -120,7 +120,7 @@ namespace WorldsApart.Code.Entities
             this.playerObjectMode = playerIndex;
             playerTangible = playerIndex;
             playerVisible = playerIndex;
-            gravity = new Vector2(0, .5f);
+            gravity = new Vector2(0, .5f); //TODO: .5f
             grabBox = new CollisionBox(this, new Vector2(halfWidth * 2, halfHeight * 2));
 
             if (playerIndex == PlayerObjectMode.One) auraColor = new Color(255, 240, 64);
@@ -308,6 +308,7 @@ namespace WorldsApart.Code.Entities
             {
                 force.Y += jumpForce;
                 isJumping = true;
+                jumpingLegacy = true;
             }
             if (jumpDown)
             {
@@ -627,6 +628,7 @@ namespace WorldsApart.Code.Entities
         public void StopJump()
         {
             isJumping = false;
+            jumpingLegacy = false;
             jumpForce = maxJumpForce;
             jumpAccel = maxJumpAccel;
             jumpCounter = 0;

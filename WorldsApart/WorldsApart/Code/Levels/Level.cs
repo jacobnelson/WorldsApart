@@ -357,21 +357,39 @@ namespace WorldsApart.Code.Levels
 
                 }
             }
-            int y1 = cornerBottomRight.Y + 1;
-            for (int x = cornerTopLeft.X; x <= cornerBottomRight.X; x++)
+
+            Point checkBelow = PositionToGrid(new Vector2(obj.position.X, obj.hitBox.Bottom() + 1));
+            if (CheckCollision(checkBelow))
             {
-                if (CheckCollision(x, y1))
+                if (environmentData[checkBelow.X, checkBelow.Y].inclineType != InclineType.Flat)
                 {
-                    AABB aabb = new AABB(null, GridToPosition(new Point(x, y1)), new Vector2(collisionSize));
-                    if (environmentData[x, y1].inclineType != InclineType.Flat)
+                    //Trace.WriteLine("Barf!");
+                    if (!obj.jumpingLegacy)
                     {
-                        Trace.WriteLine("Barf!");
-                        obj.position += new Vector2(0, 32);
-                        collisionList.Add(aabb);
-                        frictionList.Add(GetFriction(obj, environmentData[x, y1]));
+                        //AABB aabb = new AABB(null, GridToPosition(checkBelow), new Vector2(collisionSize));
+                        //aabb = SolveIncline(obj, checkBelow.X, checkBelow.Y);
+                        //obj.hitBox.SetPosition(obj.hitBox.GetPosition() + new Vector2(0, aabb.y2 - obj.hitBox.Bottom()));
+                        //collisionList.Add(aabb);
+                        //frictionList.Add(GetFriction(obj, environmentData[checkBelow.X, checkBelow.Y]));
+                        obj.nextForce.Y += 20;
                     }
                 }
             }
+
+            //int y1 = cornerBottomRight.Y + 1;
+            //for (int x = cornerTopLeft.X; x <= cornerBottomRight.X; x++)
+            //{
+            //    if (CheckCollision(x, y1))
+            //    {
+            //        AABB aabb = new AABB(null, GridToPosition(new Point(x, y1)), new Vector2(collisionSize));
+            //        if (environmentData[x, y1].inclineType != InclineType.Flat)
+            //        {
+            //            obj.position += new Vector2(0, 32);
+            //            collisionList.Add(aabb);
+            //            frictionList.Add(GetFriction(obj, environmentData[x, y1]));
+            //        }
+            //    }
+            //}
 
 
 

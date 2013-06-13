@@ -335,6 +335,8 @@ namespace WorldsApart.Code.Gamestates
             //    player2.indicatorTexture = indicatorTarget2;
             //}
 
+            if (gameStateManager.goodness < -5) gameStateManager.goodness = -5;
+
             switch (gameStateManager.goodness)
             {
                 case -1:

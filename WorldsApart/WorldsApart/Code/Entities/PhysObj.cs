@@ -46,6 +46,7 @@ namespace WorldsApart.Code.Entities
         public float moveForce = .1f;
         public Vector2 nextForce = Vector2.Zero;
 
+        public bool jumpingLegacy = false;
 
         public Vector2 checkpoint = Vector2.Zero;
 
