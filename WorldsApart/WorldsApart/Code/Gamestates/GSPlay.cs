@@ -35,12 +35,11 @@ namespace WorldsApart.Code.Gamestates
 
         Level level;
 
-
         public Camera cameraPlayer1;
         public Camera cameraPlayer2;
         PlayerIndex playerIndex = PlayerIndex.One;
 
-        SpriteIMG alphaDot;
+        public SpriteIMG alphaDot;
         Effect alphaShader;
         Effect lightingShader;
         Effect colorShader;
@@ -174,6 +173,9 @@ namespace WorldsApart.Code.Gamestates
                     break;
                 case 50:
                     level = new theBridge(this);
+                    break;
+                case 99:
+                    level = new FinalBridge(this);
                     break;
                 default:
                     level = new TestLevel(this);

@@ -35,6 +35,7 @@ namespace WorldsApart.Code.Levels
         public FrictionType frictionType = FrictionType.Normal;
         public Vector2 airCurrent = Vector2.Zero;
         public InclineType inclineType = InclineType.Flat;
+        public bool inclineRight = true;
 
         public bool checkpoint = false;
         public bool killZone = false;
@@ -70,6 +71,24 @@ namespace WorldsApart.Code.Levels
             : this(friction)
         {
             inclineType = incline;
+            switch (inclineType)
+            {
+                case InclineType.ThreeTileLeft1:
+                case InclineType.ThreeTileLeft2:
+                case InclineType.ThreeTileLeft3:
+                case InclineType.TwoTileLeft1:
+                case InclineType.TwoTileLeft2:
+                    inclineRight = false;
+                    break;
+                case InclineType.ThreeTileRight1:
+                case InclineType.ThreeTileRight2:
+                case InclineType.ThreeTileRight3:
+                case InclineType.TwoTileRight1:
+                case InclineType.TwoTileRight2:
+                    inclineRight = true;
+                    break;
+
+            }
         }
     }
 }

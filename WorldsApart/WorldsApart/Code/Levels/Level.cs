@@ -318,6 +318,7 @@ namespace WorldsApart.Code.Levels
                         if (environmentData[x, y].inclineType != InclineType.Flat)
                         {
                             aabb = SolveIncline(obj, x, y);
+                            
                         }
                         if (environmentData[x, y].oneWayPlatform)
                         {
@@ -345,6 +346,8 @@ namespace WorldsApart.Code.Levels
                         frictionList.Add(GetFriction(obj, environmentData[x, y]));
                     }
 
+
+
                     CheckCurrent(obj, x, y);
 
                     if (IsLegalXY(x,y) && environmentData[x, y].killZone)
@@ -352,6 +355,21 @@ namespace WorldsApart.Code.Levels
                         obj.Die();
                     }
 
+                }
+            }
+            int y1 = cornerBottomRight.Y + 1;
+            for (int x = cornerTopLeft.X; x <= cornerBottomRight.X; x++)
+            {
+                if (CheckCollision(x, y1))
+                {
+                    AABB aabb = new AABB(null, GridToPosition(new Point(x, y1)), new Vector2(collisionSize));
+                    if (environmentData[x, y1].inclineType != InclineType.Flat)
+                    {
+                        Trace.WriteLine("Barf!");
+                        obj.position += new Vector2(0, 32);
+                        collisionList.Add(aabb);
+                        frictionList.Add(GetFriction(obj, environmentData[x, y1]));
+                    }
                 }
             }
 

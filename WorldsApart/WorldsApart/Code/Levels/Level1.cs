@@ -22,6 +22,9 @@ namespace WorldsApart.Code.Levels
         AnimatedSprite player1Intro;
         AnimatedSprite player2Intro;
         SpriteIMG fadeOut;
+        bool isBarrierFrame = false;
+        int barrierCounter = 0;
+        int barrierRate = 40;
 
 
         Door doubleButtonDoor;
@@ -44,6 +47,11 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            gsPlay.cameraPlayer1.Update();
+            gsPlay.cameraPlayer2.Update();
+
+            gsPlay.cameraPlayer1.SnapToTarget();
+            gsPlay.cameraPlayer2.SnapToTarget();
 
             //Deactivate players for intro scene:
             StartIntro();
@@ -163,6 +171,7 @@ namespace WorldsApart.Code.Levels
                         }
                         if (introCounter == 630)
                         {
+                            isBarrierFrame = true;
                             player1Intro.ChangeAnimationBounds(2, 1, 4);
                             player2Intro.ChangeAnimationBounds(2, 5, 4);
                             GSOverlay.words1.visible = false;
@@ -180,10 +189,11 @@ namespace WorldsApart.Code.Levels
                         }
                         if (introCounter == 1200)
                         {
+                            isBarrierFrame = false;
                             GSOverlay.FadeIn(30, Color.White);
                         }
                         if (introCounter == 1230)
-                        {
+                        {   
                             player1Intro.ChangeAnimationBounds(3, 1, 4);
                             player2Intro.ChangeAnimationBounds(3, 5, 4);
                             GSOverlay.words3.visible = false;
@@ -217,6 +227,25 @@ namespace WorldsApart.Code.Levels
                             gsPlay.player2.visible = true;
                         }
 
+
+
+                        if (isBarrierFrame)
+                        {
+                            barrierCounter++;
+                            if (barrierCounter >= barrierRate)
+                            {
+                                barrierCounter = 0;
+                                Vector2 pos = player1Intro.position + new Vector2(-2,0);
+                                Particle p = gsPlay.AddParticle(Art.barrier, pos);
+                                p.life = 40;
+                                p.startScale = .2f;
+                                p.endScale = 1f;
+                                p.startAlpha = 255;
+                                p.endAlpha = 0;
+                                p.StartParticleSystems();
+                            }
+                        }
+
                     }
 
 
@@ -233,6 +262,8 @@ namespace WorldsApart.Code.Levels
                         }
                         if (isGood) gsPlay.gameStateManager.goodness++;
                         else gsPlay.gameStateManager.goodness--;
+                        gsPlay.player1.visible = false;
+                        gsPlay.player2.visible = false;
                         gsPlay.gameStateManager.currentLevel = 2;
                         gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);
                         //gsPlay.gameStateManager.SwitchToGSPlay();

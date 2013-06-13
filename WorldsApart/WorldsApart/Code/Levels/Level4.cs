@@ -26,7 +26,7 @@ namespace WorldsApart.Code.Levels
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level4Data");
 
-            player1Pos = GridToPosition(17, 10);
+            player1Pos = GridToPosition(15, 10);
             player2Pos = GridToPosition(17, 10);
 
             portalPos = GridToPosition(232, 48);
@@ -228,6 +228,8 @@ namespace WorldsApart.Code.Levels
                         }
                         if (isGood) gsPlay.gameStateManager.goodness++;
                         else gsPlay.gameStateManager.goodness--;
+                        gsPlay.player1.visible = false;
+                        gsPlay.player2.visible = false;
                         gsPlay.gameStateManager.currentLevel = 7;
                         //gsPlay.gameStateManager.SwitchToGSPlay();
                         gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);

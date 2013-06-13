@@ -49,7 +49,7 @@ namespace WorldsApart.Code.Levels
             barrier.visible = false;
             breaker = gsPlay.AddTriggerArea(new EventTrigger(this, 2), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 14) + new Vector2(16, 0));
             breaker.visible = false;
-            gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 67) + new Vector2(16, 0)).visible = false;
+            gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 50) + new Vector2(16, 0)).visible = false;
         }
 
         public override void ActivateEvent(int eventID, TriggerState triggerState)
@@ -62,6 +62,8 @@ namespace WorldsApart.Code.Levels
                     if (triggerState == TriggerState.Triggered)
                     {
                         gsPlay.gameStateManager.currentLevel = 4;
+                        gsPlay.player1.am.StartFade(15, 255, 0);
+                        gsPlay.player2.am.StartFade(15, 255, 0);
                         //gsPlay.gameStateManager.SwitchToGSPlay();
                         gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);
                     }

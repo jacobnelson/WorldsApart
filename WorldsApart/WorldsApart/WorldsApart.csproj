@@ -161,6 +161,7 @@
     <Compile Include="Code\Graphics\SpriteText.cs" />
     <Compile Include="Code\Graphics\SpriteTextInput.cs" />
     <Compile Include="Code\Levels\EnvironmentData.cs" />
+    <Compile Include="Code\Levels\FinalBridge.cs" />
     <Compile Include="Code\Levels\Level.cs" />
     <Compile Include="Code\Levels\Level1.cs" />
     <Compile Include="Code\Levels\Level2.cs" />

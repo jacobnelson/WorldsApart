@@ -53,6 +53,12 @@ namespace WorldsApart.Code.Controllers
             targetList.Add(t);
         }
 
+        public void SnapToTarget()
+        {
+            position = targetPosition;
+            scaleValue = targetScale;
+        }
+
         public void Update()
         {
             if (GameStateManager.isMultiplayer) scaleConstant = .4f;
