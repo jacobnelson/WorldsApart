@@ -42,6 +42,9 @@ namespace WorldsApart.Code.Levels
             player1Pos = GridToPosition(42, 25);
             player2Pos = GridToPosition(40, 25);
 
+            //player1Pos = GridToPosition(679, 20);
+            //player2Pos = GridToPosition(679, 20);
+
             portalPos = GridToPosition(681, 20);
             pItemPos = GridToPosition(672, 11);
 
@@ -253,7 +256,7 @@ namespace WorldsApart.Code.Levels
 
 
                 case 0:
-                    if (triggerState == TriggerState.Triggered)
+                    if (triggerState == TriggerState.Triggered && !gsPlay.gameStateManager.screenTransition)
                     {
                         bool isGood = true;
                         foreach (Portal portal in gsPlay.portalList)

@@ -36,6 +36,8 @@ namespace WorldsApart.Code
         static public int screenWidth = 800;
         static public int screenHeight = 600;
 
+        public bool gotoFullScreen = false;
+
         static public Vector2 GetScreenCenter()
         {
             return new Vector2(screenWidth / 2, screenHeight / 2);
@@ -98,7 +100,7 @@ namespace WorldsApart.Code
             // Allows the game to exit
             Time.UpdateTime(gameTime);
             InputManager.UpdateStates(GamePad.GetState(PlayerIndex.One), GamePad.GetState(PlayerIndex.Two), Keyboard.GetState(), Mouse.GetState());
-            if (InputManager.IsKeyPressed(Keys.F11)) graphics.ToggleFullScreen();
+            if (InputManager.IsKeyPressed(Keys.F11)) gotoFullScreen = true;
             gsm.Update(gameTime);
             // TOO: Add your update logic here
 
@@ -111,6 +113,12 @@ namespace WorldsApart.Code
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            if (gotoFullScreen && (gsm.gsTitle != null || gsm.gsMenu != null)) 
+            {
+                graphics.ToggleFullScreen();
+                gotoFullScreen = false;
+            }
+
             gsm.Draw(spriteBatch);
             // TOO: Add your drawing code here
 

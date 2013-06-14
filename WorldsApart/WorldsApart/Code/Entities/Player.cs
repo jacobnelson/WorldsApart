@@ -77,6 +77,7 @@ namespace WorldsApart.Code.Entities
         public bool actionDown = false;
         public bool actionPressed = false;
         public bool signalPressed = false;
+        public bool superDown = false;
 
         bool ableToPressDrop = false;
         int dropCounter = 0;
@@ -206,6 +207,7 @@ namespace WorldsApart.Code.Entities
             actionDown = false;
             actionPressed = false;
             signalPressed = false;
+            superDown = false;
             GetInput();
 
             if (pushTarget == null) runningSpeed = runningSpeedConst;
@@ -277,12 +279,7 @@ namespace WorldsApart.Code.Entities
                 else dropCounter++;
             }
 
-            if (downDown && jumpDown)
-            {
-                    ignoreOneWay = true;
-                    ableToPressDrop = true;
-                    dropCounter = 0;
-            }
+            
 
 
 
@@ -295,16 +292,49 @@ namespace WorldsApart.Code.Entities
                 {
                     holding = false;
                     Vector2 throwSpeed = Vector2.Zero;
-                    if (upDown) throwSpeed.Y = -10;
-                    if (downDown) throwSpeed.Y = 10;
-                    if (rightDown) throwSpeed.X = 10;
-                    if (leftDown) throwSpeed.X = -10;
+
+                    if (facing == Facing.Left) throwSpeed.X = -10;
+                    if (facing == Facing.Right) throwSpeed.X = 10;
+                    throwSpeed.Y = -10;
+
+                    if (upDown)
+                    {
+                        throwSpeed.Y = -15;
+                        if (!rightDown && !leftDown) throwSpeed.X = 0;
+                    }
+                    if (downDown)
+                    {
+                        throwSpeed.Y = 15;
+                        if (!rightDown && !leftDown) throwSpeed.X = 0;
+                    }
+                    if (rightDown) throwSpeed.X = 15;
+                    if (leftDown) throwSpeed.X = -15;
                     pickUp.GetDropped(throwSpeed);
                     pickUp = null;
                 }
             }
 
-            if (jumpPressed && state == PhysState.Grounded && !downDown)
+            if (downDown && jumpDown)
+            {
+                ignoreOneWay = true;
+                ableToPressDrop = true;
+                dropCounter = 0;
+            }
+
+            bool downNotBeingPressed = false;
+
+
+            if (!GameStateManager.isMultiplayer)
+                downNotBeingPressed = InputManager.IsButtonUp(Buttons.DPadDown) && InputManager.IsKeyUp(Keys.S) && !superDown;
+            else
+            {
+                if (playerObjectMode == PlayerObjectMode.One)
+                    downNotBeingPressed = InputManager.IsButtonUp(Buttons.DPadDown) && InputManager.IsKeyUp(Keys.S) && !superDown;
+                else
+                    downNotBeingPressed = InputManager.IsButtonUp2(Buttons.DPadDown) && InputManager.IsKeyUp(Keys.S) && !superDown;
+            }
+
+            if (jumpPressed && state == PhysState.Grounded && downNotBeingPressed)
             {
                 force.Y += jumpForce;
                 isJumping = true;
@@ -406,6 +436,7 @@ namespace WorldsApart.Code.Entities
                 }
                 if (InputManager.IsKeyUp(Keys.W) && InputManager.IsButtonUp(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
                 if (InputManager.IsKeyUp(Keys.S) && InputManager.IsButtonUp(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
+                if (thumb.Y <= -.8f) superDown = true;
 
                 if ((InputManager.IsKeyDown(Keys.Down) || InputManager.IsButtonDown(Buttons.X))) actionDown = true;
                 if (InputManager.IsKeyPressed(Keys.Down) || InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
@@ -435,6 +466,7 @@ namespace WorldsApart.Code.Entities
 
                     if (InputManager.IsButtonUp(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
                     if (InputManager.IsButtonUp(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
+                    if (thumb.Y <= -.8f) superDown = true;
 
                     if ((InputManager.IsButtonDown(Buttons.X))) actionDown = true;
                     if (InputManager.IsButtonPressed(Buttons.X)) actionPressed = true;
@@ -463,6 +495,7 @@ namespace WorldsApart.Code.Entities
 
                     if (InputManager.IsKeyUp(Keys.W) && InputManager.IsButtonUp2(Buttons.DPadUp) && thumb.Y <= 0) upDown = false;
                     if (InputManager.IsKeyUp(Keys.S) && InputManager.IsButtonUp2(Buttons.DPadDown) && thumb.Y >= 0) downDown = false;
+                    if (thumb.Y <= -.8f) superDown = true;
 
                     if ((InputManager.IsKeyDown(Keys.Down) || InputManager.IsButtonDown2(Buttons.X))) actionDown = true;
                     if (InputManager.IsKeyPressed(Keys.Down) || InputManager.IsButtonPressed2(Buttons.X)) actionPressed = true;

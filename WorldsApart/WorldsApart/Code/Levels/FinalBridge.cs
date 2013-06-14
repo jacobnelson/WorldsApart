@@ -45,11 +45,11 @@ namespace WorldsApart.Code.Levels
 
             atmosphereLight = new Color(100, 100, 100);
 
-            PointLight sun1 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(0, 0), new Vector2(2048, 1600));
-            PointLight sun2 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(32, 0), new Vector2(2048, 1600));
-            PointLight sun3 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(64, 0), new Vector2(2048, 1600));
-            PointLight sun4 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(96, 0), new Vector2(2048, 1600));
-            PointLight sun5 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(128, 0), new Vector2(2048, 1600));
+            PointLight sun1 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(0, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
+            PointLight sun2 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(32, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
+            PointLight sun3 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(64, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
+            PointLight sun4 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(96, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
+            PointLight sun5 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(128, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
             sun1.screenCull = false;
             sun2.screenCull = false;
             sun3.screenCull = false;
@@ -188,7 +188,7 @@ namespace WorldsApart.Code.Levels
                                 player2Ending.ChangeAnimationBounds(5, 1, 8);
                                 player1Ending.position = gsPlay.player1.position;
                                 player2Ending.position = gsPlay.player2.position;
-                                player1Ending.spriteEffects = SpriteEffects.FlipHorizontally;
+                                //player1Ending.spriteEffects = SpriteEffects.FlipHorizontally;
                                 player2Ending.spriteEffects = SpriteEffects.FlipHorizontally;
 
                                 GSOverlay.FadeOut(120);
@@ -201,6 +201,12 @@ namespace WorldsApart.Code.Levels
                                 //TODO: broken bridge bits
 
                             }
+                        }
+
+
+                        if (sceneCounter == 540)
+                        {
+                            gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSWin, 30);
                         }
                     }
 

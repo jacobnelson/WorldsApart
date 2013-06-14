@@ -23,6 +23,8 @@ namespace WorldsApart.Code.Entities
             : base(texture, position)
         {
             gravity = new Vector2(0, .5f);
+            terminalSpeed = new Vector2(15, 15);
+            jumpingLegacy = true;
         }
 
         public PickUpObj(float bounceMultiplier, Texture2D texture, Vector2 position)

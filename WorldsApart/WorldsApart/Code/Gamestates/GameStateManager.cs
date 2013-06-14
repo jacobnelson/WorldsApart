@@ -31,6 +31,7 @@ namespace WorldsApart.Code.Gamestates
         GSTitle,
         GSMenu,
         GSPlay,
+        GSWin
     }
 
     class GameStateManager
@@ -44,19 +45,19 @@ namespace WorldsApart.Code.Gamestates
 
         public Game1 game;
 
-        GSTitle gsTitle;
-        GSMenu gsMenu;
-        GSPlay gsPlay;
-        GSWin gsWin;
-        GSPause gsPause;
-        GSOverlay gsOverlay;
+        public GSTitle gsTitle;
+        public GSMenu gsMenu;
+        public GSPlay gsPlay;
+        public GSWin gsWin;
+        public GSPause gsPause;
+        //GSOverlay gsOverlay;
 
         public bool screenTransition = false;
         public int screenTransitionCounter = 0;
         public int screenTransitionRate = 60;
         public GameStateType transitionType;
 
-        public int currentLevel = 0;
+        public int currentLevel = 1;
         public int goodness = 0;
 
         //NetServer server;
@@ -114,6 +115,10 @@ namespace WorldsApart.Code.Gamestates
                             GSOverlay.fadeOverlay.alpha = 255;
                             SwitchToGSTitle();
                             GSOverlay.FadeOut(30);
+                            break;
+                        case GameStateType.GSWin:
+                            GSOverlay.fadeOverlay.alpha = 0;
+                            SwitchToGSWin();
                             break;
                     }
                 }

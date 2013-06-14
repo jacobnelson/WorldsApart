@@ -62,9 +62,12 @@ namespace WorldsApart.Code.Levels
         {
            
             levelDataTexture = gsPlay.LoadTexture("Levels/level7Data");
+
             player1Pos = GridToPosition(5, 280);
-            //player1Pos = GridToPosition(284, 148);
             player2Pos = GridToPosition(7, 280);
+
+            //player1Pos = GridToPosition(399, 41);
+            //player2Pos = GridToPosition(399, 41);
 
             portalPos = GridToPosition(394, 41);
             pItemPos = GridToPosition(441, 119);
@@ -225,8 +228,15 @@ namespace WorldsApart.Code.Levels
             switch (eventID)
             {
                 case 0:
-                    if (triggerState == TriggerState.Triggered)
+                    if (triggerState == TriggerState.Triggered && !gsPlay.gameStateManager.screenTransition)
                     {
+                        bool isGood = true;
+                        foreach (Portal portal in gsPlay.portalList)
+                        {
+                            if (portal.goodMode == false) isGood = false;
+                        }
+                        if (isGood) gsPlay.gameStateManager.goodness++;
+                        else gsPlay.gameStateManager.goodness--;
                         gsPlay.player1.visible = false;
                         gsPlay.player2.visible = false;
                         gsPlay.gameStateManager.currentLevel = 99;
