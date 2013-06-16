@@ -15,7 +15,7 @@ namespace WorldsApart.Code.Entities
         Player player1;
         Player player2;
 
-        
+        public ParticleEmitter pulse;
 
         public bool goodMode = false;
 
@@ -48,6 +48,7 @@ namespace WorldsApart.Code.Entities
             if (triggerState == TriggerState.Triggered)
             {
                 goodMode = true;
+                pulse.color = Color.White;
                 currentCellCol = 1; //TODO: change this to match animation settings
             }
         }

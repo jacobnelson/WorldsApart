@@ -22,6 +22,7 @@ namespace WorldsApart.Code.Entities
         int lifeCounter = 0;
 
         public bool isDead = false;
+        public bool canDie = true;
 
         public byte startAlpha = 255;
         public byte endAlpha = 128;
@@ -56,15 +57,18 @@ namespace WorldsApart.Code.Entities
         {
             force = new Vector2(Mathness.RandomNumber(randomMinForce.X, randomMaxForce.X), Mathness.RandomNumber(randomMinForce.Y, randomMaxForce.Y));
             base.Update();
-            lifeCounter++;
-            if (lifeCounter >= life)
+            if (canDie)
             {
-                Die();
+                lifeCounter++;
+                if (lifeCounter >= life)
+                {
+                    Die();
+                }
             }
 
             if (lifeCounter == life / 2)
             {
-                am.StartFade(life / 2, endAlpha, startAlpha);
+                if (fadeInOut) am.StartFade(life / 2, endAlpha, startAlpha);
             }
 
             if (target != null)

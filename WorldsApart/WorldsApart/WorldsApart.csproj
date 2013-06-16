@@ -134,6 +134,7 @@
     <Compile Include="Code\Entities\Player.cs" />
     <Compile Include="Code\Entities\FlipSwitch.cs" />
     <Compile Include="Code\Entities\Portal.cs" />
+    <Compile Include="Code\Entities\PortalParticles.cs" />
     <Compile Include="Code\Entities\TriggerArea.cs" />
     <Compile Include="Code\Gamestates\GameState.cs" />
     <Compile Include="Code\Gamestates\GameStateManager.cs" />

@@ -24,5 +24,6 @@ namespace WorldsApart.Code.Graphics
         public static Texture2D words4;
         public static Texture2D words5;
         public static Texture2D words6;
+        public static Texture2D portalPulse;
     }
 }

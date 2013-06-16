@@ -246,6 +246,54 @@ namespace WorldsApart.Code.Levels
                 goody.selfIlluminating = true;
                 goody.SetAnimationStuff(1, 1, 1, 2, 128, 128, 2, 10);
                 goody.SetCollisionBox(32, 32, Vector2.Zero);
+
+                AnimatedSprite pulseSprite = new AnimatedSprite(Art.portalPulse);
+                ParticleEmitter pulse = gsPlay.AddEmitter(pulseSprite, glados.position);
+                pulse.bgParticles = true;
+                pulse.color = new Color(128, 0, 0);
+                pulse.startScale = 1;
+                pulse.endScale = 2;
+                pulse.startAlpha = 255;
+                pulse.endAlpha = 0;
+                pulse.randomRotation = false;
+                pulse.rotationSpeed = 0;
+                pulse.spawnRate = 30;
+                pulse.life = 60;
+                glados.pulse = pulse;
+
+                LightningChain portalLightning = gsPlay.AddLightning(glados.position + new Vector2(0, -48), glados.position + new Vector2(20, -27), Color.Red);
+                portalLightning.AddVertex(glados.position + new Vector2(20, 27));
+                portalLightning.AddVertex(glados.position + new Vector2(0, 48));
+                portalLightning.AddVertex(glados.position + new Vector2(-20, 27));
+                portalLightning.AddVertex(glados.position + new Vector2(-20, -27));
+                portalLightning.AddVertex(glados.position + new Vector2(0, -48));
+                portalLightning.SetActive(true);
+                portalLightning.defaultActive = true;
+                goody.AddEvent(new EventTrigger(this, portalLightning));
+                //40x55
+
+                List<Particle> particleList = new List<Particle>();
+                for (int i = 1; i <= 6; i++)
+                {
+                    Particle p = gsPlay.AddParticle(Art.sparkle, Vector2.Zero);
+                    p.canDie = false;
+                    if (i % 2 == 0) p.color = new Color(246, 133, 23);
+                    else p.color = new Color(145, 127, 185);
+                    p.alpha = 128;
+                    particleList.Add(p);
+                }
+                PortalParticles pp = new PortalParticles(gsPlay, particleList);
+                pp.AddVertex(glados.position + new Vector2(0, -53));
+                pp.AddVertex(glados.position + new Vector2(25, -27));
+                pp.AddVertex(glados.position + new Vector2(25, 27));
+                pp.AddVertex(glados.position + new Vector2(0, 53));
+                pp.AddVertex(glados.position + new Vector2(-25, 27));
+                pp.AddVertex(glados.position + new Vector2(-25, -27));
+                pp.SetUpParticles();
+                pp.Deactivate();
+                gsPlay.ppList.Add(pp);
+                goody.AddEvent(new EventTrigger(this, pp));
+                
             }
 
             gsPlay.cameraPlayer1 = new Camera(gsPlay.player1, gsPlay.player2, Vector2.Zero);

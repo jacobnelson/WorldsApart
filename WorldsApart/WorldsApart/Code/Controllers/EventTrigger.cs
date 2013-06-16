@@ -106,12 +106,11 @@ namespace WorldsApart.Code.Controllers
             {
                 if (ts == TriggerState.Triggered)
                 {
-                    Trace.WriteLine("Barf!");
-                    eventLightning.SetActive(true);
+                    eventLightning.SetActive(!eventLightning.defaultActive);
                 }
                 else
                 {
-                    eventLightning.SetActive(false);
+                    eventLightning.SetActive(eventLightning.defaultActive);
                 }
             }
         }

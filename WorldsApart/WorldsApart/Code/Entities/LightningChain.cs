@@ -16,6 +16,8 @@ namespace WorldsApart.Code.Entities
     {
         public bool isActive = false;
 
+        public bool defaultActive = false;
+
         public List<Lightning> lightningList = new List<Lightning>();
         public Vector2 lastVertex = Vector2.Zero;
 

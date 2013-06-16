@@ -102,12 +102,14 @@ namespace WorldsApart.Code.Gamestates
         public List<TriggerArea> areaList = new List<TriggerArea>();
         public List<TimerObject> timerList = new List<TimerObject>();
         static public List<Particle> particleList = new List<Particle>();
+        static public List<Particle> bgParticleList = new List<Particle>();
         public List<ParticleEmitter> emitterList = new List<ParticleEmitter>();
         public List<ParallaxLayer> bgLayerList = new List<ParallaxLayer>();
         public List<PointLight> lightList = new List<PointLight>();
         public List<LightConsole> consoleList = new List<LightConsole>();
         public List<Portal> portalList = new List<Portal>();
         public List<LightningChain> lightningList = new List<LightningChain>();
+        public List<PortalParticles> ppList = new List<PortalParticles>();
 
 
         public float dreamParticleCounter = 0;
@@ -604,6 +606,21 @@ namespace WorldsApart.Code.Gamestates
             return p;
         }
 
+        public Particle AddAnimatedBGParticle(AnimatedSprite image, Vector2 position, Vector2 speed)
+        {
+            Particle p = new Particle(image.texture, position);
+            p.SetAnimationStuff(image.minRow, image.minCol, image.rows, image.cols, image.cellW, image.cellH, image.frames, image.animationCounter);
+            p.speed = speed;
+            bgParticleList.Add(p);
+            return p;
+        }
+        public Particle AddBGParticle(Texture2D texture, Vector2 position)
+        {
+            Particle p = new Particle(texture, position);
+            bgParticleList.Add(p);
+            return p;
+        }
+
         public Particle AddRain(bool isPlayer1)
         {
             Vector2 position = Vector2.Zero;
@@ -956,6 +973,11 @@ namespace WorldsApart.Code.Gamestates
             //    move.AdjustToPlayer(player2);
             //}
 
+            foreach (PortalParticles pp in ppList)
+            {
+                pp.Update();
+            }
+
             foreach (ParticleEmitter emitter in emitterList)
             {
                 emitter.Update();
@@ -971,6 +993,14 @@ namespace WorldsApart.Code.Gamestates
             {
                 particle.Update();
                 if (particle.isDead) particleList.Remove(particle);
+            }
+
+            tempParticles = new Particle[bgParticleList.Count];
+            bgParticleList.CopyTo(tempParticles);
+            foreach (Particle particle in tempParticles)
+            {
+                particle.Update();
+                if (particle.isDead) bgParticleList.Remove(particle);
             }
 
             foreach (PointLight light in lightList)
@@ -1281,13 +1311,15 @@ namespace WorldsApart.Code.Gamestates
             //else spriteBatch.Draw(bgTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
             //colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);
+            foreach (Particle particle in bgParticleList) if (particle.playerVisible == PlayerObjectMode.None) particle.Draw(spriteBatch, camera);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
             foreach (LightningChain lightning in lightningList) lightning.Draw(spriteBatch);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
+           
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.None) s.Draw(spriteBatch, camera);
             foreach (Button button in buttonList) if (button.playerVisible == PlayerObjectMode.None) button.Draw(spriteBatch, camera);
             foreach (TriggerArea area in areaList) if (area.playerVisible == PlayerObjectMode.None) area.Draw(spriteBatch, camera);

@@ -82,6 +82,7 @@ namespace WorldsApart.Code.Gamestates
             Art.words4 = game.Content.Load<Texture2D>("Cutscene/words4");
             Art.words5 = game.Content.Load<Texture2D>("Cutscene/words5");
             Art.words6 = game.Content.Load<Texture2D>("Cutscene/words6");
+            Art.portalPulse = game.Content.Load<Texture2D>("GameObjects/portalPulse");
 
 
             GSOverlay.InitializeGSOverlay(this);
