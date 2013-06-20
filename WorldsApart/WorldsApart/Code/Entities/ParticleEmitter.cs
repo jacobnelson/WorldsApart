@@ -25,7 +25,7 @@ namespace WorldsApart.Code.Entities
         public bool randomRotation = false;
         public Vector2 speed = Vector2.Zero;
 
-        public Color color;
+        public Color color = Color.White;
 
         public bool fadeInOut = false;
         public bool bgParticles = false;
