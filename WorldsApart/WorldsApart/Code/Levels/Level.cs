@@ -240,8 +240,7 @@ namespace WorldsApart.Code.Levels
             if (hasPortal)
             {
                 glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), portalPos);
-                glados.SetAnimationStuff(1, 2, 1, 2, 96, 192, 2, 5);
-                glados.isAnimating = false;
+                glados.SetAnimationStuff(2, 1, 2, 8, 96, 192, 8, 5);
                 Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), pItemPos);
                 goody.selfIlluminating = true;
                 goody.SetAnimationStuff(1, 1, 1, 2, 128, 128, 2, 10);

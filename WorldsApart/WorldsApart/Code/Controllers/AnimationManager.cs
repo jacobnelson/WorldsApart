@@ -79,6 +79,21 @@ namespace WorldsApart.Code.Controllers
             this.target = target;
         }
 
+        public static void FadeInAndOut(Sprite target, int duration, byte lowAlpha, byte highAlpha)
+        {
+            if (!target.am.fading)
+            {
+                if (target.alpha == lowAlpha)
+                {
+                    target.am.StartFade(duration, target.alpha, highAlpha);
+                }
+                else
+                {
+                    target.am.StartFade(duration, target.alpha, lowAlpha);
+                }
+            }
+        }
+
         public void StartNewAnimation(AnimationType animationType, Vector2 startPosition, Vector2 endPosition, int duration)
         {
             positionType = animationType;

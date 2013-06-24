@@ -49,7 +49,7 @@ namespace WorldsApart.Code.Entities
             {
                 goodMode = true;
                 pulse.color = Color.White;
-                currentCellCol = 1; //TODO: change this to match animation settings
+                ChangeAnimationBounds(1, 1, 8);
             }
         }
 

@@ -852,6 +852,7 @@ namespace WorldsApart.Code.Entities
                 texture = indicatorTexture;
                 color = new Color(indicatorAlpha, indicatorAlpha, indicatorAlpha);
             }
+
             base.DrawAura(spriteBatch, screenOrigin);
         }
 
@@ -867,6 +868,7 @@ namespace WorldsApart.Code.Entities
                 texture = indicatorTexture;
                 color = new Color(indicatorAlpha, indicatorAlpha, indicatorAlpha);
             }
+
             base.Draw(spriteBatch);
         }
     }

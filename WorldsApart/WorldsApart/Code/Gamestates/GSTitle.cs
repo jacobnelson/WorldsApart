@@ -19,10 +19,14 @@ namespace WorldsApart.Code.Gamestates
 {
     class GSTitle : GameState
     {
-        SpriteIMG titleScreen;
-        SpriteIMG title;
-        SpriteIMG start;
-        AnimatedSprite blob;
+        SpriteIMG titleSplashArt;
+        SpriteIMG titleLogo;
+        SpriteIMG titlePressStart;
+        SpriteIMG sparkles1;
+        SpriteIMG sparkles2;
+        SpriteIMG titleCopyright;
+
+        bool titleFadedIn = false;
 
         int timerCounter = 0;
        
@@ -32,16 +36,18 @@ namespace WorldsApart.Code.Gamestates
         {
 
 
-            titleScreen = new SpriteIMG(LoadTexture("TitleAssets/TitleScreen"), new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2));
-            title = new SpriteIMG(LoadTexture("TitleAssets/title"), new Vector2(1500, 100));
-            start = new SpriteIMG(LoadTexture("TitleAssets/start"), new Vector2(Game1.screenWidth / 2, 500));
-            start.alpha = 0;
-            blob = new AnimatedSprite(LoadTexture("TitleAssets/blob"), new Vector2(-500, 300));
-            blob.SetAnimationStuff(1, 1, 1, 3, 192, 192, 3, 10);
+            titleSplashArt = new SpriteIMG(LoadTexture("TitleAssets/titleSplashArt"), Game1.GetScreenCenter());
+            titleLogo = new SpriteIMG(LoadTexture("TitleAssets/titleLogo"), Game1.GetScreenCenter());
+            titlePressStart = new SpriteIMG(LoadTexture("TitleAssets/titlePressStart"), Game1.GetScreenCenter());
+            sparkles1 = new SpriteIMG(LoadTexture("TitleAssets/titleSparkles1"), Game1.GetScreenCenter());
+            sparkles2 = new SpriteIMG(LoadTexture("TitleAssets/titleSparkles2"), Game1.GetScreenCenter());
+            titleCopyright = new SpriteIMG(LoadTexture("TitleAssets/titleCopyright"), Game1.GetScreenCenter());
 
-            title.am.StartNewAnimation(AnimationType.EaseOutQuart, new Vector2(1500, 100), new Vector2(Game1.screenWidth / 2, 100), 120);
-            blob.am.StartNewAnimation(AnimationType.EaseOutQuart, new Vector2(-500, 300), new Vector2(Game1.screenWidth / 2, 300), 120);
-
+            titleLogo.alpha = 0;
+            titlePressStart.alpha = 0;
+            titleCopyright.alpha = 0;
+            sparkles2.alpha = 0;
+            
         }
 
         public void GetInput()
@@ -58,17 +64,36 @@ namespace WorldsApart.Code.Gamestates
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            timerCounter++;
 
-            if (timerCounter == 120)
+            if (!titleFadedIn)
             {
-                start.am.StartFade(60, 0, 255);
+                timerCounter++;
+
+                if (timerCounter == 120)
+                {
+                    titleLogo.am.StartFade(120, 0, 255);
+                }
+
+                if (titleLogo.alpha == 255)
+                {
+                    timerCounter = 0;
+                    titleFadedIn = true;
+                    titleCopyright.am.StartFade(120, 0, 255);
+                }
+            }
+            else
+            {
+                AnimationManager.FadeInAndOut(titlePressStart, 120, 0, 255);
             }
 
-            blob.Update();
-            start.Update();
-            title.Update();
-            blob.Update();
+            AnimationManager.FadeInAndOut(sparkles1, 120, 0, 255);
+            AnimationManager.FadeInAndOut(sparkles2, 120, 0, 255);
+
+            titlePressStart.Update();
+            titleLogo.Update();
+            titleCopyright.Update();
+            sparkles1.Update();
+            sparkles2.Update();
 
             GetInput();
         }
@@ -79,10 +104,20 @@ namespace WorldsApart.Code.Gamestates
 
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-            titleScreen.Draw(spriteBatch);
-            blob.Draw(spriteBatch);
-            start.Draw(spriteBatch);
-            title.Draw(spriteBatch);
+            titleSplashArt.Draw(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+            sparkles1.Draw(spriteBatch);
+            sparkles2.Draw(spriteBatch);
+            sparkles1.Draw(spriteBatch);
+            sparkles2.Draw(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            titlePressStart.Draw(spriteBatch);
+            titleCopyright.Draw(spriteBatch);
+            titleLogo.Draw(spriteBatch);
             spriteBatch.End();
         }
     }

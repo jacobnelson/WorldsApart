@@ -147,6 +147,9 @@ namespace WorldsApart.Code.Gamestates
                 verticalDivide.scale = new Vector2(1, 32);
             }
 
+            alphaDot = new SpriteIMG(LoadTexture("ShaderAssets/playerAlphaMask"));
+            alphaDot.scale = new Vector2(2);
+
             switch (levelIndex)
             {
                 case 0:
@@ -186,8 +189,7 @@ namespace WorldsApart.Code.Gamestates
 
             
             
-            alphaDot = new SpriteIMG(LoadTexture("ShaderAssets/playerAlphaMask"));
-            alphaDot.scale = new Vector2(2);
+            
             alphaMask = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             renderTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             player1Objects = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
@@ -263,49 +265,49 @@ namespace WorldsApart.Code.Gamestates
             List<IdealAnimationSet> player1Textures = new List<IdealAnimationSet>();
             player1.idleSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 1, 1, 8, 8, 6, 8);
             player1Textures.Add(player1.idleSet);
-            player1.runningLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 2, 7, 8, 8, 1, 5, new Point(2,7));
+            player1.runningLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 1, 8, 8, 8, 1, 5, new Point(1,8));
             player1Textures.Add(player1.runningLeadSet);
-            player1.runningSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 1, 7, 8, 8, 8 ,8);
+            player1.runningSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 2, 1, 8, 8, 8 ,8);
             player1Textures.Add(player1.runningSet);
-            player1.runningEndSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 2, 7, 8, 8, 1, 5, new Point(2,7));
+            player1.runningEndSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 1, 8, 8, 8, 1, 5, new Point(1,8));
             player1Textures.Add(player1.runningEndSet);
-            player1.jumpingUpLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 4, 3, 8, 8, 2,5, new Point(4,4));
+            player1.jumpingUpLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 1, 8, 8, 2,5, new Point(5,1));
             player1Textures.Add(player1.jumpingUpLeadSet);
-            player1.jumpingUpSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 4, 5, 8, 8, 4,5);
+            player1.jumpingUpSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 2, 8, 8, 4,8);
             player1Textures.Add(player1.jumpingUpSet);
-            player1.jumpingDownLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 1, 8, 8, 4,5, new Point(5,1));
+            player1.jumpingDownLeadSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 6, 8, 8, 4,5, new Point(5,6));
             player1Textures.Add(player1.jumpingDownLeadSet);
-            player1.jumpingDownSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 2, 8, 8, 4,5);
+            player1.jumpingDownSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 7, 8, 8, 4,8);
             player1Textures.Add(player1.jumpingDownSet);
-            player1.jumpingDownEndSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 5, 6, 8, 8, 2,5, new Point(5,7));
+            player1.jumpingDownEndSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 6, 3, 8, 8, 1,5, new Point(6,3));
             player1Textures.Add(player1.jumpingDownEndSet);
-            player1.DyingSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 3, 1, 8, 8, 5,8, new Point(3,5));
+            player1.DyingSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 3, 1, 8, 8, 8,5, new Point(3,8));
             player1Textures.Add(player1.DyingSet);
-            player1.RevivingSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 3, 6, 8, 8, 5,8, new Point(4,2)); 
+            player1.RevivingSet = new IdealAnimationSet(player1.regularTexture, player1.indicatorTexture, 4, 1, 8, 8, 5,8, new Point(4,5)); 
             player1Textures.Add(player1.RevivingSet);
 
             List<IdealAnimationSet> player2Textures = new List<IdealAnimationSet>();
             player2.idleSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 1, 1, 8, 8, 6, 8);
             player2Textures.Add(player2.idleSet);
-            player2.runningLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 2, 7, 8, 8, 1, 5, new Point(2, 7));
+            player2.runningLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 1, 8, 8, 8, 1, 5, new Point(1, 8));
             player2Textures.Add(player2.runningLeadSet);
-            player2.runningSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 1, 7, 8, 8, 8, 8);
+            player2.runningSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 2, 1, 8, 8, 8, 8);
             player2Textures.Add(player2.runningSet);
-            player2.runningEndSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 2, 7, 8, 8, 1, 5, new Point(2, 7));
+            player2.runningEndSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 1, 8, 8, 8, 1, 5, new Point(1, 8));
             player2Textures.Add(player2.runningEndSet);
-            player2.jumpingUpLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 4, 3, 8, 8, 2, 5, new Point(4, 4));
+            player2.jumpingUpLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 1, 8, 8, 2, 5, new Point(5, 1));
             player2Textures.Add(player2.jumpingUpLeadSet);
-            player2.jumpingUpSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 4, 5, 8, 8, 4, 5);
+            player2.jumpingUpSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 2, 8, 8, 4, 8);
             player2Textures.Add(player2.jumpingUpSet);
-            player2.jumpingDownLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 1, 8, 8, 4, 5, new Point(5, 1));
+            player2.jumpingDownLeadSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 6, 8, 8, 4, 5, new Point(5, 6));
             player2Textures.Add(player2.jumpingDownLeadSet);
-            player2.jumpingDownSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 2, 8, 8, 4, 5);
+            player2.jumpingDownSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 7, 8, 8, 4, 8);
             player2Textures.Add(player2.jumpingDownSet);
-            player2.jumpingDownEndSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 5, 6, 8, 8, 2, 5, new Point(5, 7));
+            player2.jumpingDownEndSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 6, 3, 8, 8, 1, 5, new Point(6, 3));
             player2Textures.Add(player2.jumpingDownEndSet);
-            player2.DyingSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 3, 1, 8, 8, 5, 8, new Point(3, 5));
+            player2.DyingSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 3, 1, 8, 8, 8, 5, new Point(3, 8));
             player2Textures.Add(player2.DyingSet);
-            player2.RevivingSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 3, 6, 8, 8, 5, 8, new Point(4, 2));
+            player2.RevivingSet = new IdealAnimationSet(player2.regularTexture, player2.indicatorTexture, 4, 1, 8, 8, 5, 8, new Point(4, 5));
             player2Textures.Add(player2.RevivingSet);
 
             player1.showingRegular = true;
@@ -1047,8 +1049,8 @@ namespace WorldsApart.Code.Gamestates
             #region Set Regular Showing
             if (playerIndex == PlayerIndex.One)
             {
-                player1.showingRegular = true;
-                player2.showingRegular = false;
+                player1.showingRegular = true; 
+                player2.showingRegular = false; 
             }
             else
             {

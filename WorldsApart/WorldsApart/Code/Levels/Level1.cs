@@ -168,6 +168,7 @@ namespace WorldsApart.Code.Levels
             gsPlay.player2.superStopInput = true;
             gsPlay.player1.visible = false;
             gsPlay.player2.visible = false;
+            gsPlay.alphaDot.visible = false;
 
             Vector2 introPos = GridToPosition(41, 25) + new Vector2(0, 20);
             player1Intro = new AnimatedSprite(gsPlay.LoadTexture("Cutscene/cutscenePlayers"), introPos);
@@ -269,6 +270,7 @@ namespace WorldsApart.Code.Levels
                             gsPlay.player2.superStopInput = false;
                             gsPlay.player1.visible = true;
                             gsPlay.player2.visible = true;
+                            gsPlay.alphaDot.visible = true;
                         }
 
 
