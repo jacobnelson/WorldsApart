@@ -601,7 +601,6 @@ namespace WorldsApart.Code.Levels
         {
             return CheckCollision(gridSpace.X, gridSpace.Y);
         }
-
         public static bool CheckCollision(int x, int y)
         {
             if (IsLegalXY(x, y)) return (environmentData[x, y].isSolid);

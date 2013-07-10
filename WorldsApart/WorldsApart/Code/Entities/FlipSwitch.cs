@@ -39,13 +39,16 @@ namespace WorldsApart.Code.Entities
             switch (playerVisible)
             {
                 case PlayerObjectMode.One:
-                    currentCellCol = 2;
+                    currentCellCol = 3;
+                    light.color = Color.Orange;
                     break;
                 case PlayerObjectMode.Two:
-                    currentCellCol = 3;
+                    currentCellCol = 2;
+                    light.color = Color.Blue;
                     break;
                 case PlayerObjectMode.None:
                     currentCellCol = 1;
+                    light.color = Color.Green;
                     break;
             }
             selfIlluminating = true;

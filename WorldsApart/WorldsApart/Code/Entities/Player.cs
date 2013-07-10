@@ -83,6 +83,10 @@ namespace WorldsApart.Code.Entities
         int dropCounter = 0;
         int dropRate = 10;
 
+        bool walkingOffCliff = false;
+        float cliffCounter = 0;
+        float cliffRate = .05f;
+
         Vector2 thumb = Vector2.Zero;
 
         //PlayerMode currentMode = PlayerMode.Idle;
@@ -282,7 +286,6 @@ namespace WorldsApart.Code.Entities
             
 
 
-
             if (!actionDown)
             {
                 psyHold = false;
@@ -292,23 +295,10 @@ namespace WorldsApart.Code.Entities
                 {
                     holding = false;
                     Vector2 throwSpeed = Vector2.Zero;
-
-                    if (facing == Facing.Left) throwSpeed.X = -10;
-                    if (facing == Facing.Right) throwSpeed.X = 10;
-                    throwSpeed.Y = -10;
-
-                    if (upDown)
-                    {
-                        throwSpeed.Y = -15;
-                        if (!rightDown && !leftDown) throwSpeed.X = 0;
-                    }
-                    if (downDown)
-                    {
-                        throwSpeed.Y = 15;
-                        if (!rightDown && !leftDown) throwSpeed.X = 0;
-                    }
-                    if (rightDown) throwSpeed.X = 15;
-                    if (leftDown) throwSpeed.X = -15;
+                    if (upDown) throwSpeed.Y = -10;
+                    if (downDown) throwSpeed.Y = 10;
+                    if (rightDown) throwSpeed.X = 10;
+                    if (leftDown) throwSpeed.X = -10;
                     pickUp.GetDropped(throwSpeed);
                     pickUp = null;
                 }
@@ -362,6 +352,9 @@ namespace WorldsApart.Code.Entities
             }
 
             if (light != null) psyHold = true;
+
+            
+            
 
             base.Update();
             grabBox.SetPosition(hitBox.GetPosition());
@@ -530,6 +523,23 @@ namespace WorldsApart.Code.Entities
 
         public void ChangeSprite()
         {
+            if (currentSet == PlayerMode.Running && speed.Y > 0)
+            {
+                walkingOffCliff = true;
+            }
+
+            if (walkingOffCliff)
+            {
+                cliffCounter += Time.GetSeconds();
+                if (cliffCounter >= cliffRate || state == PhysState.Grounded)
+                {
+                    cliffCounter = 0;
+                    walkingOffCliff = false;
+                }
+            }
+
+
+
             isAnimating = true;
             if (facing == Facing.Right) spriteEffects = SpriteEffects.None;
             else spriteEffects = SpriteEffects.FlipHorizontally;
@@ -633,7 +643,8 @@ namespace WorldsApart.Code.Entities
                 {
                     if (currentSet != PlayerMode.JumpingDownLead && currentSet != PlayerMode.JumpingDown)
                     {
-                        ChangeCurrentSet(PlayerMode.JumpingDownLead);
+                        if (!walkingOffCliff)
+                            ChangeCurrentSet(PlayerMode.JumpingDownLead);
                     }
                     else if (currentSet == PlayerMode.JumpingDownLead)
                     {
@@ -650,6 +661,7 @@ namespace WorldsApart.Code.Entities
             //animationRate = 5;
             //if (currentSet == PlayerMode.Running) animationRate = 8;
             //if (currentSet == PlayerMode.Idle) animationRate = 8;
+            
 
         }
 

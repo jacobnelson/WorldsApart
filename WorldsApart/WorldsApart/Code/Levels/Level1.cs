@@ -164,6 +164,19 @@ namespace WorldsApart.Code.Levels
 
         public void StartIntro()
         {
+            GSOverlay.words1.visible = true;
+            GSOverlay.words2.visible = true;
+            GSOverlay.words3.visible = true;
+            GSOverlay.words4.visible = true;
+            GSOverlay.words5.visible = true;
+            GSOverlay.words6.visible = true;
+            GSOverlay.words1.alpha = 0;
+            GSOverlay.words2.alpha = 0;
+            GSOverlay.words3.alpha = 0;
+            GSOverlay.words4.alpha = 0;
+            GSOverlay.words5.alpha = 0;
+            GSOverlay.words6.alpha = 0;
+
             gsPlay.player1.superStopInput = true;
             gsPlay.player2.superStopInput = true;
             gsPlay.player1.visible = false;

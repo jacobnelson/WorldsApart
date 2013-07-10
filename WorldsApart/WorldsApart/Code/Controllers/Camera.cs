@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 using WorldsApart.Code.Gamestates;
 using WorldsApart.Code.Graphics;
+using WorldsApart.Code.Levels;
 
 namespace WorldsApart.Code.Controllers
 {
@@ -102,6 +103,14 @@ namespace WorldsApart.Code.Controllers
 
             position += (targetPosition - position) / shiftRate;
             scaleValue += (targetScale - scaleValue) / shiftRate;
+
+            //float halfScreenWidth = (Game1.screenWidth / 2) / scaleValue;
+            //float halfScreenHeight = (Game1.screenHeight / 2) / scaleValue;
+
+            //if (position.X - halfScreenWidth < 0) position.X = halfScreenWidth;
+            //else if (position.X + halfScreenWidth > Level.levelWidth) position.X = Level.levelWidth - halfScreenWidth;
+            //if (position.Y - halfScreenHeight < 0) position.Y = halfScreenHeight;
+            //else if (position.Y + halfScreenHeight > Level.levelHeight) position.Y = Level.levelHeight - halfScreenHeight;
 
             
             //if (GameStateManager.isMultiplayer)
