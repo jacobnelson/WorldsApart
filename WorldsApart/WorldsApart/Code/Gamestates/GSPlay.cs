@@ -651,7 +651,8 @@ namespace WorldsApart.Code.Gamestates
             Particle p = new Particle(Art.sparkle, Vector2.Zero);
             p.speed = new Vector2(Mathness.RandomNumber(-2f, 2f), Mathness.RandomNumber(-2f, 2f));
             p.startScale = Mathness.RandomNumber(.5f, .8f);
-            p.endScale = Mathness.RandomNumber(.8f, 1f);
+            p.endScale = Mathness.RandomNumber(1.2f, 1.5f);
+            p.rotationSpeed = Mathness.RandomNumber(.05f, .1f);
             //p.startScale = 1;
             //p.endScale = 1;
             p.fadeInOut = true;
@@ -664,13 +665,13 @@ namespace WorldsApart.Code.Gamestates
             p.illuminatingAllTheTime = true;
             if (isPlayer1)
             {
-                p.color = new Color(255, Mathness.RandomNumber(0, 100), Mathness.RandomNumber(0, 100));
+                p.color = new Color(255, Mathness.RandomNumber(50, 150), Mathness.RandomNumber(50, 150));
                 p.position = new Vector2(player1.position.X + Mathness.RandomNumber(-Game1.screenWidth / 2, Game1.screenWidth / 2), player1.position.Y + Mathness.RandomNumber(-Game1.screenHeight / 2, Game1.screenHeight / 2));
                 p.SetPlayerMode(PlayerObjectMode.One);
             }
             else
             {
-                p.color = new Color(Mathness.RandomNumber(0, 100), Mathness.RandomNumber(0, 100), 255);
+                p.color = new Color(Mathness.RandomNumber(50, 150), Mathness.RandomNumber(50, 150), 255);
                 p.position = new Vector2(player2.position.X + Mathness.RandomNumber(-Game1.screenWidth / 2, Game1.screenWidth / 2), player2.position.Y + Mathness.RandomNumber(-Game1.screenHeight / 2, Game1.screenHeight / 2));
                 p.SetPlayerMode(PlayerObjectMode.Two);
             }
@@ -867,7 +868,6 @@ namespace WorldsApart.Code.Gamestates
 
             player1.Update();
             player2.Update();
-
 
             #region Iterations
 
@@ -1261,8 +1261,16 @@ namespace WorldsApart.Code.Gamestates
                 foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.One)) portal.Draw(spriteBatch, camera);
                 foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.One) light.Draw(spriteBatch, camera);
-                foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.One || particle.playerVisible == PlayerObjectMode.None)) particle.Draw(spriteBatch, camera);
                 spriteBatch.End();
+               
+                foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.One || particle.playerVisible == PlayerObjectMode.None))
+                {
+                    colorShader.Parameters["DestColor"].SetValue(particle.color.ToVector4());
+                    spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
+                    particle.Draw(spriteBatch, camera);
+                    spriteBatch.End();
+                }
+                
                 spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
                 foreach (LightningChain lightning in lightningList) if (lightning.playerObjectMode == PlayerObjectMode.One || lightning.playerObjectMode == PlayerObjectMode.None) lightning.Draw(spriteBatch, camera);
                 spriteBatch.End();
@@ -1283,8 +1291,16 @@ namespace WorldsApart.Code.Gamestates
                 foreach (Portal portal in portalList) if (portal.selfIlluminating && (portal.playerVisible == PlayerObjectMode.None || portal.playerVisible == PlayerObjectMode.Two)) portal.Draw(spriteBatch, camera);
                 foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.Two)) tile.Draw(spriteBatch, camera);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch, camera);
-                foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.Two || particle.playerVisible == PlayerObjectMode.None)) particle.Draw(spriteBatch, camera);
                 spriteBatch.End();
+
+                foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.Two || particle.playerVisible == PlayerObjectMode.None))
+                {
+                    colorShader.Parameters["DestColor"].SetValue(particle.color.ToVector4());
+                    spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
+                    particle.Draw(spriteBatch, camera);
+                    spriteBatch.End();
+                }
+
                 spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
                 foreach (LightningChain lightning in lightningList) if (lightning.playerObjectMode == PlayerObjectMode.Two || lightning.playerObjectMode == PlayerObjectMode.None) lightning.Draw(spriteBatch, camera);
                 spriteBatch.End();

@@ -187,8 +187,8 @@ namespace WorldsApart.Code.Levels
             player1Intro = new AnimatedSprite(gsPlay.LoadTexture("Cutscene/cutscenePlayers"), introPos);
             player2Intro = new AnimatedSprite(gsPlay.LoadTexture("Cutscene/cutscenePlayers"), introPos);
 
-            player1Intro.SetAnimationStuff(1, 1, 3, 8, 256, 256, 4, 12);
-            player2Intro.SetAnimationStuff(1, 5, 3, 8, 256, 256, 4, 12);
+            player2Intro.SetAnimationStuff(1, 1, 3, 8, 256, 256, 4, 12);
+            player1Intro.SetAnimationStuff(1, 5, 3, 8, 256, 256, 4, 12);
 
             player1Intro.SetPlayerMode(PlayerObjectMode.One);
             player2Intro.SetPlayerMode(PlayerObjectMode.Two);
@@ -230,8 +230,8 @@ namespace WorldsApart.Code.Levels
                         if (introCounter == 630)
                         {
                             isBarrierFrame = true;
-                            player1Intro.ChangeAnimationBounds(2, 1, 4);
-                            player2Intro.ChangeAnimationBounds(2, 5, 4);
+                            player2Intro.ChangeAnimationBounds(2, 1, 4);
+                            player1Intro.ChangeAnimationBounds(2, 5, 4);
                             GSOverlay.words1.visible = false;
                             GSOverlay.words2.visible = false;
                             GSOverlay.FadeOut(30);
@@ -252,8 +252,8 @@ namespace WorldsApart.Code.Levels
                         }
                         if (introCounter == 1230)
                         {   
-                            player1Intro.ChangeAnimationBounds(3, 1, 4);
-                            player2Intro.ChangeAnimationBounds(3, 5, 4);
+                            player2Intro.ChangeAnimationBounds(3, 1, 4);
+                            player1Intro.ChangeAnimationBounds(3, 5, 4);
                             GSOverlay.words3.visible = false;
                             GSOverlay.words4.visible = false;
                             GSOverlay.FadeOut(30);
