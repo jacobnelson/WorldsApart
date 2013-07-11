@@ -26,7 +26,7 @@ namespace WorldsApart.Code.Graphics
 
         public Color color = Color.White;
 
-        public float redrawCounter = 0;
+        public float redrawCounter = .06f;
         public float redrawRate = .05f;
 
         public Lightning(Vector2 start, Vector2 end)
@@ -79,6 +79,17 @@ namespace WorldsApart.Code.Graphics
             }
         }
 
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        {
+            if (canDraw)
+            {
+                foreach (Line line in boltList)
+                {
+                    line.Draw(spriteBatch, color, camera);
+                }
+            }
+        }
+
         protected static List<Line> CreateBolt(Vector2 source, Vector2 dest, float thickness)
         {
             var results = new List<Line>();
@@ -89,7 +100,7 @@ namespace WorldsApart.Code.Graphics
             List<float> positions = new List<float>();
             positions.Add(0);
 
-            for (int i = 0; i < length / 4; i++)
+            for (int i = 0; i < length / 8; i++)
                 positions.Add(Mathness.RandomNumber(0f, 1f));
 
             positions.Sort();

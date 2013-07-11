@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 using WorldsApart.Code.Graphics;
+using WorldsApart.Code.Controllers;
 
 using System.Diagnostics;
 
@@ -14,8 +15,9 @@ namespace WorldsApart.Code.Entities
 {
     class LightningChain
     {
-        public bool isActive = false;
+        public bool setID = false;
 
+        public bool isActive = false;
         public bool defaultActive = false;
 
         public List<Lightning> lightningList = new List<Lightning>();
@@ -24,6 +26,8 @@ namespace WorldsApart.Code.Entities
         public List<Vector2> vertexList = new List<Vector2>();
 
         public Color color = Color.White;
+
+        public PlayerObjectMode playerObjectMode = PlayerObjectMode.None;
 
         public LightningChain(Vector2 vertex1, Vector2 vertex2, Color color)
         {
@@ -34,6 +38,11 @@ namespace WorldsApart.Code.Entities
             lastVertex = vertex2;
             //vertexList.Add(vertex1);
             //vertexList.Add(vertex2);
+        }
+
+        public void SetPlayerMode(PlayerObjectMode pi)
+        {
+            playerObjectMode = pi;
         }
 
         public void AddVertex(Vector2 vertex)
@@ -66,12 +75,28 @@ namespace WorldsApart.Code.Entities
             foreach (Lightning lightning in lightningList)
             {
                 lightning.Update();
+
             }
+
+            if (setID)
+                foreach (Lightning lightning in lightningList)
+                {
+                    foreach (Line line in lightning.boltList)
+                    {
+                        line.traceID = 99;
+                        return;
+                    }
+                }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (Lightning lightning in lightningList) lightning.Draw(spriteBatch);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        {
+            foreach (Lightning lightning in lightningList) lightning.Draw(spriteBatch, camera);
         }
 
 

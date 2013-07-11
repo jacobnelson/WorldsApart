@@ -5,11 +5,18 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+using WorldsApart.Code.Controllers;
+
+using System.Diagnostics;
 
 namespace WorldsApart.Code.Graphics
 {
     class Line
     {
+        public int traceID = 0;
+
         public Vector2 a;
         public Vector2 b;
         public float thickness;
@@ -37,6 +44,32 @@ namespace WorldsApart.Code.Graphics
             spriteBatch.Draw(Art.lineMiddle, a, null, color, rotation, middleOrigin, middleScale, SpriteEffects.None, 0f);
             spriteBatch.Draw(Art.lineEnd, a, null, color, rotation, capOrigin, thicknessScale, SpriteEffects.None, 0f);
             spriteBatch.Draw(Art.lineEnd, b, null, color, rotation + MathHelper.Pi, capOrigin, thicknessScale, SpriteEffects.None, 0f);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Color color, Camera camera)
+        {
+            Vector2 cornerTopLeft = Vector2.Zero;
+            if (a.X < b.X) cornerTopLeft.X = a.X / 2;
+            else cornerTopLeft.X = b.X / 2;
+            if (a.Y < b.Y) cornerTopLeft.Y = a.Y / 2;
+            else cornerTopLeft.Y = b.Y / 2;
+
+            Vector2 tangent = b - a;
+
+            Rectangle textureArea = new Rectangle((int)cornerTopLeft.X, (int)cornerTopLeft.Y, (int)Math.Abs(tangent.X), (int)Math.Abs(tangent.Y));
+            if (textureArea.Intersects(camera.visibleArea))
+            {
+                Draw(spriteBatch, color);
+            }
+
+            //if (traceID == 99)
+            //{
+            //    Trace.WriteLine("Texture:");
+            //    Trace.WriteLine(textureArea.X + ", " + textureArea.Y + ", " + textureArea.Width + ", " + textureArea.Height);
+            //    Trace.WriteLine("Camera:");
+            //    Trace.WriteLine(camera.visibleArea.X + ", " + camera.visibleArea.Y + ", " + camera.visibleArea.Width + ", " + camera.visibleArea.Height);
+            //}
+
         }
     }
 }

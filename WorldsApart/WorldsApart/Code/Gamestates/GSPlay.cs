@@ -23,6 +23,7 @@ namespace WorldsApart.Code.Gamestates
 {
     class GSPlay : GameState
     {
+
         SpriteIMG verticalDivide;
 
         Viewport mainViewport;
@@ -1261,6 +1262,10 @@ namespace WorldsApart.Code.Gamestates
                 foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.One)) tile.Draw(spriteBatch, camera);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.One) light.Draw(spriteBatch, camera);
                 foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.One || particle.playerVisible == PlayerObjectMode.None)) particle.Draw(spriteBatch, camera);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
+                foreach (LightningChain lightning in lightningList) if (lightning.playerObjectMode == PlayerObjectMode.One || lightning.playerObjectMode == PlayerObjectMode.None) lightning.Draw(spriteBatch, camera);
+                spriteBatch.End();
 
             }
             else
@@ -1279,27 +1284,12 @@ namespace WorldsApart.Code.Gamestates
                 foreach (SpriteIMG tile in frontFGList) if (tile.selfIlluminating && (tile.playerVisible == PlayerObjectMode.None || tile.playerVisible == PlayerObjectMode.Two)) tile.Draw(spriteBatch, camera);
                 foreach (PointLight light in lightList) if (light.playerVisible == PlayerObjectMode.Two) light.Draw(spriteBatch, camera);
                 foreach (Particle particle in particleList) if (particle.selfIlluminating && (particle.playerVisible == PlayerObjectMode.Two || particle.playerVisible == PlayerObjectMode.None)) particle.Draw(spriteBatch, camera);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
+                foreach (LightningChain lightning in lightningList) if (lightning.playerObjectMode == PlayerObjectMode.Two || lightning.playerObjectMode == PlayerObjectMode.None) lightning.Draw(spriteBatch, camera);
+                spriteBatch.End();
             }
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
-            foreach (LightningChain lightning in lightningList) lightning.Draw(spriteBatch);
-            spriteBatch.End();
-            #endregion
-
-            #region Lightning drawing
-
-            //gameStateManager.game.GraphicsDevice.SetRenderTarget(lightningTarget);
-            //gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
-
-            //spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
-
-            //foreach (Lightning lightning in lightningList)
-            //{
-            //    lightning.Draw(spriteBatch);
-            //}
-
-            //spriteBatch.End();
-
+    
             #endregion
 
             #region Player neutral drawing
@@ -1317,9 +1307,22 @@ namespace WorldsApart.Code.Gamestates
             foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);
             foreach (Particle particle in bgParticleList) if (particle.playerVisible == PlayerObjectMode.None) particle.Draw(spriteBatch, camera);
             spriteBatch.End();
+
+
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, null, camera.transform);
-            foreach (LightningChain lightning in lightningList) lightning.Draw(spriteBatch);
+            if (playerIndex == PlayerIndex.One)
+            {
+                foreach (LightningChain lightning in lightningList)
+                    if (lightning.playerObjectMode == PlayerObjectMode.None || lightning.playerObjectMode == PlayerObjectMode.One) lightning.Draw(spriteBatch, camera);
+            }
+            else
+            {
+                foreach (LightningChain lightning in lightningList)
+                    if (lightning.playerObjectMode == PlayerObjectMode.None || lightning.playerObjectMode == PlayerObjectMode.Two) lightning.Draw(spriteBatch, camera);
+            }
             spriteBatch.End();
+
+
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
            
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.None) s.Draw(spriteBatch, camera);
