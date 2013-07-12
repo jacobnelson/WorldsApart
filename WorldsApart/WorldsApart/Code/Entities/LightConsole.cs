@@ -40,12 +40,12 @@ namespace WorldsApart.Code.Entities
         {
             base.ActivateEvent(triggerState);
 
-            if (triggerState == TriggerState.Triggered)
+            foreach (EventTrigger eventTrigger in triggerList)
             {
+                eventTrigger.ActivateEvent(triggerState);
             }
-            else
-            {
-            }
+
+            
         }
 
         public void PressConsole(Player player, bool canDo)
@@ -73,6 +73,10 @@ namespace WorldsApart.Code.Entities
                     }
                 }
                 hasLight = false;
+
+                ActivateEvent(TriggerState.Untriggered);
+
+
             }
             else
             {
@@ -97,6 +101,8 @@ namespace WorldsApart.Code.Entities
                     }
                 }
                 hasLight = true;
+
+                ActivateEvent(TriggerState.Triggered);
             }
         }
 

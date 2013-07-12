@@ -57,7 +57,7 @@ namespace WorldsApart.Code.Gamestates
         public int screenTransitionRate = 60;
         public GameStateType transitionType;
 
-        public int currentLevel = 1;
+        public int currentLevel = 0;
         public int goodness = 0;
 
         //NetServer server;

@@ -121,10 +121,17 @@ namespace WorldsApart.Code.Levels
             player2Light = gsPlay.AddPointLight(gsPlay.LoadTexture("ShaderAssets/pointLight"), Vector2.Zero, new Vector2(2));
             player2Light.SetGlowing(2, 2.4f, 120);
 
+
+            
             LightConsole console1 = gsPlay.AddLightConsole(gsPlay.LoadTexture("TestSprites/winSpot"), GridToPosition(189, 39));
             console1.AddLight(player1Light);
-            console1 = gsPlay.AddLinkedLightConsole(console1, console1.texture, GridToPosition(189, 32));
-            console1.AddLight(player2Light);
+            LightConsole console2 = gsPlay.AddLinkedLightConsole(console1, console1.texture, GridToPosition(189, 32));
+            console2.AddLight(player2Light);
+            LightningChain consoleLightning = gsPlay.AddLightning(GridToPosition(189, 39), GridToPosition(189, 32), Color.White);
+            consoleLightning.SetActive(true);
+            console1.AddEvent(new EventTrigger(this, consoleLightning));
+            console2.AddEvent(new EventTrigger(this, consoleLightning));
+            
 
             console1 = gsPlay.AddLightConsole(console1.texture, GridToPosition(220, 17));
 
