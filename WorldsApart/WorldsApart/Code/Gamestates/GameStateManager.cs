@@ -57,7 +57,7 @@ namespace WorldsApart.Code.Gamestates
         public int screenTransitionRate = 60;
         public GameStateType transitionType;
 
-        public int currentLevel = 0;
+        public int currentLevel = 1;
         public int goodness = 0;
 
         //NetServer server;
@@ -86,6 +86,8 @@ namespace WorldsApart.Code.Gamestates
 
 
             GSOverlay.InitializeGSOverlay(this);
+
+            
 
             SwitchToGSTitle();
         }
@@ -172,7 +174,6 @@ namespace WorldsApart.Code.Gamestates
             {
                 gsPlay = new GSPlay(this, currentLevel);
             }
-            Trace.WriteLine(1);
             gsPause = null;
             gsTitle = null;
             gsWin = null;

@@ -114,7 +114,7 @@ namespace WorldsApart.Code.Gamestates
 
 
         public float dreamParticleCounter = 0;
-        public float dreamParticleRate = .5f;
+        public float dreamParticleRate = .2f;
 
         public GSPlay(GameStateManager gsm, int levelIndex)
             : base(gsm)
@@ -666,13 +666,13 @@ namespace WorldsApart.Code.Gamestates
             if (isPlayer1)
             {
                 p.color = new Color(255, Mathness.RandomNumber(50, 150), Mathness.RandomNumber(50, 150));
-                p.position = new Vector2(player1.position.X + Mathness.RandomNumber(-Game1.screenWidth / 2, Game1.screenWidth / 2), player1.position.Y + Mathness.RandomNumber(-Game1.screenHeight / 2, Game1.screenHeight / 2));
+                p.position = new Vector2(player1.position.X + Mathness.RandomNumber(-Game1.screenWidth, Game1.screenWidth), player1.position.Y + Mathness.RandomNumber(-Game1.screenHeight, Game1.screenHeight));
                 p.SetPlayerMode(PlayerObjectMode.One);
             }
             else
             {
                 p.color = new Color(Mathness.RandomNumber(50, 150), Mathness.RandomNumber(50, 150), 255);
-                p.position = new Vector2(player2.position.X + Mathness.RandomNumber(-Game1.screenWidth / 2, Game1.screenWidth / 2), player2.position.Y + Mathness.RandomNumber(-Game1.screenHeight / 2, Game1.screenHeight / 2));
+                p.position = new Vector2(player2.position.X + Mathness.RandomNumber(-Game1.screenWidth, Game1.screenWidth), player2.position.Y + Mathness.RandomNumber(-Game1.screenHeight, Game1.screenHeight));
                 p.SetPlayerMode(PlayerObjectMode.Two);
             }
 
@@ -727,6 +727,17 @@ namespace WorldsApart.Code.Gamestates
             ParticleEmitter emitter = new ParticleEmitter(this, image, position);
             emitterList.Add(emitter);
             return emitter;
+        }
+
+        public ParticleEmitter AddWindEmitter(Vector2 position, Vector2 speed)
+        {
+            ParticleEmitter pe = AddEmitter(new AnimatedSprite(LoadTexture("TestSprites/particleWind")), position);
+            pe.speed = speed;
+            pe.randomRotation = true;
+            pe.rotationSpeed = .2f;
+            pe.fadeInOut = true;
+            pe.randomDisplacement.X = 16;
+            return pe;
         }
 
         public TimerObject AddTimer(EventTrigger eventTrigger, int duration)

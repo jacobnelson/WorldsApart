@@ -80,11 +80,7 @@ namespace WorldsApart.Code.Levels
                     else if (colorData[x, y] == new Color(0, 255, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(0, -1f));
-                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, 16));
-                        pe.speed = new Vector2(0, -2);
-                        pe.randomRotation = true;
-                        pe.fadeInOut = true;
-                        pe.randomDisplacement.X = 16;
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(0, -2));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentUp"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
                         //tile.alpha = 128;
@@ -93,11 +89,7 @@ namespace WorldsApart.Code.Levels
                     else if (colorData[x, y] == new Color(255, 0, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(0, 1f));
-                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(0, -16));
-                        pe.speed = new Vector2(0, 2);
-                        pe.randomRotation = true;
-                        pe.fadeInOut = true;
-                        pe.randomDisplacement.X = 16;
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(0, 2));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentDown"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
                         //tile.alpha = 128;
@@ -106,11 +98,7 @@ namespace WorldsApart.Code.Levels
                     else if (colorData[x, y] == new Color(255, 255, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(4, 0));
-                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(-16, 0));
-                        pe.speed = new Vector2(2, 0);
-                        pe.randomRotation = true;
-                        pe.fadeInOut = true;
-                        pe.randomDisplacement.Y = 16;
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(2, 0));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentRight"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
                         //tile.alpha = 128;
@@ -119,11 +107,7 @@ namespace WorldsApart.Code.Levels
                     else if (colorData[x, y] == new Color(0, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(-4, 0));
-                        ParticleEmitter pe = gsPlay.AddEmitter(new AnimatedSprite(gsPlay.LoadTexture("TestSprites/puff")), GridToPosition(x, y) + new Vector2(16, 0));
-                        pe.speed = new Vector2(-2, 0);
-                        pe.randomRotation = true;
-                        pe.fadeInOut = true;
-                        pe.randomDisplacement.Y = 16;
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(-2, 0));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentLeft"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
                         //tile.alpha = 128;

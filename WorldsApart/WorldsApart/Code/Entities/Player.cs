@@ -65,7 +65,7 @@ namespace WorldsApart.Code.Entities
         
         public bool isSignaling = false;
         float signalCounter = 0;
-        float signalRate = 0;
+        float signalRate = .5f;
 
         public bool rightDown = false;
         public bool leftDown = false;
@@ -260,7 +260,7 @@ namespace WorldsApart.Code.Entities
             }
 
 
-            if (signalPressed)
+            if (signalPressed && !isSignaling)
             {
                 ActivateSignal();
             }
@@ -269,8 +269,7 @@ namespace WorldsApart.Code.Entities
                 signalCounter += Time.GetSeconds();
                 if (signalCounter >= signalRate)
                 {
-                    isSignaling = false;
-                    signalCounter = 0;
+                    DeactivateSignal();
                 }
             }
 

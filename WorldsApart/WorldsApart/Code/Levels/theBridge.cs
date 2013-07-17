@@ -50,6 +50,8 @@ namespace WorldsApart.Code.Levels
             breaker = gsPlay.AddTriggerArea(new EventTrigger(this, 2), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 14) + new Vector2(16, 0));
             breaker.visible = false;
             gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("bridgeBreakTrigger"), GridToPosition(67, 50) + new Vector2(16, 0)).visible = false;
+
+            AudioManager.PlayMusic("Bridge");
         }
 
         public override void ActivateEvent(int eventID, TriggerState triggerState)

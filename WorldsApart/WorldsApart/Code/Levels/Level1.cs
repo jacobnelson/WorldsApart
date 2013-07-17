@@ -158,8 +158,8 @@ namespace WorldsApart.Code.Levels
             lc12.AddVertex(GridToPosition(605, 11) + new Vector2(0, 0));
             //lc6.ConvertEndPointToTarget(d5);
             finalSwitch.AddEvent(new EventTrigger(this, lc12));
-            
 
+            AudioManager.PlayMusic("Field");
         }
 
         public void StartIntro()

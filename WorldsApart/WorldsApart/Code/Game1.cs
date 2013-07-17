@@ -76,6 +76,9 @@ namespace WorldsApart.Code
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            AudioManager.InitializeAudioManager(Content);
+
             gsm = new GameStateManager(this);
             gd = GraphicsDevice;
             // TDO: use this.Content to load your game content here

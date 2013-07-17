@@ -325,6 +325,8 @@ namespace WorldsApart.Code.Levels
             LightningChain lcfinal2 = gsPlay.AddLightning(FS9.position, p3.position, Color.Orange);
             lcfinal2.ConvertEndPointToTarget(p3);
             FS9.AddEvent(new EventTrigger(this, lcfinal2));
+
+            AudioManager.PlayMusic("Construction");
             
         }
 
