@@ -190,6 +190,8 @@ namespace WorldsApart.Code.Levels
             Door bd6 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(154, 66)) + new Vector2(-16, 0), OpenState.Closed);
             bd6.SetPlayerMode(PlayerObjectMode.Two);
 
+            AudioManager.PlayMusic("Mountain");
+
         }
 
         public override void ActivateEvent(int eventID, TriggerState triggerState)

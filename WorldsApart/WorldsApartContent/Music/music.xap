@@ -214,6 +214,19 @@ Global Settings
         Min = 0.000000;
         Max = 1000000.000000;
     }
+
+    Compression Preset
+    {
+        Name = Compression Preset;
+        Xbox Format Tag = 357;
+        Target Sample Rate = 48000;
+        XMA Quality = 60;
+        Find Best Quality = 0;
+        High Freq Cut = 0;
+        Loop = 0;
+        PC Format Tag = 2;
+        Samples Per Block = 128;
+    }
 }
 
 Wave Bank
@@ -224,16 +237,18 @@ Wave Bank
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
     Seek Tables = 1;
-    Compression Preset Name = <none>;
-    Bank Last Revised Low = 1178178944;
-    Bank Last Revised High = 30311186;
+    Compression Preset Name = Compression Preset;
+    Header Last Modified Low = 0;
+    Header Last Modified High = 0;
+    Bank Last Revised Low = 332557216;
+    Bank Last Revised High = 30312229;
 
     Wave
     {
         Name = Bridge;
         File = Bridge.wav;
-        Build Settings Last Modified Low = 978188944;
-        Build Settings Last Modified High = 30311186;
+        Build Settings Last Modified Low = 303557216;
+        Build Settings Last Modified High = 30312229;
 
         Cache
         {
@@ -255,8 +270,8 @@ Wave Bank
     {
         Name = Cave;
         File = Cave.wav;
-        Build Settings Last Modified Low = 978518944;
-        Build Settings Last Modified High = 30311186;
+        Build Settings Last Modified Low = 303557216;
+        Build Settings Last Modified High = 30312229;
 
         Cache
         {
@@ -278,8 +293,8 @@ Wave Bank
     {
         Name = Construction;
         File = Construction.wav;
-        Build Settings Last Modified Low = 978578944;
-        Build Settings Last Modified High = 30311186;
+        Build Settings Last Modified Low = 303557216;
+        Build Settings Last Modified High = 30312229;
 
         Cache
         {
@@ -301,8 +316,8 @@ Wave Bank
     {
         Name = Field;
         File = Field.wav;
-        Build Settings Last Modified Low = 978718944;
-        Build Settings Last Modified High = 30311186;
+        Build Settings Last Modified Low = 303567216;
+        Build Settings Last Modified High = 30312229;
 
         Cache
         {
@@ -324,8 +339,8 @@ Wave Bank
     {
         Name = Forest;
         File = Forest.wav;
-        Build Settings Last Modified Low = 978788944;
-        Build Settings Last Modified High = 30311186;
+        Build Settings Last Modified Low = 303567216;
+        Build Settings Last Modified High = 30312229;
 
         Cache
         {
@@ -347,8 +362,8 @@ Wave Bank
     {
         Name = Mountain;
         File = Mountain.wav;
-        Build Settings Last Modified Low = 978898944;
-        Build Settings Last Modified High = 30311186;
+        Build Settings Last Modified Low = 303567216;
+        Build Settings Last Modified High = 30312229;
 
         Cache
         {
@@ -374,6 +389,8 @@ Sound Bank
     Windows File = Win\Sound Bank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
+    Header Last Modified High = 0;
+    Header Last Modified Low = 0;
 
     Sound
     {
