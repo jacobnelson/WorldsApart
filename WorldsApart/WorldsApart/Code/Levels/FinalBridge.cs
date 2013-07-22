@@ -186,8 +186,8 @@ namespace WorldsApart.Code.Levels
 
                                 player1Ending.visible = true;
                                 player2Ending.visible = true;
-                                player1Ending.ChangeAnimationBounds(4, 1, 8);
-                                player2Ending.ChangeAnimationBounds(5, 1, 8);
+                                player2Ending.ChangeAnimationBounds(4, 1, 8);
+                                player1Ending.ChangeAnimationBounds(5, 1, 8);
                                 player1Ending.position = gsPlay.player1.position;
                                 player2Ending.position = gsPlay.player2.position;
                                 //player1Ending.spriteEffects = SpriteEffects.FlipHorizontally;
