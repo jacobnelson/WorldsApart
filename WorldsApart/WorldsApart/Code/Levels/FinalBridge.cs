@@ -208,6 +208,7 @@ namespace WorldsApart.Code.Levels
 
                         if (sceneCounter == 540)
                         {
+                            gsPlay.gameStateManager.currentLevel = 1;
                             gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSWin, 30);
                         }
                     }

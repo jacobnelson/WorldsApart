@@ -104,7 +104,10 @@ namespace WorldsApart.Code.Controllers
             position += (targetPosition - position) / shiftRate;
             scaleValue += (targetScale - scaleValue) / shiftRate;
 
-            float halfScreenWidth = (Game1.screenWidth / 2) / scaleValue;
+            float splitMultiplier = 1;
+            if (GameStateManager.isMultiplayer) splitMultiplier = 2;
+
+            float halfScreenWidth = (Game1.screenWidth / 2) / scaleValue / splitMultiplier;
             float halfScreenHeight = (Game1.screenHeight / 2) / scaleValue;
 
             if (position.X * 2 - halfScreenWidth < 0) position.X = halfScreenWidth / 2;

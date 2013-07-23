@@ -38,7 +38,7 @@ namespace WorldsApart.Code.Gamestates
 
         public Camera cameraPlayer1;
         public Camera cameraPlayer2;
-        PlayerIndex playerIndex = PlayerIndex.One;
+        public PlayerIndex playerIndex = PlayerIndex.One;
 
         public SpriteIMG alphaDot;
         Effect alphaShader;
@@ -796,7 +796,11 @@ namespace WorldsApart.Code.Gamestates
 
         #endregion
 
-
+        public void ShiftPlayer()
+        {
+            if (playerIndex == PlayerIndex.One) playerIndex = PlayerIndex.Two;
+            else playerIndex = PlayerIndex.One;
+        }
 
         public void GetInput()
         {
@@ -811,8 +815,7 @@ namespace WorldsApart.Code.Gamestates
             {
                 if (InputManager.IsButtonPressed(Buttons.Back) || InputManager.IsKeyPressed(Keys.LeftShift))
                 {
-                    if (playerIndex == PlayerIndex.One) playerIndex = PlayerIndex.Two;
-                    else playerIndex = PlayerIndex.One;
+                    ShiftPlayer();
                 }
             }
 
@@ -838,12 +841,16 @@ namespace WorldsApart.Code.Gamestates
             
         }
 
-        public void Pause()
+        public void PauseInput()
         {
+            stopInput = true;
         }
 
-        public void Unpause()
+        public void UnpauseInput()
         {
+            stopInput = false;
+            player1.superStopInput = false;
+            player2.superStopInput = false;
         }
 
         public override void Update(GameTime gameTime)

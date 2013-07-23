@@ -23,8 +23,8 @@ namespace WorldsApart.Code.Levels
         AnimatedSprite player2Intro;
         SpriteIMG fadeOut;
         bool isBarrierFrame = false;
-        int barrierCounter = 0;
-        int barrierRate = 40;
+        int barrierCounter = 24;
+        int barrierRate = 24;
 
 
         Door doubleButtonDoor;
@@ -195,6 +195,15 @@ namespace WorldsApart.Code.Levels
 
             gsPlay.frontFGList.Add(player1Intro);
             gsPlay.frontFGList.Add(player2Intro);
+
+            gsPlay.PauseInput();
+            if (!GameStateManager.isMultiplayer)
+            {
+                if (Mathness.RandomNumber(1, 2) == 1)
+                    gsPlay.playerIndex = PlayerIndex.Two;
+                else
+                    gsPlay.playerIndex = PlayerIndex.One;
+            }
         }
 
 
@@ -235,6 +244,10 @@ namespace WorldsApart.Code.Levels
                             GSOverlay.words1.visible = false;
                             GSOverlay.words2.visible = false;
                             GSOverlay.FadeOut(30);
+                            if (!GameStateManager.isMultiplayer)
+                            {
+                                gsPlay.ShiftPlayer();
+                            }
                         }
                         if (introCounter == 660)
                         {
@@ -257,6 +270,10 @@ namespace WorldsApart.Code.Levels
                             GSOverlay.words3.visible = false;
                             GSOverlay.words4.visible = false;
                             GSOverlay.FadeOut(30);
+                            if (!GameStateManager.isMultiplayer)
+                            {
+                                gsPlay.ShiftPlayer();
+                            }
                         }
                         if (introCounter == 1260)
                         {
@@ -279,11 +296,18 @@ namespace WorldsApart.Code.Levels
                             GSOverlay.words5.visible = false;
                             GSOverlay.words6.visible = false;
 
+
+                            gsPlay.UnpauseInput();
                             gsPlay.player1.superStopInput = false;
                             gsPlay.player2.superStopInput = false;
                             gsPlay.player1.visible = true;
                             gsPlay.player2.visible = true;
                             gsPlay.alphaDot.visible = true;
+
+                            if (!GameStateManager.isMultiplayer)
+                            {
+                                gsPlay.ShiftPlayer();
+                            }
                         }
 
 
