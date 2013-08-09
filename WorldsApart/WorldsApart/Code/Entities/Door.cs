@@ -33,6 +33,8 @@ namespace WorldsApart.Code.Entities
 
         public DoorType doorType = DoorType.Opening;
 
+        public int fadeRate = 30;
+
         public Door(Texture2D texture, Vector2 position)
             : base(texture, position)
         {
@@ -85,12 +87,12 @@ namespace WorldsApart.Code.Entities
 
         public void Appear()
         {
-            am.StartFade(30, alpha, 255);
+            am.StartFade(fadeRate, alpha, 255);
         }
 
         public void Disappear()
         {
-            am.StartFade(30, alpha, 0);
+            am.StartFade(fadeRate, alpha, 0);
         }
 
         public override void ActivateEvent(TriggerState ts)

@@ -304,10 +304,18 @@ namespace WorldsApart.Code.Levels
         {
             return GridToPosition(new Point(x, y));
         }
-
         public static Vector2 GridToPosition(Point gridSpace)
         {
             return new Vector2(gridSpace.X * collisionSize, gridSpace.Y * collisionSize);
+        }
+
+        public static Vector2 GridToCenterPosition(int x, int y)
+        {
+            return GridToPosition(x, y) + new Vector2(16, 16);
+        }
+        public static Vector2 GridToCenterPosition(Point gridSpace)
+        {
+            return GridToCenterPosition(gridSpace.X, gridSpace.Y);
         }
 
         public static void CheckForPlayerStuff(Player player)
