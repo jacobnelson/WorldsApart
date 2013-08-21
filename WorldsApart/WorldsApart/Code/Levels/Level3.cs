@@ -24,7 +24,7 @@ namespace WorldsApart.Code.Levels
             player1Pos = GridToPosition(23, 150);
             player2Pos = GridToPosition(20, 150);
 
-            //player1Pos = GridToPosition(152, 67);
+            //player1Pos = GridToPosition(394, 55);
             //player2Pos = player1Pos;
             
 
@@ -35,25 +35,29 @@ namespace WorldsApart.Code.Levels
 
             //part1
             Door d1 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(137, 101)) + new Vector2(-16, 0), OpenState.Closed);
-            FlipSwitch s1 = gsPlay.AddSwitch(new EventTrigger(this, d1), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(144, 111)));
+            FlipSwitch s1 = gsPlay.AddOnSwitch(new EventTrigger(this, d1), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(144, 111)));
             s1.SetPlayerMode(PlayerObjectMode.Two);
             Door bd1 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(137, 101)) + new Vector2(-16, 0), OpenState.Closed);
             bd1.SetPlayerMode(PlayerObjectMode.Two);
-            LightningChain lc1 = gsPlay.AddLightning(s1.position, s1.position + new Vector2(0, -240), Color.Orange);
+            LightningChain lc1 = gsPlay.AddLightning(s1.position, s1.position + new Vector2(0, -240), Color.LightBlue);
             lc1.AddVertex(d1.position + new Vector2(0, 80));
             lc1.AddVertex(d1.position + new Vector2(0, 64));
             s1.AddEvent(new EventTrigger(this, lc1));
+            lc1.defaultActive = true;
+            lc1.SetActive(true);
 
             Door d2 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(new Point(157, 107)) + new Vector2(-16, -16), OpenState.Closed);
-            FlipSwitch s2 = gsPlay.AddSwitch(new EventTrigger(this, d2), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(148, 101)));
+            FlipSwitch s2 = gsPlay.AddOnSwitch(new EventTrigger(this, d2), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(148, 101)));
             s2.SetPlayerMode(PlayerObjectMode.One);
             Door bd2 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(new Point(157, 107)) + new Vector2(-16, -16), OpenState.Closed);
             bd2.SetPlayerMode(PlayerObjectMode.One);
-            LightningChain lc2 = gsPlay.AddLightning(s2.position, s2.position + new Vector2(0, 80), Color.Orange);
+            LightningChain lc2 = gsPlay.AddLightning(s2.position, s2.position + new Vector2(0, 80), Color.Red);
             lc2.AddVertex(s2.position + new Vector2(96, 80));
             lc2.AddVertex(d2.position + new Vector2(-80, 0));
             lc2.AddVertex(d2.position + new Vector2(-48, 0));
             s2.AddEvent(new EventTrigger(this, lc2));
+            lc2.defaultActive = true;
+            lc2.SetActive(true);
 
 
 
@@ -143,25 +147,32 @@ namespace WorldsApart.Code.Levels
             mp1.SetPlayerMode(PlayerObjectMode.One);
             FlipSwitch ms1 = gsPlay.AddSwitch(new EventTrigger(this, mp1), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(403, 29)));
             ms1.SetPlayerMode(PlayerObjectMode.Two);
-            LightningChain lc114 = gsPlay.AddLightning(ms1.position, mp1.position, Color.Orange);
+            LightningChain lc114 = gsPlay.AddLightning(ms1.position, mp1.position, Color.LightBlue);
             lc114.ConvertEndPointToTarget(mp1);
-            ms1.AddEvent(new EventTrigger(this, lc114));
+            ms1.AddEvent(new EventTrigger(this, lc114)); 
 
             Door d14 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(393, 9)) + new Vector2(-16, 0), OpenState.Closed);
             FlipSwitch s14 = gsPlay.AddSwitch(new EventTrigger(this, d14), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(398, 21)));
-            LightningChain lc14 = gsPlay.AddLightning(s14.position, d14.position, Color.Orange);
+            LightningChain lc14 = gsPlay.AddLightning(s14.position, GridToPosition(393, 21), Color.Red);
+            lc14.AddVertex(d14.position);
             s14.AddEvent(new EventTrigger(this, lc14));
 
             Door d15 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(new Point(366, 33)) + new Vector2(0, -16), OpenState.Closed);
             Button s15 = gsPlay.AddButton(new EventTrigger(this, d15), 1, gsPlay.LoadTexture("TestSprites/button"), GridToPosition(new Point(370, 32)));
-            LightningChain lc15 = gsPlay.AddLightning(s15.position, d15.position, Color.Orange);
+            LightningChain lc15 = gsPlay.AddLightning(s15.position, GridToPosition(370, 33) + new Vector2(0, -16), Color.Orange);
+            lc15.AddVertex(GridToPosition(367, 33) + new Vector2(0, -16));
             s15.AddEvent(new EventTrigger(this, lc15));
+            lc15.defaultActive = true;
+            lc15.SetActive(true);
 
             Door d16 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(new Point(444, 69)) + new Vector2(0, -16), OpenState.Closed);
             FlipSwitch s16 = gsPlay.AddSwitch(new EventTrigger(this, d16), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(440, 71)));
             s16.SetPlayerMode(PlayerObjectMode.Two);
-            LightningChain lc16 = gsPlay.AddLightning(s16.position, d16.position, Color.Orange);
+            LightningChain lc16 = gsPlay.AddLightning(s16.position, GridToPosition(440, 69) + new Vector2(0, -16), Color.Orange);
+            lc16.AddVertex(GridToPosition(443, 69) + new Vector2(0, -16));
             s16.AddEvent(new EventTrigger(this, lc16));
+            lc16.defaultActive = true;
+            lc16.SetActive(true);
 
 
             gsPlay.AddBouncyBall(.5f, gsPlay.LoadTexture("TestSprites/pickUp"), GridToPosition(new Point(426, 68))).selfIlluminating = true;
@@ -175,7 +186,7 @@ namespace WorldsApart.Code.Levels
             FlipSwitch ms2 = gsPlay.AddSwitch(new EventTrigger(this, mp2), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(152, 67)) + new Vector2(-16, 0));
             ms2.pressureCooker = true;
             ms2.SetPlayerMode(PlayerObjectMode.One);
-            LightningChain lc17 = gsPlay.AddLightning(ms2.position, mp2.position + new Vector2(64, 0), Color.Blue);
+            LightningChain lc17 = gsPlay.AddLightning(ms2.position, mp2.position + new Vector2(64, 0), Color.LightBlue);
             ms2.AddEvent(new EventTrigger(this, lc17));
 
             Door mp3 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(new Point(152, 69)) + new Vector2(-16, -16), OpenState.Closed);

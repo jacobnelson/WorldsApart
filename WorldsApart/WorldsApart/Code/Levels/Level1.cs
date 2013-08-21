@@ -42,8 +42,8 @@ namespace WorldsApart.Code.Levels
             player1Pos = GridToPosition(42, 25);
             player2Pos = GridToPosition(40, 25);
 
-            //player1Pos = GridToPosition(679, 20);
-            //player2Pos = GridToPosition(679, 20);
+            //player1Pos = GridToPosition(554, 24);
+            //player2Pos = player1Pos;
 
             portalPos = GridToPosition(681, 20);
             pItemPos = GridToPosition(672, 11);
@@ -108,12 +108,14 @@ namespace WorldsApart.Code.Levels
             gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(386, 25)), Level.GridToPosition(new Point(386, 30)));                             //box accross moving
 
             Door d5 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(561, 24)), OpenState.Closed);                                             //barn door
-            FlipSwitch s1 = gsPlay.AddSwitch(new EventTrigger(this, d5), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(556, 25)));                                               //barn door
+            FlipSwitch s1 = gsPlay.AddOnSwitch(new EventTrigger(this, d5), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(556, 25)));                                               //barn door
             LightningChain lc6 = gsPlay.AddLightning(s1.position, GridToPosition(556, 26) + new Vector2(0, 16), Color.Green);
             lc6.AddVertex(GridToPosition(561, 26) + new Vector2(0, 16));
             lc6.AddVertex(GridToPosition(561, 26) + new Vector2(0, 0));
             //lc6.ConvertEndPointToTarget(d5);
             s1.AddEvent(new EventTrigger(this, lc6));
+            lc6.defaultActive = true;
+            lc6.SetActive(true);
 
             Door d6 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(570, 15)), Level.GridToPosition(new Point(570, 23)), OpenState.Closed);
             Button b6 = gsPlay.AddButton(new EventTrigger(this, d6), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(573, 19)));
@@ -132,32 +134,38 @@ namespace WorldsApart.Code.Levels
             //gsPlay.AddPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(635, 06)), Level.GridToPosition(new Point(635, 25)));
             MovingPlatform p1 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(595, 06)), Level.GridToPosition(new Point(595, 25)));
             FlipSwitch s2 = gsPlay.AddSwitch(new EventTrigger(this, p1), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(602, 25)));
-            LightningChain lc9 = gsPlay.AddLightning(s2.position, p1.position, Color.Green);
+            LightningChain lc9 = gsPlay.AddLightning(s2.position, GridToPosition(595, 25), Color.Green);
+            lc9.AddVertex(p1.position);
             lc9.ConvertEndPointToTarget(p1);
             s2.AddEvent(new EventTrigger(this, lc9));
 
             Door d8 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(605, 18)), OpenState.Closed);                                                //lower barn exit
-            FlipSwitch s3 = gsPlay.AddSwitch(new EventTrigger(this, d8), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(601, 19)));                                  //lower barn exit
+            FlipSwitch s3 = gsPlay.AddOnSwitch(new EventTrigger(this, d8), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(601, 19)));                                  //lower barn exit
             LightningChain lc10 = gsPlay.AddLightning(s3.position, GridToPosition(601, 20) + new Vector2(0, 16), Color.Green);
             lc10.AddVertex(GridToPosition(605, 20) + new Vector2(0, 16));
             lc10.AddVertex(GridToPosition(605, 20) + new Vector2(0, 0));
             //lc6.ConvertEndPointToTarget(d5);
             s3.AddEvent(new EventTrigger(this, lc10));
+            lc10.defaultActive = true;
+            lc10.SetActive(true);
 
             finalTrapDoor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(600, 28)), Level.GridToPosition(new Point(600, 24)), OpenState.Closed);
             Button finalButton = gsPlay.AddButton(new EventTrigger(this, finalTrapDoor), 2, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(591, 26)));
-            LightningChain lc11 = gsPlay.AddLightning(finalButton.position, finalTrapDoor.position, Color.Green);
+            LightningChain lc11 = gsPlay.AddLightning(finalButton.position, GridToPosition(600, 26), Color.Green);
+            lc11.AddVertex(finalTrapDoor.position);
             lc11.ConvertEndPointToTarget(finalTrapDoor);
             finalButton.AddEvent(new EventTrigger(this, lc11));
 
             finalTopDoor = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(605, 09)), OpenState.Closed);                                                //upper barn exit
-            FlipSwitch finalSwitch = gsPlay.AddSwitch(new EventTrigger(this, finalTopDoor), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(601, 10)));                    //upper barn exit 
+            FlipSwitch finalSwitch = gsPlay.AddOnSwitch(new EventTrigger(this, finalTopDoor), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(601, 10)));                    //upper barn exit 
             finalSwitch.AddEvent(new EventTrigger(this, 4));
             LightningChain lc12 = gsPlay.AddLightning(finalSwitch.position, GridToPosition(601, 11) + new Vector2(0, 16), Color.Green);
             lc12.AddVertex(GridToPosition(605, 11) + new Vector2(0, 16));
             lc12.AddVertex(GridToPosition(605, 11) + new Vector2(0, 0));
             //lc6.ConvertEndPointToTarget(d5);
             finalSwitch.AddEvent(new EventTrigger(this, lc12));
+            lc12.defaultActive = true;
+            lc12.SetActive(true);
 
             AudioManager.PlayMusic("Field");
         }

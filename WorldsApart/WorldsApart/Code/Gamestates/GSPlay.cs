@@ -564,6 +564,22 @@ namespace WorldsApart.Code.Gamestates
             return s;
         }
 
+        public FlipSwitch AddOnSwitch(EventTrigger eventTrigger, Texture2D texture, Vector2 position)
+        {
+            FlipSwitch s = AddSwitch(eventTrigger, texture, position);
+            s.defaultOn = true;
+            s.LightsOn();
+            return s;
+        }
+
+        public FlipSwitch AddMultiSwitch(EventTrigger eventTrigger, Texture2D texture, Vector2 position)
+        {
+            FlipSwitch s = AddSwitch(eventTrigger, texture, position);
+            s.multiSwitch = true;
+            s.LightsOff();
+            return s;
+        }
+
         public Door AddOpeningDoor(Texture2D texture, Vector2 openPosition, Vector2 closePosition, OpenState state)
         {
 

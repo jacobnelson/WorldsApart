@@ -13,6 +13,9 @@ namespace WorldsApart.Code.Entities
 {
     class FlipSwitch : EventObject
     {
+        public bool defaultOn = false;
+        public bool multiSwitch = false;
+
         public bool pressureCooker = false;
         public bool touching = false;
 
@@ -27,10 +30,27 @@ namespace WorldsApart.Code.Entities
             
         }
 
+        public FlipSwitch(EventTrigger eventTrigger, Texture2D texture, Vector2 position, bool isOn) : this(eventTrigger, texture, position)
+        {
+            if (isOn)
+            {
+                defaultOn = true;
+                LightsOn();
+            }
+        }
+
         public override void SetPlayerMode(PlayerObjectMode pi)
         {
             base.SetPlayerMode(pi);
             light.SetPlayerMode(pi);
+            if (defaultOn)
+            {
+                LightsOn();
+            }
+            else
+            {
+                LightsOff();
+            }
         }
 
         public void LightsOn()
@@ -47,8 +67,16 @@ namespace WorldsApart.Code.Entities
                     light.color = Color.Blue;
                     break;
                 case PlayerObjectMode.None:
-                    currentCellCol = 1;
-                    light.color = Color.Green;
+                    if (!multiSwitch)
+                    {
+                        currentCellCol = 1;
+                        light.color = Color.Green;
+                    }
+                    else
+                    {
+                        currentCellCol = 3;
+                        light.color = Color.Orange;
+                    }
                     break;
             }
             selfIlluminating = true;
@@ -58,9 +86,21 @@ namespace WorldsApart.Code.Entities
         public void LightsOff()
         {
             //color = Color.Red;
-            currentCellCol = 4;
-            selfIlluminating = false;
-            light.visible = false;
+
+            if (!multiSwitch)
+            {
+
+                currentCellCol = 4;
+                selfIlluminating = false;
+                light.visible = false;
+            }
+            else
+            {
+                currentCellCol = 2;
+                light.color = Color.Blue;
+                selfIlluminating = true;
+                light.visible = true;
+            }
         }
 
         public override void Update()
@@ -90,7 +130,8 @@ namespace WorldsApart.Code.Entities
             if (triggerState == TriggerState.Untriggered)
             {
                 triggerState = TriggerState.Triggered;
-                LightsOn();
+                if (defaultOn) LightsOff();
+                else LightsOn();
                 foreach (EventTrigger eventTrigger in triggerList)
                 {
                     eventTrigger.ActivateEvent(TriggerState.Triggered);
@@ -100,7 +141,8 @@ namespace WorldsApart.Code.Entities
             else
             {
                 triggerState = TriggerState.Untriggered;
-                LightsOff();
+                if (defaultOn) LightsOn();
+                else LightsOff();
                 foreach (EventTrigger eventTrigger in triggerList)
                 {
                     eventTrigger.ActivateEvent(TriggerState.Untriggered);
@@ -120,7 +162,8 @@ namespace WorldsApart.Code.Entities
             {
                 eventTrigger.ActivateEvent(TriggerState.Triggered);
             }
-            currentCellCol = 2;
+            currentCellCol = 1;
+            light.visible = true;
         }
 
         public void PressureOff()
@@ -129,7 +172,8 @@ namespace WorldsApart.Code.Entities
             {
                 eventTrigger.ActivateEvent(TriggerState.Untriggered);
             }
-            currentCellCol = 1;
+            currentCellCol = 4;
+            light.visible = false;
         }
 
         //public void SwitchOn()
