@@ -64,16 +64,19 @@ namespace WorldsApart.Code.Levels
             levelDataTexture = gsPlay.LoadTexture("Levels/level7Data");
 
 
-            player1Pos = GridToPosition(5, 280);
-            player2Pos = GridToPosition(7, 280);
+            //player1Pos = GridToPosition(5, 280);
+            //player2Pos = GridToPosition(7, 280);
 
-            //player1Pos = GridToPosition(310, 177);
-            //player2Pos = player1Pos;
+            player1Pos = GridToPosition(224, 274);
+            player2Pos = player1Pos;
 
             portalPos = GridToPosition(394, 41);
             pItemPos = GridToPosition(441, 119);
 
             SetupLevel();
+
+            leftLimit = 32;
+            rightLimit = levelWidth;
 
             TriggerArea update = gsPlay.AddTriggerArea(new EventTrigger(this, 99), Art.smoke, Vector2.Zero);
             update.visible = false;
@@ -279,7 +282,7 @@ namespace WorldsApart.Code.Levels
             lc22.AddVertex(GridToPosition(300, 98));
             lc22.ConvertEndPointToTarget(c2);
             FS5.AddEvent(new EventTrigger(this, lc22));
-            Moveable m3 = gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveable"), Level.GridToPosition(new Point(302, 97)), .8f);
+            Moveable m3 = gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveableMechanical"), Level.GridToPosition(new Point(302, 97)), .8f);
             m3.SetPlayerMode(PlayerObjectMode.One);
 
             c3 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(338, 98)), 256, 360);

@@ -459,7 +459,6 @@ namespace WorldsApart.Code.Gamestates
             PickUpObj obj = new PickUpObj(texture, position);
             obj.playerTangible = playerMode;
             obj.playerVisible = playerMode;
-            obj.SetAnimationStuff(1, 1, 1, 3, 64, 64, 3, 5);
             obj.SetCollisionBox(22, 22, Vector2.Zero);
             pickUpList.Add(obj);
         }
@@ -469,7 +468,6 @@ namespace WorldsApart.Code.Gamestates
             PickUpObj obj = new PickUpObj(bounceMultiplier, texture, position);
             pickUpList.Add(obj);
             pickUpAuras.Add(new GaussianTargets(gameStateManager.game.GraphicsDevice));
-            obj.SetAnimationStuff(1, 1, 1, 3, 64, 64, 3, 20);
             obj.SetCollisionBox(22, 22, Vector2.Zero);
             return obj;
         }
@@ -480,7 +478,6 @@ namespace WorldsApart.Code.Gamestates
             obj.playerVisible = playerMode;
             pickUpList.Add(obj);
             pickUpAuras.Add(new GaussianTargets(gameStateManager.game.GraphicsDevice));
-            obj.SetAnimationStuff(1, 1, 1, 3, 64, 64, 3, 10);
             obj.SetCollisionBox(22, 22, Vector2.Zero);
             return obj;
         }
@@ -541,6 +538,10 @@ namespace WorldsApart.Code.Gamestates
             Button button = new Button(eventTrigger, texture, position);
             button.neededMass = neededMass;
             buttonList.Add(button);
+
+            SpriteIMG bBase = AddFrontFGTile(LoadTexture("TestSprites/buttonBase"), position);
+            bBase.origin = button.origin;
+
             return button;
         }
 
@@ -633,6 +634,7 @@ namespace WorldsApart.Code.Gamestates
             bgParticleList.Add(p);
             return p;
         }
+
         public Particle AddBGParticle(Texture2D texture, Vector2 position)
         {
             Particle p = new Particle(texture, position);
@@ -703,7 +705,7 @@ namespace WorldsApart.Code.Gamestates
         {
             for (int i = 0; i < 8; i++)
             {
-                Particle p = new Particle(Art.smoke, position);
+                Particle p = new Particle(Art.smokePuff, position);
                 p.life = 30;
                 p.speed = new Vector2(Mathness.RandomNumber(-1.5f, 1.5f), Mathness.RandomNumber(-1.5f, 1.5f));
                 p.startAlpha = 255;
@@ -741,6 +743,13 @@ namespace WorldsApart.Code.Gamestates
         public ParticleEmitter AddEmitter(AnimatedSprite image, Vector2 position)
         {
             ParticleEmitter emitter = new ParticleEmitter(this, image, position);
+            emitterList.Add(emitter);
+            return emitter;
+        }
+
+        public CircularEmitter AddCircularEmitter(AnimatedSprite image, Vector2 position)
+        {
+            CircularEmitter emitter = new CircularEmitter(this, image, position);
             emitterList.Add(emitter);
             return emitter;
         }
@@ -808,6 +817,105 @@ namespace WorldsApart.Code.Gamestates
             console.LinkConsole(linkedConsole);
             consoleList.Add(console);
             return console;
+        }
+
+        public void AddFireParticle(Vector2 position)
+        {
+            AnimatedSprite particle2 = new AnimatedSprite(LoadTexture("GameObjects/orangeFire"), position);
+            ParticleEmitter pe2 = AddEmitter(particle2, position);
+            pe2.fadeInOut = true;
+            pe2.startAlpha = 0;
+            pe2.endAlpha = 128;
+            pe2.startScale = 3;
+            pe2.endScale = 4;
+            pe2.spawnRate = 1;
+            pe2.color = Color.Orange;
+            pe2.randomDisplacement = new Vector2(10, 8);
+            pe2.randomSpeedX = new Vector2(-.25f, .25f);
+            pe2.randomSpeedY = new Vector2(-.6f, -.4f);
+            pe2.life = 30;
+            pe2.selfIlluminated = true;
+
+
+            AnimatedSprite particle = new AnimatedSprite(LoadTexture("GameObjects/whiteFire"), position);
+            ParticleEmitter pe = AddEmitter(particle, position);
+            pe.startAlpha = 0;
+            pe.endAlpha = 255;
+            pe.fadeInOut = true;
+            pe.startScale = 2f;
+            pe.endScale = 2.5f;
+            pe.spawnRate = 40;
+            pe.life = 180;
+            pe.color = new Color(255, 242, 93);
+            pe.randomDisplacement = new Vector2(5, 5);
+            pe.selfIlluminated = true;
+
+            
+        }
+
+        public void AddSpinningFireParticle(Vector2 position)
+        {
+            float angle = Mathness.RandomNumber(0, (float)Math.PI * 2);
+
+            AnimatedSprite particle2 = new AnimatedSprite(LoadTexture("GameObjects/orangeFire"), position);
+            CircularEmitter pe2 = AddCircularEmitter(particle2, position);
+            pe2.fadeInOut = true;
+            pe2.startAlpha = 0;
+            pe2.endAlpha = 128;
+            pe2.startScale = 3;
+            pe2.endScale = 4;
+            pe2.spawnRate = 1;
+            pe2.color = Color.Orange;
+            pe2.randomDisplacement = new Vector2(10, 8);
+            pe2.randomSpeedX = new Vector2(-.25f, .25f);
+            pe2.randomSpeedY = new Vector2(-.6f, -.4f);
+            pe2.life = 30;
+            pe2.selfIlluminated = true;
+            pe2.angle = angle;
+
+            //AnimatedSprite particle3 = new AnimatedSprite(LoadTexture("GameObjects/orangeFire"), position);
+            //CircularEmitter pe3 = AddCircularEmitter(particle3, position);
+            //pe3.fadeInOut = true;
+            //pe3.startAlpha = 0;
+            //pe3.endAlpha = 128;
+            //pe3.startScale = 3;
+            //pe3.endScale = 4;
+            //pe3.spawnRate = 1;
+            //pe3.color = Color.Orange;
+            //pe3.randomDisplacement = new Vector2(10, 8);
+            //pe3.randomSpeedX = new Vector2(-.25f, .25f);
+            //pe3.randomSpeedY = new Vector2(-.6f, -.4f);
+            //pe3.life = 30;
+            //pe3.selfIlluminated = true;
+            //pe3.angle = (float)Math.PI;
+
+            AnimatedSprite particle = new AnimatedSprite(LoadTexture("GameObjects/whiteFire"), position);
+            CircularEmitter pe = AddCircularEmitter(particle, position);
+            pe.startAlpha = 0;
+            pe.endAlpha = 255;
+            pe.fadeInOut = true;
+            pe.startScale = 2f;
+            pe.endScale = 2.5f;
+            pe.spawnRate = 5;
+            pe.life = 40;
+            pe.color = new Color(255, 242, 93);
+            pe.randomDisplacement = new Vector2(5, 5);
+            pe.selfIlluminated = true;
+            pe.angle = angle;
+
+            //AnimatedSprite particle4 = new AnimatedSprite(LoadTexture("GameObjects/whiteFire"), position);
+            //CircularEmitter pe4 = AddCircularEmitter(particle4, position);
+            //pe4.startAlpha = 0;
+            //pe4.endAlpha = 255;
+            //pe4.fadeInOut = true;
+            //pe4.startScale = 2f;
+            //pe4.endScale = 2.5f;
+            //pe4.spawnRate = 5;
+            //pe4.life = 40;
+            //pe4.color = new Color(255, 242, 93);
+            //pe4.randomDisplacement = new Vector2(5, 5);
+            //pe4.selfIlluminated = true;
+            //pe4.angle = (float)Math.PI;
         }
 
         #endregion

@@ -110,10 +110,10 @@ namespace WorldsApart.Code.Controllers
             float halfScreenWidth = (Game1.screenWidth / 2) / scaleValue / splitMultiplier;
             float halfScreenHeight = (Game1.screenHeight / 2) / scaleValue;
 
-            if (position.X * 2 - halfScreenWidth < 0) position.X = halfScreenWidth / 2;
-            else if (position.X * 2 + halfScreenWidth > Level.levelWidth * 2) position.X = Level.levelWidth - halfScreenWidth / 2;
+            if (position.X * 2 - halfScreenWidth < Level.leftLimit * 2) position.X = (Level.leftLimit * 2 + halfScreenWidth) / 2;
+            else if (position.X * 2 + halfScreenWidth > Level.rightLimit * 2) position.X = (Level.rightLimit * 2 - halfScreenWidth) / 2;
             if (position.Y * 2 - halfScreenHeight < 0) position.Y = halfScreenHeight / 2;
-            else if (position.Y * 2 + halfScreenHeight > Level.levelHeight * 2) position.Y = Level.levelHeight - halfScreenHeight / 2;
+            else if (position.Y * 2 + halfScreenHeight > Level.levelHeight * 2) position.Y = (Level.levelHeight * 2 - halfScreenHeight) / 2;
 
             
             //if (GameStateManager.isMultiplayer)

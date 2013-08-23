@@ -53,6 +53,11 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            leftLimit = 32;
+            rightLimit = levelWidth;
+
+            //gsPlay.AddSpinningFireParticle(GridToPosition(7, 47));
+
             LightningChain bolt = gsPlay.AddLightning(GridToPosition(24, 42), GridToPosition(27, 42), Color.White);
             bolt.AddVertex(GridToPosition(27, 38));
             bolt.SetActive(true);
@@ -123,7 +128,7 @@ namespace WorldsApart.Code.Levels
 
 
             
-            LightConsole console1 = gsPlay.AddLightConsole(gsPlay.LoadTexture("TestSprites/winSpot"), GridToPosition(189, 39));
+            LightConsole console1 = gsPlay.AddLightConsole(gsPlay.LoadTexture("TestSprites/LightConsole"), GridToPosition(189, 39));
             console1.AddLight(player1Light);
             LightConsole console2 = gsPlay.AddLinkedLightConsole(console1, console1.texture, GridToPosition(189, 32));
             console2.AddLight(player2Light);
@@ -205,7 +210,7 @@ namespace WorldsApart.Code.Levels
 
             finalDoor = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/platform"), GridToPosition(207, 13) + new Vector2(16, 16), OpenState.Closed);
             //gsPlay.AddSwitch(new EventTrigger(this, gsPlay.AddEventPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(93, 26)), Level.GridToPosition(new Point(100, 26)))), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(88, 28)));
-            //gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/winSpot"), Level.GridToPosition(new Point(207, 11)) + new Vector2(16,16));
+            //gsPlay.AddTriggerArea(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/LightConsole"), Level.GridToPosition(new Point(207, 11)) + new Vector2(16,16));
 
 
             final1 = gsPlay.AddTriggerArea(new EventTrigger(this, 5), gsPlay.LoadTexture("TestSprites/lock1"), GridToPosition(202, 16) + new Vector2(16, 16));
@@ -228,8 +233,10 @@ namespace WorldsApart.Code.Levels
                 case 0:
                     if (triggerState == TriggerState.Triggered)
                     {
-                        gsPlay.gameStateManager.currentLevel = 1;
-                        gsPlay.gameStateManager.SwitchToGSPlay();
+                        gsPlay.player1.visible = false;
+                        gsPlay.player2.visible = false;
+                        gsPlay.gameStateManager.currentLevel = 7;
+                        gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);
                     }
                     break;
                 case 1:

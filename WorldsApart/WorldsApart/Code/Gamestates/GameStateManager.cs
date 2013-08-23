@@ -57,7 +57,7 @@ namespace WorldsApart.Code.Gamestates
         public int screenTransitionRate = 60;
         public GameStateType transitionType;
 
-        public int currentLevel = 1; 
+        public int currentLevel = 0; 
         public int goodness = 0;
 
         //NetServer server;
@@ -83,6 +83,12 @@ namespace WorldsApart.Code.Gamestates
             Art.words5 = game.Content.Load<Texture2D>("Cutscene/words5");
             Art.words6 = game.Content.Load<Texture2D>("Cutscene/words6");
             Art.portalPulse = game.Content.Load<Texture2D>("GameObjects/portalPulse");
+            Art.portalItem1 = game.Content.Load<Texture2D>("GameObjects/portalItem1");
+            Art.portalItem2 = game.Content.Load<Texture2D>("GameObjects/portalItem2");
+            Art.portalItem3 = game.Content.Load<Texture2D>("GameObjects/portalItem3");
+            Art.portalItem4 = game.Content.Load<Texture2D>("GameObjects/portalItem4");
+            Art.portalItem5 = game.Content.Load<Texture2D>("GameObjects/portalItem5");
+            Art.smokePuff = game.Content.Load<Texture2D>("TestSprites/SmokePuff");
 
 
             GSOverlay.InitializeGSOverlay(this);

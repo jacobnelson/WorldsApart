@@ -30,6 +30,8 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            rightLimit = levelWidth;
+
             //672,11
         }
 

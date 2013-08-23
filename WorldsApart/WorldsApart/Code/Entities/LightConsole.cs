@@ -22,6 +22,8 @@ namespace WorldsApart.Code.Entities
 
         public LightConsole(Texture2D texture, Vector2 position) : base(texture, position)
         {
+            scale = new Vector2(1.5f);
+            hitBox.SetSize(new Vector2(texture.Width * .75f, texture.Height * .75f));
         }
 
         public void LinkConsole(LightConsole console)
@@ -76,7 +78,6 @@ namespace WorldsApart.Code.Entities
 
                 ActivateEvent(TriggerState.Untriggered);
 
-
             }
             else
             {
@@ -99,10 +100,12 @@ namespace WorldsApart.Code.Entities
                         player.sleeperLight = null;
                         sleeperLight.target = this;
                     }
+
+                    ActivateEvent(TriggerState.Triggered);
                 }
                 hasLight = true;
 
-                ActivateEvent(TriggerState.Triggered);
+                
             }
         }
 

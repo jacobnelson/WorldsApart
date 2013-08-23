@@ -47,7 +47,7 @@ namespace WorldsApart.Code.Entities
 
         public Texture2D regularTexture;
 
-        PlayerObjectMode playerObjectMode = PlayerObjectMode.One;
+        public PlayerObjectMode playerObjectMode = PlayerObjectMode.One;
         public bool stopInput = false;
         public bool superStopInput = false;
 
@@ -358,6 +358,11 @@ namespace WorldsApart.Code.Entities
             base.Update();
             grabBox.SetPosition(hitBox.GetPosition());
             Level.CheckForPlayerStuff(this);
+
+            if (hitBox.Bottom() < 0 || hitBox.Top() > Level.levelHeight || hitBox.Right() < 0 || hitBox.Left() > Level.levelWidth)
+            {
+                
+            }
 
         }
 

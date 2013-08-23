@@ -36,6 +36,8 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            rightLimit = levelWidth;
+
             Sprite cameraTarget = new Sprite(GridToPosition(137, 86));
             gsPlay.cameraPlayer1.AddTarget(cameraTarget);
             gsPlay.cameraPlayer2.AddTarget(cameraTarget);

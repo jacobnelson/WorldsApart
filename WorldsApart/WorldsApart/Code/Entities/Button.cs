@@ -20,7 +20,7 @@ namespace WorldsApart.Code.Entities
         bool raisingUp = false;
 
         Vector2 unpressedScale = Vector2.One;
-        Vector2 pressedScale = new Vector2(1, .2f);
+        Vector2 pressedScale = new Vector2(1, 0.4375f);
 
         public float neededMass = 1;
         public float heldMass = 0;

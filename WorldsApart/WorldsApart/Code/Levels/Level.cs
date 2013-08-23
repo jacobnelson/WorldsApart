@@ -23,6 +23,8 @@ namespace WorldsApart.Code.Levels
         static public float collisionSize = 32;
         static public float levelWidth;
         static public float levelHeight;
+        static public float leftLimit = 0;
+        static public float rightLimit = 0;
         public static EnvironmentData[,] environmentData;
         public List<InventoryItem> itemList = new List<InventoryItem>();
 
@@ -34,6 +36,9 @@ namespace WorldsApart.Code.Levels
         public Color atmosphereLight = Color.White;
 
         static public float deathHeight = 0;
+
+        static public SpriteIMG player1Checkpoint;
+        static public SpriteIMG player2Checkpoint;
 
         Portal glados;
         public bool hasPortal = true;
@@ -195,17 +200,30 @@ namespace WorldsApart.Code.Levels
                     {
                         environmentData[x, y] = new EnvironmentData(false);
                         environmentData[x, y].checkpoint = true;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/checkpoint"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
+                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/checkpoint"), GridToCenterPosition(new Point(x, y)));
+                        tile.scale = new Vector2(1.5f);
                         gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 128, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(false);
                         environmentData[x, y].killZone = true;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/killZone"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/killZone"), GridToPosition(new Point(x, y)));
+                        //tile.origin = Vector2.Zero;
+                        //gsPlay.backFGList.Add(tile);
+                        //gsPlay.AddFireParticle(GridToCenterPosition(x, y));
+                    }
+                    else if (colorData[x, y] == new Color(255, 128, 1))
+                    {
+                        environmentData[x, y] = new EnvironmentData(false);
+                        environmentData[x, y].killZone = true;
+                        gsPlay.AddFireParticle(GridToCenterPosition(x, y));
+                    }
+                    else if (colorData[x, y] == new Color(255, 128, 2))
+                    {
+                        environmentData[x, y] = new EnvironmentData(false);
+                        environmentData[x, y].killZone = true;
+                        gsPlay.AddSpinningFireParticle(GridToCenterPosition(x, y));
                     }
                     else
                     {
@@ -220,15 +238,42 @@ namespace WorldsApart.Code.Levels
             gsPlay.player2 = new Player(gsPlay, PlayerObjectMode.Two, gsPlay.LoadTexture("player2"), player2Pos);
             gsPlay.player2.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player2.SetCollisionBox(48, 96, Vector2.Zero);
+
+            player1Checkpoint = gsPlay.AddBackBGTile(gsPlay.LoadTexture("TestSprites/checkpointWarm"), new Vector2(-64, -64));
+            player1Checkpoint.SetPlayerMode(PlayerObjectMode.One);
+            player1Checkpoint.scale = new Vector2(1.5f);
+            player1Checkpoint.illuminatingAllTheTime = true;
+            player2Checkpoint = gsPlay.AddBackBGTile(gsPlay.LoadTexture("TestSprites/checkpointCool"), new Vector2(-64, -64));
+            player2Checkpoint.SetPlayerMode(PlayerObjectMode.Two);
+            player2Checkpoint.scale = new Vector2(1.5f);
+            player2Checkpoint.illuminatingAllTheTime = true;
             
             if (hasPortal)
             {
                 glados = gsPlay.AddPortal(new EventTrigger(this, 0), gsPlay.LoadTexture("TestSprites/portal"), portalPos);
                 glados.SetAnimationStuff(2, 1, 2, 8, 96, 192, 8, 5);
-                Collectible goody = gsPlay.AddCollectible(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), pItemPos);
-                goody.selfIlluminating = true;
-                goody.SetAnimationStuff(1, 1, 1, 2, 128, 128, 2, 10);
+                PortalItem goody = new PortalItem(new EventTrigger(this, glados), gsPlay.LoadTexture("TestSprites/Cursor"), pItemPos);
+                gsPlay.areaList.Add(goody);
                 goody.SetCollisionBox(32, 32, Vector2.Zero);
+                goody.visible = false;
+                GlyphEmitter ge = new GlyphEmitter(gsPlay, Art.portalItem1, pItemPos);
+                ge.AddTexture(Art.portalItem2);
+                ge.AddTexture(Art.portalItem3);
+                ge.AddTexture(Art.portalItem4);
+                ge.AddTexture(Art.portalItem5);
+                ge.selfIlluminated = true;
+                ge.startAlpha = 0;
+                ge.endAlpha = 255;
+                ge.fadeInOut = true;
+                ge.startScale = .75f;
+                ge.endScale = 1.25f;
+                ge.spawnRate = 10;
+                ge.life = 40;
+                //ge.randomDisplacement = new Vector2(8, 8);
+                ge.randomSpeedX = new Vector2(-.75f, .75f);
+                ge.randomSpeedY = new Vector2(-.75f, .75f);
+                gsPlay.emitterList.Add(ge);
+                goody.emitter = ge;
 
                 AnimatedSprite pulseSprite = new AnimatedSprite(Art.portalPulse);
                 ParticleEmitter pulse = gsPlay.AddEmitter(pulseSprite, glados.position);
@@ -331,7 +376,16 @@ namespace WorldsApart.Code.Levels
                     {
                         if (environmentData[x, y].checkpoint)
                         {
+
                             player.checkpoint = GridToPosition(new Point(x, y));
+                            if (player.playerObjectMode == PlayerObjectMode.One)
+                            {
+                                player1Checkpoint.position = GridToCenterPosition(x, y);
+                            }
+                            else
+                            {
+                                player2Checkpoint.position = GridToCenterPosition(x, y);
+                            }
                         }
                         
                     }

@@ -50,6 +50,9 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            leftLimit = 32;
+            rightLimit = levelWidth - 32;
+
             gsPlay.cameraPlayer1.Update();
             gsPlay.cameraPlayer2.Update();
 
