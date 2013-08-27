@@ -62,12 +62,49 @@ namespace WorldsApart.Code.Levels
             //Deactivate players for intro scene:
             StartIntro();
 
+            Vector2 bgPosition = new Vector2(-300, -300);
+            for (int x = 0; x < 3; x++)
+            {
+                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropBase1"), bgPosition);
+                bg1.SetPlayerMode(PlayerObjectMode.One);
+                gsPlay.AddParallax(bg1, .1f);
+                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropBase2"), bgPosition);
+                bg2.SetPlayerMode(PlayerObjectMode.Two);
+                gsPlay.AddParallax(bg2, .1f);
+
+                bgPosition.X += 1024;
+            }
+
+            bgPosition = new Vector2(-300, -300);
+            for (int x = 0; x < 5; x++)
+            {
+                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropOverlay1"), bgPosition);
+                bg1.SetPlayerMode(PlayerObjectMode.One);
+                gsPlay.AddParallax(bg1, .2f);
+                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropOverlay2"), bgPosition);
+                bg2.SetPlayerMode(PlayerObjectMode.Two);
+                gsPlay.AddParallax(bg2, .2f);
+
+                bgPosition.X += 1024;
+            }
+
+            bgPosition = new Vector2(-300, -300);
+            for (int x = 0; x < 11; x++)
+            {
+                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldMatte1"), bgPosition);
+                bg1.SetPlayerMode(PlayerObjectMode.One);
+                gsPlay.AddParallax(bg1, .5f);
+                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldMatte2"), bgPosition);
+                bg2.SetPlayerMode(PlayerObjectMode.Two);
+                gsPlay.AddParallax(bg2, .5f);
+
+                bgPosition.X += 1024;
+            }
+
             TriggerArea update = gsPlay.AddTriggerArea(new EventTrigger(this, 99), Art.barrier, Vector2.Zero);
 
             atmosphereLight = new Color(255, 255, 255);
 
-            SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(64, levelHeight / 2));
-            gsPlay.AddParallax(s, .5f);
 
             doubleButtonDoor = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), Level.GridToPosition(new Point(214, 23)), Level.GridToPosition(new Point(214, 27)), OpenState.Closed);  //first door puzzle
             Button b1 = gsPlay.AddButton(new EventTrigger(this, 1), 1, gsPlay.LoadTexture("TestSprites/button"), Level.GridToPosition(new Point(206, 29)));                                            //first door puzzle
@@ -358,6 +395,8 @@ namespace WorldsApart.Code.Levels
                         else gsPlay.gameStateManager.goodness--;
                         gsPlay.player1.visible = false;
                         gsPlay.player2.visible = false;
+                        GSPlay.AddCheckpointParticles(gsPlay.player1.position, true);
+                        GSPlay.AddCheckpointParticles(gsPlay.player2.position, false);
                         gsPlay.gameStateManager.currentLevel = 2;
                         gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);
                         //gsPlay.gameStateManager.SwitchToGSPlay();

@@ -11,6 +11,8 @@ using WorldsApart.Code.Gamestates;
 using WorldsApart.Code.Controllers;
 using WorldsApart.Code.Graphics;
 
+using System.Diagnostics;
+
 namespace WorldsApart.Code.Levels
 {
     class Level2 : Level
@@ -35,6 +37,51 @@ namespace WorldsApart.Code.Levels
             pItemPos = GridToPosition(241, 79);
 
             SetupLevel();
+
+            Vector2 bgPosition = new Vector2(-400, -300);
+            for (int x = 0; x < 3; x++)
+            {
+                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/forestBackdropBase1"), bgPosition);
+                bg1.SetPlayerMode(PlayerObjectMode.One);
+                gsPlay.AddParallax(bg1, .1f);
+                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/forestBackdropBase2"), bgPosition);
+                bg2.SetPlayerMode(PlayerObjectMode.Two);
+                gsPlay.AddParallax(bg2, .1f);
+
+                bgPosition.X += 1024;
+            }
+
+            bgPosition = new Vector2(-300, -200);
+            for (int x = 0; x < 4; x++)
+            {
+                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/forestBackdropOverlay1"), bgPosition);
+                bg1.SetPlayerMode(PlayerObjectMode.One);
+                gsPlay.AddParallax(bg1, .2f);
+                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/forestBackdropOverlay2"), bgPosition);
+                bg2.SetPlayerMode(PlayerObjectMode.Two);
+                gsPlay.AddParallax(bg2, .2f);
+
+                bgPosition.X += 1024;
+            }
+
+            bgPosition = new Vector2(-300, -300);
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 2; y++)
+                {
+                    SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/forestMatte1"), bgPosition);
+                    bg1.SetPlayerMode(PlayerObjectMode.One);
+                    gsPlay.AddParallax(bg1, .5f);
+                    SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/forestMatte2"), bgPosition);
+                    bg2.SetPlayerMode(PlayerObjectMode.Two);
+                    gsPlay.AddParallax(bg2, .5f);
+
+                    bgPosition.Y += 1024;
+                }
+
+                bgPosition.Y = -300;
+                bgPosition.X += 1024;
+            }
 
             rightLimit = levelWidth;
 
@@ -270,9 +317,6 @@ namespace WorldsApart.Code.Levels
             //Button (365, 60)
 
 
-            SpriteIMG s = new SpriteIMG(gsPlay.LoadTexture("bgSky"), new Vector2(32, levelHeight / 4));
-            gsPlay.AddParallax(s, .5f);
-
             //672,11
 
             AudioManager.PlayMusic("Forest");
@@ -296,6 +340,8 @@ namespace WorldsApart.Code.Levels
                         else gsPlay.gameStateManager.goodness--;
                         gsPlay.player1.visible = false;
                         gsPlay.player2.visible = false;
+                        GSPlay.AddCheckpointParticles(gsPlay.player1.position, true);
+                        GSPlay.AddCheckpointParticles(gsPlay.player2.position, false);
                         gsPlay.gameStateManager.currentLevel = 3;
                         //gsPlay.gameStateManager.SwitchToGSPlay();
                         gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);

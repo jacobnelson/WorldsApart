@@ -411,6 +411,8 @@ namespace WorldsApart.Code.Levels
                         else gsPlay.gameStateManager.goodness--;
                         gsPlay.player1.visible = false;
                         gsPlay.player2.visible = false;
+                        GSPlay.AddCheckpointParticles(gsPlay.player1.position, true);
+                        GSPlay.AddCheckpointParticles(gsPlay.player2.position, false);
                         gsPlay.gameStateManager.currentLevel = 99;
                         //gsPlay.gameStateManager.SwitchToGSPlay();
                         gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);

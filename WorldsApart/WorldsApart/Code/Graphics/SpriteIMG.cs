@@ -44,6 +44,11 @@ namespace WorldsApart.Code.Graphics
         {
         }
 
+        public void ConvertCameraOrigin()
+        {
+            origin = new Vector2(texture.Width / 4, texture.Height / 4);
+        }
+
         public override void Update()
         {
             base.Update();

@@ -39,7 +39,52 @@ namespace WorldsApart.Code.Levels
 
             rightLimit = levelWidth - 32;
 
-            atmosphereLight = new Color(0,0,0);
+            Vector2 bgPosition = new Vector2(-400, -300);
+            for (int x = 0; x < 2; x++)
+            {
+                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/caveBackdropBase1"), bgPosition);
+                bg1.SetPlayerMode(PlayerObjectMode.One);
+                gsPlay.AddParallax(bg1, .1f);
+                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/caveBackdropBase2"), bgPosition);
+                bg2.SetPlayerMode(PlayerObjectMode.Two);
+                gsPlay.AddParallax(bg2, .1f);
+
+                bgPosition.X += 1024;
+            }
+
+            bgPosition = new Vector2(-400, -300);
+            for (int x = 0; x < 3; x++)
+            {
+                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/caveBackdropOverlay1"), bgPosition);
+                bg1.SetPlayerMode(PlayerObjectMode.One);
+                gsPlay.AddParallax(bg1, .2f);
+                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/caveBackdropOverlay2"), bgPosition);
+                bg2.SetPlayerMode(PlayerObjectMode.Two);
+                gsPlay.AddParallax(bg2, .2f);
+
+                bgPosition.X += 1024;
+            }
+
+            bgPosition = new Vector2(-300, -300);
+            for (int x = 0; x < 5; x++)
+            {
+                for (int y = 0; y < 2; y++)
+                {
+                    SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/caveMatte1"), bgPosition);
+                    bg1.SetPlayerMode(PlayerObjectMode.One);
+                    gsPlay.AddParallax(bg1, .5f);
+                    SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/caveMatte2"), bgPosition);
+                    bg2.SetPlayerMode(PlayerObjectMode.Two);
+                    gsPlay.AddParallax(bg2, .5f);
+
+                    bgPosition.Y += 1024;
+                }
+
+                bgPosition.Y = -300;
+                bgPosition.X += 1024;
+            }
+
+            atmosphereLight = new Color(0, 0, 0);
 
             gsPlay.AddPointLight(gsPlay.LoadTexture("ShaderAssets/pointLight"), GridToPosition(240, 44), new Vector2(4));
 
@@ -393,6 +438,8 @@ namespace WorldsApart.Code.Levels
                         else gsPlay.gameStateManager.goodness--;
                         gsPlay.player1.visible = false;
                         gsPlay.player2.visible = false;
+                        GSPlay.AddCheckpointParticles(gsPlay.player1.position, true);
+                        GSPlay.AddCheckpointParticles(gsPlay.player2.position, false);
                         gsPlay.gameStateManager.currentLevel = 7;
                         //gsPlay.gameStateManager.SwitchToGSPlay();
                         gsPlay.gameStateManager.TransitionToGameState(gsPlay, GameStateType.GSPlay, 30);

@@ -239,11 +239,11 @@ namespace WorldsApart.Code.Levels
             gsPlay.player2.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player2.SetCollisionBox(48, 96, Vector2.Zero);
 
-            player1Checkpoint = gsPlay.AddBackBGTile(gsPlay.LoadTexture("TestSprites/checkpointWarm"), new Vector2(-64, -64));
+            player1Checkpoint = gsPlay.AddBackFGTile(gsPlay.LoadTexture("TestSprites/checkpointWarm"), new Vector2(-64, -64));
             player1Checkpoint.SetPlayerMode(PlayerObjectMode.One);
             player1Checkpoint.scale = new Vector2(1.5f);
             player1Checkpoint.illuminatingAllTheTime = true;
-            player2Checkpoint = gsPlay.AddBackBGTile(gsPlay.LoadTexture("TestSprites/checkpointCool"), new Vector2(-64, -64));
+            player2Checkpoint = gsPlay.AddBackFGTile(gsPlay.LoadTexture("TestSprites/checkpointCool"), new Vector2(-64, -64));
             player2Checkpoint.SetPlayerMode(PlayerObjectMode.Two);
             player2Checkpoint.scale = new Vector2(1.5f);
             player2Checkpoint.illuminatingAllTheTime = true;
@@ -381,10 +381,12 @@ namespace WorldsApart.Code.Levels
                             if (player.playerObjectMode == PlayerObjectMode.One)
                             {
                                 player1Checkpoint.position = GridToCenterPosition(x, y);
+                                GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), true);
                             }
                             else
                             {
                                 player2Checkpoint.position = GridToCenterPosition(x, y);
+                                GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), false);
                             }
                         }
                         

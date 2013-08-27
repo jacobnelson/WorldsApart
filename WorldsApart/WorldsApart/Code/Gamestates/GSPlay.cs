@@ -55,6 +55,8 @@ namespace WorldsApart.Code.Gamestates
         RenderTarget2D nonAlphaPlayer;
         RenderTarget2D finalTarget;
         RenderTarget2D bgTarget;
+        RenderTarget2D bgTarget1;
+        RenderTarget2D bgTarget2;
         RenderTarget2D lightningTarget;
 
         //RenderTarget2D alphaMask2;
@@ -220,6 +222,8 @@ namespace WorldsApart.Code.Gamestates
             auraTargetOrigin = new Vector2(Game1.screenWidth / 2, Game1.screenHeight / 2);
             player2Aura = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             bgTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            bgTarget1 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
+            bgTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             lightningTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             warpTarget = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
             warpTarget2 = new RenderTarget2D(gameStateManager.game.GraphicsDevice, Game1.screenWidth, Game1.screenHeight);
@@ -447,7 +451,7 @@ namespace WorldsApart.Code.Gamestates
             return tile;
         }
 
-        public SpriteIMG AddBackBGTile(Texture2D texture, Vector2 position)
+        public SpriteIMG AddBackFGTile(Texture2D texture, Vector2 position)
         {
             SpriteIMG tile = new SpriteIMG(texture, position);
             backFGList.Add(tile);
@@ -642,6 +646,30 @@ namespace WorldsApart.Code.Gamestates
             return p;
         }
 
+        static public void AddCheckpointParticles(Vector2 position, bool isPlayer1)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Particle p = new Particle(Art.sparkle, position);
+                p.position += new Vector2(Mathness.RandomNumber(-10f, 10f), Mathness.RandomNumber(-10f, 10f));
+                p.speed = new Vector2(Mathness.RandomNumber(-2f, 2f), Mathness.RandomNumber(-2f, 2f));
+                p.randomMinForce = new Vector2(0, 0);
+                p.randomMaxForce = new Vector2(0, .08f);
+                p.startAlpha = 255;
+                p.endAlpha = 0;
+                p.startScale = .5f;
+                p.endScale = .75f;
+                p.life = 80;
+                if (isPlayer1) p.color = Color.Red;
+                else p.color = Color.Blue;
+                p.illuminatingAllTheTime = true;
+
+                p.StartParticleSystems();
+
+                particleList.Add(p);
+            }
+        }
+
         public Particle AddRain(bool isPlayer1)
         {
             Vector2 position = Vector2.Zero;
@@ -776,8 +804,8 @@ namespace WorldsApart.Code.Gamestates
         public void AddParallax(SpriteIMG img, float parallaxRatio)
         {
             bool noMatches = true;
-            img.position *= parallaxRatio;
             img.screenCull = false;
+            img.origin = Vector2.Zero;
             foreach (ParallaxLayer bg in bgLayerList)
             {
                 if (bg.parallaxRatio == parallaxRatio)
@@ -1352,14 +1380,14 @@ namespace WorldsApart.Code.Gamestates
             {
                 spriteBatch.End();
                 colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, colorShader, camera.transform);
                 player1.Draw(spriteBatch, camera);
             }
             else
             {
                 spriteBatch.End();
                 colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, colorShader, camera.transform);
                 player1.Draw(spriteBatch, camera);
 
             }
@@ -1367,14 +1395,14 @@ namespace WorldsApart.Code.Gamestates
             {
                 spriteBatch.End();
                 colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, colorShader, camera.transform);
                 player2.Draw(spriteBatch, camera);
             }
             else
             {
                 spriteBatch.End();
                 colorShader.Parameters["DestColor"].SetValue(new Color(50, 50, 50).ToVector4());
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, colorShader, camera.transform);
                 player2.Draw(spriteBatch, camera);
 
             }
@@ -1382,11 +1410,11 @@ namespace WorldsApart.Code.Gamestates
             {
                 spriteBatch.End();
                 colorShader.Parameters["DestColor"].SetValue(light.color.ToVector4());
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+                spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, colorShader, camera.transform);
                 light.Draw(spriteBatch, camera);
             }
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, colorShader, camera.transform);
+            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null, null, null, colorShader, camera.transform);
             colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
             if (playerIndex == PlayerIndex.One)
             {
@@ -1455,9 +1483,15 @@ namespace WorldsApart.Code.Gamestates
             gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget);
             //else gameStateManager.game.GraphicsDevice.SetRenderTarget(renderTarget2);
             gameStateManager.game.GraphicsDevice.Clear(Color.SlateBlue); //TODO: change here for background color
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             //if (playerIndex == PlayerIndex.One) 
             spriteBatch.Draw(bgTarget, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+            if (playerIndex == PlayerIndex.One)
+                spriteBatch.Draw(bgTarget1, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            else
+                spriteBatch.Draw(bgTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
             //else spriteBatch.Draw(bgTarget2, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
             //colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
@@ -1560,6 +1594,8 @@ namespace WorldsApart.Code.Gamestates
             gameStateManager.game.GraphicsDevice.SetRenderTarget(player1Objects);
             //else gameStateManager.game.GraphicsDevice.SetRenderTarget(player1Objects2);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+
+
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.One) s.Draw(spriteBatch, camera);
@@ -1596,6 +1632,8 @@ namespace WorldsApart.Code.Gamestates
             gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Objects);
             //else gameStateManager.game.GraphicsDevice.SetRenderTarget(player2Objects2);
             gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+
+
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.Two) s.Draw(spriteBatch, camera);
@@ -1730,6 +1768,8 @@ namespace WorldsApart.Code.Gamestates
 
         public void DrawParallaxLayers(SpriteBatch spriteBatch, Camera camera)
         {
+
+            #region Player neutral bgs
             //if (playerIndex == PlayerIndex.One) 
             gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget);
             //else gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget2);
@@ -1740,15 +1780,65 @@ namespace WorldsApart.Code.Gamestates
                 camera.parallaxRatio = bg.parallaxRatio;
                 camera.UpdateMatrixValues();
                 GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, null, null, null, camera.transform);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, null, camera.transform);
                 foreach (SpriteIMG img in bg.imageList)
                 {
-                    img.Draw(spriteBatch, camera);
+                    if (img.playerVisible == PlayerObjectMode.None)
+                        img.Draw(spriteBatch, camera);
                 }
                 spriteBatch.End();
             }
             camera.parallaxRatio = 1;
             camera.UpdateMatrixValues();
+            #endregion
+
+            #region Player 1 bgs
+
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget1);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget2);
+            gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+            foreach (ParallaxLayer bg in bgLayerList)
+            {
+
+                camera.parallaxRatio = bg.parallaxRatio;
+                camera.UpdateMatrixValues();
+                GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, null, camera.transform);
+                foreach (SpriteIMG img in bg.imageList)
+                {
+                    if (img.playerVisible == PlayerObjectMode.One)
+                        img.Draw(spriteBatch, camera);
+                }
+                spriteBatch.End();
+            }
+            camera.parallaxRatio = 1;
+            camera.UpdateMatrixValues();
+
+            #endregion
+
+            #region Player 2 bgs
+
+            gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget2);
+            //else gameStateManager.game.GraphicsDevice.SetRenderTarget(bgTarget2);
+            gameStateManager.game.GraphicsDevice.Clear(Color.Transparent);
+            foreach (ParallaxLayer bg in bgLayerList)
+            {
+
+                camera.parallaxRatio = bg.parallaxRatio;
+                camera.UpdateMatrixValues();
+                GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, null, null, null, camera.transform);
+                foreach (SpriteIMG img in bg.imageList)
+                {
+                    if (img.playerVisible == PlayerObjectMode.Two)
+                        img.Draw(spriteBatch, camera);
+                }
+                spriteBatch.End();
+            }
+            camera.parallaxRatio = 1;
+            camera.UpdateMatrixValues();
+
+            #endregion
         }
 
         public override void Draw(SpriteBatch spriteBatch)

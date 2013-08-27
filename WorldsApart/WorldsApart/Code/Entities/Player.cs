@@ -323,7 +323,8 @@ namespace WorldsApart.Code.Entities
                     downNotBeingPressed = InputManager.IsButtonUp2(Buttons.DPadDown) && InputManager.IsKeyUp(Keys.S) && !superDown;
             }
 
-            if (jumpPressed && state == PhysState.Grounded && downNotBeingPressed)
+            //if (jumpPressed && state == PhysState.Grounded && downNotBeingPressed) TODO: change back
+            if (jumpPressed && downNotBeingPressed)
             {
                 force.Y += jumpForce;
                 isJumping = true;
@@ -338,7 +339,7 @@ namespace WorldsApart.Code.Entities
                     jumpCounter++;
                     if (jumpCounter >= jumpRate)
                     {
-                        StopJump();
+                        //StopJump(); TODO: uncomment
                     }
                 }
             }

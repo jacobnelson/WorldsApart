@@ -27,7 +27,9 @@ namespace WorldsApart.Code.Gamestates
         SpriteIMG multiPlayer;
         SpriteIMG exit;
 
-        SpriteIMG backdrop;
+        ScrollingBackground backdropBase;
+        ScrollingBackground backdropOverlay;
+        ScrollingBackground backdropMatte;
 
         bool startPressed = false;
         bool firstBit = true;
@@ -52,6 +54,10 @@ namespace WorldsApart.Code.Gamestates
 
             multiPlayer.alpha = 128;
             exit.alpha = 128;
+
+            backdropBase = new ScrollingBackground(LoadTexture("BGs/fieldBackdropBase1"), false);
+            backdropOverlay = new ScrollingBackground(LoadTexture("BGs/fieldBackdropOverlay2"), false);
+            backdropMatte = new ScrollingBackground(LoadTexture("TitleAssets/menuBackdrop"), false);
         }
 
         public void MenuUp()
@@ -120,6 +126,10 @@ namespace WorldsApart.Code.Gamestates
             singlePlayer.Update();
             multiPlayer.Update();
             exit.Update();
+
+            backdropBase.UpdateScroll(-.25f);
+            backdropOverlay.UpdateScroll(-.5f);
+            backdropMatte.UpdateScroll(-1f);
 
             startPressed = false;
 
@@ -203,7 +213,11 @@ namespace WorldsApart.Code.Gamestates
             base.Draw(spriteBatch);
 
             gameStateManager.game.GraphicsDevice.Clear(Color.White);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+            backdropBase.Draw(spriteBatch);
+            backdropOverlay.Draw(spriteBatch);
+            backdropMatte.Draw(spriteBatch);
 
             logo.Draw(spriteBatch);
             singlePlayer.Draw(spriteBatch);
