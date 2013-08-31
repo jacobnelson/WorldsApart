@@ -31,5 +31,23 @@ namespace WorldsApart.Code.Graphics
         public static Texture2D portalItem4;
         public static Texture2D portalItem5;
         public static Texture2D smokePuff;
+        public static Texture2D bridgeParticle1;
+        public static Texture2D bridgeParticle2;
+        public static Texture2D bridgeParticle3;
+        public static Texture2D bridgeParticle4;
+        public static Texture2D bridgeParticle5;
+        public static Texture2D bridgeParticle6;
+        public static Texture2D bridgeParticle7;
+        public static Texture2D bridgeParticle8;
+        public static Texture2D bridgeParticle9;
+        public static Texture2D bridgeParticle10;
+        public static Texture2D bridgeParticle11;
+        public static Texture2D bridgeParticle12;
+        public static Texture2D bridgeParticle13;
+        public static Texture2D bridgeParticle14;
+        public static Texture2D bridgeParticle15;
+        public static Texture2D bridgeParticle16;
+        public static Texture2D bridgeParticle17;
+        public static Texture2D bridgeParticle18;
     }
 }

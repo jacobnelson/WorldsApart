@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.IO;
+
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
@@ -26,6 +28,8 @@ namespace WorldsApart.Code.Levels
         AnimatedSprite player1FadeFrame;
         AnimatedSprite player2FadeFrame;
 
+        SpriteIMG finalField;
+
 
         public FinalBridge(GSPlay gsPlay)
             : base(gsPlay)
@@ -33,8 +37,8 @@ namespace WorldsApart.Code.Levels
             levelDataTexture = gsPlay.LoadTexture("Levels/bridge");
 
             //player1Pos = GridToPosition(79, 44);
-            player1Pos = GridToPosition(6, 44);
-            player2Pos = GridToPosition(131, 44);
+            player2Pos = GridToPosition(6, 44);
+            player1Pos = GridToPosition(131, 44);
 
             hasPortal = false;
 
@@ -45,18 +49,75 @@ namespace WorldsApart.Code.Levels
 
             rightLimit = levelWidth;
 
+            Vector2 bgPosition = new Vector2(-400, -400);
+            SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropBaseBoth"), bgPosition);
+            bg1.scale = new Vector2(1.5f);
+            gsPlay.AddParallax(bg1, .1f);
+            bgPosition = new Vector2(-600, -380);
+            SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropOverlayBoth"), bgPosition);
+            bg2.scale = new Vector2(2);
+            gsPlay.AddParallax(bg2, .2f);
+
+            for (int x = 1; x <= 5; x++)
+            {
+                for (int y = 1; y <= 2; y++)
+                {
+                    if (x == 5 && y == 1) continue;
+
+                    SpriteIMG matte = new SpriteIMG(gsPlay.LoadTexture("BGs/bridgeMatte" + x + "x" + y), new Vector2(1024 * (x - 1) - 1078, 1024 * (y - 1) - 100));
+                    gsPlay.AddParallax(matte, .5f);
+
+
+                }
+            }
+
+            for (int x = 1; x <= 5; x++)
+            {
+                for (int y = 1; y <= 3; y++)
+                {
+                    string fgName = "LevelTiles/Bridge/bridgeFG" + x + "x" + y;
+                    if (File.Exists("Content/" + fgName + ".xnb"))
+                    {
+                        SpriteIMG fg = gsPlay.AddFrontFGTile(gsPlay.LoadTexture(fgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        fg.origin = Vector2.Zero;
+                    }
+
+                    string bgName = "LevelTiles/Bridge/bridgeBG" + x + "x" + y;
+                    if (File.Exists("Content/" + bgName + ".xnb"))
+                    {
+                        SpriteIMG bg = gsPlay.AddBackFGTile(gsPlay.LoadTexture(bgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        bg.origin = Vector2.Zero;
+                    }
+
+                }
+            }
+
+            for (int x = 1; x <= 5; x++)
+            {
+                SpriteIMG cloud = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("LevelTiles/Bridge/clouds" + x + "x1"), new Vector2(1024 * (x - 1), 0));
+                cloud.illuminatingAllTheTime = true;
+                cloud.origin = Vector2.Zero;
+            }
+
+            Vector2 bridgePos = new Vector2(2160, 613.5f);
+            gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeFull"), bridgePos);
+
             atmosphereLight = new Color(100, 100, 100);
 
-            PointLight sun1 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(0, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
-            PointLight sun2 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(32, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
-            PointLight sun3 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(64, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
-            PointLight sun4 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(96, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
-            PointLight sun5 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(128, 0) + new Vector2(0, -200), new Vector2(2048, 1800));
+            PointLight sun1 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(0, 0) + new Vector2(0, -200), new Vector2(2048, 1850));
+            PointLight sun2 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(32, 0) + new Vector2(0, -200), new Vector2(2048, 1850));
+            PointLight sun3 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(64, 0) + new Vector2(0, -200), new Vector2(2048, 1850));
+            PointLight sun4 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(96, 0) + new Vector2(0, -200), new Vector2(2048, 1850));
+            PointLight sun5 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(128, 0) + new Vector2(0, -200), new Vector2(2048, 1850));
             sun1.screenCull = false;
             sun2.screenCull = false;
             sun3.screenCull = false;
             sun4.screenCull = false;
             sun5.screenCull = false;
+
+
+            finalField = gsPlay.AddBackFGTile(gsPlay.LoadTexture("Cutscene/finalField"), new Vector2(2175, 451));
+            finalField.visible = false;
             
 
             Vector2 introPos = GridToPosition(41, 25) + new Vector2(0, 20);
@@ -113,20 +174,20 @@ namespace WorldsApart.Code.Levels
                     for (int i = 0; i < 2; i++)
                     {
                         Particle rain = gsPlay.AddRain(true);
-                        rain.position = new Vector2(rain.position.X, 800);
+                        rain.position = new Vector2(rain.position.X, 762);
                         rain = gsPlay.AddRain(false);
-                        rain.position = new Vector2(rain.position.X, 800);
+                        rain.position = new Vector2(rain.position.X, 762);
                     }
 
-                    if (gsPlay.player1.position.X > 2048)
-                    {
-                        gsPlay.player1.superStopInput = true;
-                        gsPlay.player1.speed.X = 0;
-                    }
-                    if (gsPlay.player2.position.X < 2272)
+                    if (gsPlay.player2.position.X > 2048)
                     {
                         gsPlay.player2.superStopInput = true;
                         gsPlay.player2.speed.X = 0;
+                    }
+                    if (gsPlay.player1.position.X < 2272)
+                    {
+                        gsPlay.player1.superStopInput = true;
+                        gsPlay.player1.speed.X = 0;
                     }
 
                     if (beforeCutscene)
@@ -161,6 +222,11 @@ namespace WorldsApart.Code.Levels
                                 player1Ending.visible = true;
                                 player2Ending.visible = true;
 
+                                finalField.visible = true;
+                                gsPlay.frontFGList.Clear();
+                                gsPlay.frontFGList.Add(player1Ending);
+                                gsPlay.frontFGList.Add(player2Ending);
+
                                 //67.5 x 13.5
                                 player1Ending.position = GridToPosition(67, 13) + new Vector2(16, 16);
                                 player2Ending.position = player1Ending.position;
@@ -170,8 +236,8 @@ namespace WorldsApart.Code.Levels
                                 gsPlay.player1.position = player1Ending.position;
                                 gsPlay.player2.position = player1Ending.position;
 
-                                player1Ending.spriteEffects = SpriteEffects.FlipHorizontally;
-                                player2Ending.spriteEffects = SpriteEffects.FlipHorizontally;
+                                //player1Ending.spriteEffects = SpriteEffects.FlipHorizontally;
+                                //player2Ending.spriteEffects = SpriteEffects.FlipHorizontally;
 
                                 //TODO: unified background
 

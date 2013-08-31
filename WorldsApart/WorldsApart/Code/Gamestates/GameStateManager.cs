@@ -89,6 +89,24 @@ namespace WorldsApart.Code.Gamestates
             Art.portalItem4 = game.Content.Load<Texture2D>("GameObjects/portalItem4");
             Art.portalItem5 = game.Content.Load<Texture2D>("GameObjects/portalItem5");
             Art.smokePuff = game.Content.Load<Texture2D>("TestSprites/SmokePuff");
+            Art.bridgeParticle1 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle1");
+            Art.bridgeParticle2 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle2");
+            Art.bridgeParticle3 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle3");
+            Art.bridgeParticle4 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle4");
+            Art.bridgeParticle5 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle5");
+            Art.bridgeParticle6 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle6");
+            Art.bridgeParticle7 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle7");
+            Art.bridgeParticle8 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle8");
+            Art.bridgeParticle9 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle9");
+            Art.bridgeParticle10 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle10");
+            Art.bridgeParticle11 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle11");
+            Art.bridgeParticle12 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle12");
+            Art.bridgeParticle13 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle13");
+            Art.bridgeParticle14 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle14");
+            Art.bridgeParticle15 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle15");
+            Art.bridgeParticle16 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle16");
+            Art.bridgeParticle17 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle17");
+            Art.bridgeParticle18 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle18");
 
 
             GSOverlay.InitializeGSOverlay(this);

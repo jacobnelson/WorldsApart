@@ -31,14 +31,24 @@ namespace WorldsApart.Code.Levels
         float barrierCounter = 0;
         float barrierRate = 1;
 
+        SpriteIMG bridge;
+        SpriteIMG cracksWarm1;
+        SpriteIMG cracksWarm2;
+        SpriteIMG cracksWarm3;
+        SpriteIMG cracksCool1;
+        SpriteIMG cracksCool2;
+        SpriteIMG cracksCool3;
+
+        bool bridgeShattered = false;
+
         public theBridge(GSPlay gsPlay)
             : base(gsPlay)
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/bridge");
 
             //player1Pos = GridToPosition(79, 44);
-            player1Pos = GridToPosition(6, 44);
-            player2Pos = GridToPosition(131, 44);
+            player2Pos = GridToPosition(6, 44);
+            player1Pos = GridToPosition(131, 44);
 
             hasPortal = false;
 
@@ -92,7 +102,23 @@ namespace WorldsApart.Code.Levels
                 }
             }
 
-            
+            Vector2 bridgePos = new Vector2(2160, 613.5f);
+
+            bridge = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeFull"), bridgePos);
+
+            cracksCool1 = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeCracksCool1"), bridgePos);
+            cracksCool2 = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeCracksCool2"), bridgePos);
+            cracksCool3 = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeCracksCool3"), bridgePos);
+            cracksCool1.visible = false;
+            cracksCool2.visible = false;
+            cracksCool3.visible = false;
+
+            cracksWarm1 = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeCracksWarm1"), bridgePos);
+            cracksWarm2 = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeCracksWarm2"), bridgePos);
+            cracksWarm3 = gsPlay.AddFrontFGTile(gsPlay.LoadTexture("GameObjects/bridgeCracksWarm3"), bridgePos);
+            cracksWarm1.visible = false;
+            cracksWarm2.visible = false;
+            cracksWarm3.visible = false;
 
             barrier = gsPlay.AddTriggerArea(new EventTrigger(this, 1), gsPlay.LoadTexture("bridgeBarrier"), GridToPosition(67, 7) + new Vector2(16, 16));
             barrier.visible = false;
@@ -137,7 +163,7 @@ namespace WorldsApart.Code.Levels
 
                     if (barrier.hitBox.CheckCollision(gsPlay.player1.hitBox))
                     {
-                        gsPlay.player1.nextForce.X = -5;
+                        gsPlay.player1.nextForce.X = 5;
                         Vector2 pos = new Vector2(barrier.position.X, gsPlay.player1.position.Y);
                         Particle p = gsPlay.AddParticle(Art.barrier, pos);
                         p.startScale = .8f;
@@ -147,10 +173,13 @@ namespace WorldsApart.Code.Levels
                         p.StartParticleSystems();
                         player1Count++;
                         atmosphereLight = Color.Black;
+                        if (player1Count == 2) cracksWarm1.visible = true;
+                        else if (player1Count == 5) cracksWarm2.visible = true;
+                        else if (player1Count == 7) cracksWarm3.visible = true;
                     }
                     if (barrier.hitBox.CheckCollision(gsPlay.player2.hitBox))
                     {
-                        gsPlay.player2.nextForce.X = 5;
+                        gsPlay.player2.nextForce.X = -5;
                         Vector2 pos = new Vector2(barrier.position.X, gsPlay.player2.position.Y);
                         Particle p = gsPlay.AddParticle(Art.barrier, pos);
                         p.startScale = .8f;
@@ -160,12 +189,18 @@ namespace WorldsApart.Code.Levels
                         p.StartParticleSystems();
                         player2Count++;
                         atmosphereLight = Color.Black;
+                        if (player2Count == 2) cracksCool1.visible = true;
+                        else if (player2Count == 5) cracksCool2.visible = true;
+                        else if (player2Count == 7) cracksCool3.visible = true;
                     }
                     break;
                 case 2:
-                    if (player1Count >= 5 && player2Count >= 5 && breaker.hitBox.CheckCollision(gsPlay.player1.hitBox) && breaker.hitBox.CheckCollision(gsPlay.player2.hitBox))
+                    if (player1Count >= 10 && player2Count >= 10 && breaker.hitBox.CheckCollision(gsPlay.player1.hitBox) && breaker.hitBox.CheckCollision(gsPlay.player2.hitBox))
                     {
-                        ShatterBridge();
+                        if (!bridgeShattered)
+                        {
+                            ShatterBridge();
+                        }
                     }
                     break;
                 case 3:
@@ -176,6 +211,8 @@ namespace WorldsApart.Code.Levels
 
         public void ShatterBridge()
         {
+            bridgeShattered = true;
+
             //62, 15
             environmentData[62, 15].isSolid = false;
             environmentData[63, 15].isSolid = false;
@@ -189,6 +226,45 @@ namespace WorldsApart.Code.Levels
             environmentData[71, 15].isSolid = false;
             environmentData[72, 15].isSolid = false;
 
+            bridge.visible = false;
+            cracksCool1.visible = false;
+            cracksCool2.visible = false;
+            cracksCool3.visible = false;
+            cracksWarm1.visible = false;
+            cracksWarm2.visible = false;
+            cracksWarm3.visible = false;
+            
+            Vector2 bridgePos = new Vector2(2160, 613.5f);
+
+
+            //Warm
+            gsPlay.AddBridgeParticle(Art.bridgeParticle1, bridgePos + new Vector2(153, 10));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle2, bridgePos + new Vector2(114, -88));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle3, bridgePos + new Vector2(160, -114));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle4, bridgePos + new Vector2(158, -5));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle13, bridgePos + new Vector2(68, -94));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle14, bridgePos + new Vector2(18, -105));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle15, bridgePos + new Vector2(162, -48));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle16, bridgePos + new Vector2(93, -127));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle17, bridgePos + new Vector2(32, -127));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle18, bridgePos + new Vector2(93, -58));
+
+
+            //Cold
+            gsPlay.AddBridgeParticle(Art.bridgeParticle5, bridgePos + new Vector2(-161, -100));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle6, bridgePos + new Vector2(-70, -60));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle7, bridgePos + new Vector2(-118, -125));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle8, bridgePos + new Vector2(-162, -52));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle9, bridgePos + new Vector2(-26, -103));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle10, bridgePos + new Vector2(-112, -70));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle11, bridgePos + new Vector2(-78, -99));
+            gsPlay.AddBridgeParticle(Art.bridgeParticle12, bridgePos + new Vector2(-131, -19));
+
+
+            for (int i = 0; i < 20; i++)
+            {
+                gsPlay.AddBridgeSmoke();
+            }
         }
     }
 }

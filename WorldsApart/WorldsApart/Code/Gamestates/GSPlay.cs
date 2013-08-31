@@ -646,6 +646,32 @@ namespace WorldsApart.Code.Gamestates
             return p;
         }
 
+        public Particle AddBridgeParticle(Texture2D texture, Vector2 position)
+        {
+            Particle p = new Particle(texture, position);
+            particleList.Add(p);
+            p.rotationSpeed = Mathness.RandomNumber(-.1f, .1f);
+            p.randomMinForce = new Vector2(-.04f, .5f);
+            p.randomMaxForce = new Vector2(.04f, .5f);
+            p.canDie = false;
+            return p;
+        }
+
+        public Particle AddBridgeSmoke()
+        {
+            Vector2 topLeft = new Vector2(1982, 494);
+            Vector2 bottomRight = new Vector2(2317, 598);
+            Particle p = new Particle(Art.smokePuff, new Vector2(Mathness.RandomNumber(topLeft.X, bottomRight.X), Mathness.RandomNumber(topLeft.Y, bottomRight.Y)));
+            particleList.Add(p);
+            p.startAlpha = 255;
+            p.endAlpha = 0;
+            p.startScale = 1.5f;
+            p.endScale = 2f;
+            p.rotationSpeed = Mathness.RandomNumber(-.1f, .1f);
+            p.StartParticleSystems();
+            return p;
+        }
+
         static public void AddCheckpointParticles(Vector2 position, bool isPlayer1)
         {
             for (int i = 0; i < 10; i++)

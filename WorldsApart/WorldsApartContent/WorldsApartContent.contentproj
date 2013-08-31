@@ -798,7 +798,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameObjects\portalItem1.png">
+    <Compile Include="portalItem1.png">
       <Name>portalItem1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -1248,6 +1248,151 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameObjects\bridgeFull.png">
+      <Name>bridgeFull</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameObjects\bridgeCracksCool1.png">
+      <Name>bridgeCracksCool1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeCracksCool2.png">
+      <Name>bridgeCracksCool2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeCracksCool3.png">
+      <Name>bridgeCracksCool3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeCracksWarm1.png">
+      <Name>bridgeCracksWarm1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeCracksWarm2.png">
+      <Name>bridgeCracksWarm2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeCracksWarm3.png">
+      <Name>bridgeCracksWarm3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameObjects\bridgeDebrisParticle1.png">
+      <Name>bridgeDebrisParticle1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle10.png">
+      <Name>bridgeDebrisParticle10</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle11.png">
+      <Name>bridgeDebrisParticle11</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle12.png">
+      <Name>bridgeDebrisParticle12</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle13.png">
+      <Name>bridgeDebrisParticle13</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle14.png">
+      <Name>bridgeDebrisParticle14</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle15.png">
+      <Name>bridgeDebrisParticle15</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle16.png">
+      <Name>bridgeDebrisParticle16</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle17.png">
+      <Name>bridgeDebrisParticle17</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle18.png">
+      <Name>bridgeDebrisParticle18</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle2.png">
+      <Name>bridgeDebrisParticle2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle3.png">
+      <Name>bridgeDebrisParticle3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle4.png">
+      <Name>bridgeDebrisParticle4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle5.png">
+      <Name>bridgeDebrisParticle5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle6.png">
+      <Name>bridgeDebrisParticle6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle7.png">
+      <Name>bridgeDebrisParticle7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle8.png">
+      <Name>bridgeDebrisParticle8</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="GameObjects\bridgeDebrisParticle9.png">
+      <Name>bridgeDebrisParticle9</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameObjects\portalItem1.png">
+      <Name>portalItem1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cutscene\finalField.png">
+      <Name>finalField</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
