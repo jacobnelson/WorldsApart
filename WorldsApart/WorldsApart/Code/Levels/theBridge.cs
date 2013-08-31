@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.IO;
+
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
@@ -44,6 +46,53 @@ namespace WorldsApart.Code.Levels
             //pItemPos = GridToPosition(672
 
             SetupLevel();
+
+            rightLimit = levelWidth;
+
+            Vector2 bgPosition = new Vector2(-400, -400);
+            SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropBaseBoth"), bgPosition);
+            bg1.scale = new Vector2(1.5f);
+            gsPlay.AddParallax(bg1, .1f);
+            bgPosition = new Vector2(-600, -380);
+            SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropOverlayBoth"), bgPosition);
+            bg2.scale = new Vector2(2);
+            gsPlay.AddParallax(bg2, .2f);
+
+            for (int x = 1; x <= 5; x++)
+            {
+                for (int y = 1; y <= 2; y++)
+                {
+                    if (x == 5 && y == 1) continue;
+
+                    SpriteIMG matte = new SpriteIMG(gsPlay.LoadTexture("BGs/bridgeMatte" + x + "x" + y), new Vector2(1024 * (x - 1) - 1078, 1024 * (y - 1) - 100));
+                    gsPlay.AddParallax(matte, .5f);
+
+
+                }
+            }
+
+            for (int x = 1; x <= 5; x++)
+            {
+                for (int y = 1; y <= 3; y++)
+                {
+                    string fgName = "LevelTiles/Bridge/bridgeFG" + x + "x" + y;
+                    if (File.Exists("Content/" + fgName + ".xnb"))
+                    {
+                        SpriteIMG fg = gsPlay.AddFrontFGTile(gsPlay.LoadTexture(fgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        fg.origin = Vector2.Zero;
+                    }
+
+                    string bgName = "LevelTiles/Bridge/bridgeBG" + x + "x" + y;
+                    if (File.Exists("Content/" + bgName + ".xnb"))
+                    {
+                        SpriteIMG bg = gsPlay.AddBackFGTile(gsPlay.LoadTexture(bgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        bg.origin = Vector2.Zero;
+                    }
+
+                }
+            }
+
+            
 
             barrier = gsPlay.AddTriggerArea(new EventTrigger(this, 1), gsPlay.LoadTexture("bridgeBarrier"), GridToPosition(67, 7) + new Vector2(16, 16));
             barrier.visible = false;

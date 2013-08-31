@@ -43,6 +43,8 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
+            rightLimit = levelWidth;
+
             atmosphereLight = new Color(100, 100, 100);
 
             PointLight sun1 = gsPlay.AddPointLight(Art.whitePixel, GridToPosition(0, 0) + new Vector2(0, -200), new Vector2(2048, 1800));

@@ -519,6 +519,7 @@
       <Name>signal</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -624,6 +625,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="LevelTiles\Cave\" />
+    <Folder Include="LevelTiles\Construction\" />
+    <Folder Include="LevelTiles\Field\" />
+    <Folder Include="LevelTiles\Forest\" />
+    <Folder Include="LevelTiles\Mountain\" />
     <Folder Include="SFX\" />
   </ItemGroup>
   <ItemGroup>
@@ -739,31 +745,37 @@
       <Name>Bridge</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+      <ProcessorParameters_Quality>Medium</ProcessorParameters_Quality>
     </Compile>
     <Compile Include="Music\Cave.wav">
       <Name>Cave</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+      <ProcessorParameters_Quality>Medium</ProcessorParameters_Quality>
     </Compile>
     <Compile Include="Music\Construction.wav">
       <Name>Construction</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+      <ProcessorParameters_Quality>Medium</ProcessorParameters_Quality>
     </Compile>
     <Compile Include="Music\Field.wav">
       <Name>Field</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+      <ProcessorParameters_Quality>Medium</ProcessorParameters_Quality>
     </Compile>
     <Compile Include="Music\Forest.wav">
       <Name>Forest</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+      <ProcessorParameters_Quality>Medium</ProcessorParameters_Quality>
     </Compile>
     <Compile Include="Music\Mountain.wav">
       <Name>Mountain</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+      <ProcessorParameters_Quality>Medium</ProcessorParameters_Quality>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -876,31 +888,37 @@
       <Name>fieldBackdropBase1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\fieldBackdropBase2.png">
       <Name>fieldBackdropBase2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\fieldBackdropOverlay1.png">
       <Name>fieldBackdropOverlay1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\fieldBackdropOverlay2.png">
       <Name>fieldBackdropOverlay2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\fieldMatte1.png">
       <Name>fieldMatte1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\fieldMatte2.png">
       <Name>fieldMatte2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -908,31 +926,37 @@
       <Name>forestBackdropBase1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\forestBackdropBase2.png">
       <Name>forestBackdropBase2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\forestBackdropOverlay1.png">
       <Name>forestBackdropOverlay1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\forestBackdropOverlay2.png">
       <Name>forestBackdropOverlay2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\forestMatte1.png">
       <Name>forestMatte1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\forestMatte2.png">
       <Name>forestMatte2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -940,31 +964,37 @@
       <Name>mountainBackdropBase1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\mountainBackdropBase2.png">
       <Name>mountainBackdropBase2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\mountainBackdropOverlay1.png">
       <Name>mountainBackdropOverlay1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\mountainBackdropOverlay2.png">
       <Name>mountainBackdropOverlay2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\mountainMatte1.png">
       <Name>mountainMatte1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\mountainMatte2.png">
       <Name>mountainMatte2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -972,31 +1002,37 @@
       <Name>caveBackdropBase1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\caveBackdropBase2.png">
       <Name>caveBackdropBase2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\caveBackdropOverlay1.png">
       <Name>caveBackdropOverlay1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\caveBackdropOverlay2.png">
       <Name>caveBackdropOverlay2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\caveMatte1.png">
       <Name>caveMatte1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="BGs\caveMatte2.png">
       <Name>caveMatte2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -1004,6 +1040,214 @@
       <Name>menuBackdrop</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BGs\bridgeMatte1x1.png">
+      <Name>bridgeMatte1x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte1x2.png">
+      <Name>bridgeMatte1x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte2x1.png">
+      <Name>bridgeMatte2x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte2x2.png">
+      <Name>bridgeMatte2x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte3x1.png">
+      <Name>bridgeMatte3x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte3x2.png">
+      <Name>bridgeMatte3x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte4x1.png">
+      <Name>bridgeMatte4x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte4x2.png">
+      <Name>bridgeMatte4x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\bridgeMatte5x2.png">
+      <Name>bridgeMatte5x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LevelTiles\Bridge\bridgeBG1x1.png">
+      <Name>bridgeBG1x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG1x2.png">
+      <Name>bridgeBG1x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG2x1.png">
+      <Name>bridgeBG2x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG2x2.png">
+      <Name>bridgeBG2x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG2x3.png">
+      <Name>bridgeBG2x3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG3x1.png">
+      <Name>bridgeBG3x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG3x2.png">
+      <Name>bridgeBG3x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG3x3.png">
+      <Name>bridgeBG3x3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG4x1.png">
+      <Name>bridgeBG4x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG4x2.png">
+      <Name>bridgeBG4x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeBG5x2.png">
+      <Name>bridgeBG5x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeFG2x1.png">
+      <Name>bridgeFG2x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeFG2x2.png">
+      <Name>bridgeFG2x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeFG2x3.png">
+      <Name>bridgeFG2x3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeFG3x1.png">
+      <Name>bridgeFG3x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeFG3x2.png">
+      <Name>bridgeFG3x2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\bridgeFG3x3.png">
+      <Name>bridgeFG3x3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LevelTiles\Bridge\clouds1x1.png">
+      <Name>clouds1x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\clouds2x1.png">
+      <Name>clouds2x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\clouds3x1.png">
+      <Name>clouds3x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="LevelTiles\Bridge\clouds4x1.png">
+      <Name>clouds4x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BGs\mountainBackdropBaseBoth.png">
+      <Name>mountainBackdropBaseBoth</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+    <Compile Include="BGs\mountainBackdropOverlayBoth.png">
+      <Name>mountainBackdropOverlayBoth</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LevelTiles\Bridge\clouds5x1.png">
+      <Name>clouds5x1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

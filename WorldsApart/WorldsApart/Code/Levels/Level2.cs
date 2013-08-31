@@ -38,7 +38,7 @@ namespace WorldsApart.Code.Levels
 
             SetupLevel();
 
-            Vector2 bgPosition = new Vector2(-400, -300);
+            Vector2 bgPosition = new Vector2(-400, -350);
             for (int x = 0; x < 3; x++)
             {
                 SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/forestBackdropBase1"), bgPosition);

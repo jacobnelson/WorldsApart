@@ -36,16 +36,21 @@ namespace WorldsApart.Code.Levels
             rightLimit = levelWidth - 32;
 
 
-            Vector2 bgPosition = new Vector2(-400, -300);
+            Vector2 bgPosition = new Vector2(-400, -400);
             for (int x = 0; x < 3; x++)
             {
-                SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropBase1"), bgPosition);
-                bg1.SetPlayerMode(PlayerObjectMode.One);
-                gsPlay.AddParallax(bg1, .1f);
-                SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropBase2"), bgPosition);
-                bg2.SetPlayerMode(PlayerObjectMode.Two);
-                gsPlay.AddParallax(bg2, .1f);
+                for (int y = 0; y < 2; y++)
+                {
+                    SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropBase1"), bgPosition);
+                    bg1.SetPlayerMode(PlayerObjectMode.One);
+                    gsPlay.AddParallax(bg1, .1f);
+                    SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/mountainBackdropBase2"), bgPosition);
+                    bg2.SetPlayerMode(PlayerObjectMode.Two);
+                    gsPlay.AddParallax(bg2, .1f);
 
+                    bgPosition.Y += 1024;
+                }
+                bgPosition.Y = -400;
                 bgPosition.X += 1024;
             }
 

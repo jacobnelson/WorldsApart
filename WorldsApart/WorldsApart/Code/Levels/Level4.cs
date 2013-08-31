@@ -29,7 +29,7 @@ namespace WorldsApart.Code.Levels
             player1Pos = GridToPosition(15, 10);
             player2Pos = GridToPosition(17, 10);
 
-            //player1Pos = GridToPosition(228, 48);
+            //player1Pos = GridToPosition(176, 84);
             //player2Pos = player1Pos;
 
             portalPos = GridToPosition(232, 48);

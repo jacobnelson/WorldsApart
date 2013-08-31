@@ -62,7 +62,7 @@ namespace WorldsApart.Code.Levels
             //Deactivate players for intro scene:
             StartIntro();
 
-            Vector2 bgPosition = new Vector2(-300, -300);
+            Vector2 bgPosition = new Vector2(-300, -500);
             for (int x = 0; x < 3; x++)
             {
                 SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropBase1"), bgPosition);
@@ -75,7 +75,7 @@ namespace WorldsApart.Code.Levels
                 bgPosition.X += 1024;
             }
 
-            bgPosition = new Vector2(-300, -300);
+            bgPosition = new Vector2(-300, -500);
             for (int x = 0; x < 5; x++)
             {
                 SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropOverlay1"), bgPosition);
