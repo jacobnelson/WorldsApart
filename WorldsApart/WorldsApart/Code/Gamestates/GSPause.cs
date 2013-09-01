@@ -120,7 +120,11 @@ namespace WorldsApart.Code.Gamestates
                     DeactivateItem(resume);
                     ActivateItem(mainMenu);
                     if (startPressed)
+                    {
+                        AudioManager.PlayMusic("Title");
+                        gameStateManager.currentLevel = 1;
                         gameStateManager.SwitchToGSMenu();
+                    }
                     break;
             }
         }

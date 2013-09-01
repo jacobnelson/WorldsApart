@@ -208,9 +208,9 @@ namespace WorldsApart.Code.Levels
                     {
                         environmentData[x, y] = new EnvironmentData(false);
                         environmentData[x, y].killZone = true;
-                        //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/killZone"), GridToPosition(new Point(x, y)));
-                        //tile.origin = Vector2.Zero;
-                        //gsPlay.backFGList.Add(tile);
+                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/killZone"), GridToPosition(new Point(x, y)));
+                        tile.origin = Vector2.Zero;
+                        gsPlay.backFGList.Add(tile);
                         //gsPlay.AddFireParticle(GridToCenterPosition(x, y));
                     }
                     else if (colorData[x, y] == new Color(255, 128, 1))
@@ -377,16 +377,23 @@ namespace WorldsApart.Code.Levels
                         if (environmentData[x, y].checkpoint)
                         {
 
-                            player.checkpoint = GridToPosition(new Point(x, y));
-                            if (player.playerObjectMode == PlayerObjectMode.One)
+                            if (player.checkpoint != GridToCenterPosition(x, y))
                             {
-                                player1Checkpoint.position = GridToCenterPosition(x, y);
-                                GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), true);
-                            }
-                            else
-                            {
-                                player2Checkpoint.position = GridToCenterPosition(x, y);
-                                GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), false);
+                                player.checkpoint = GridToCenterPosition(new Point(x, y));
+                                if (player.playerObjectMode == PlayerObjectMode.One)
+                                {
+                                    player1Checkpoint.position = GridToCenterPosition(x, y);
+                                    GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), true);
+                                    GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), true);
+                                    GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), true);
+                                }
+                                else
+                                {
+                                    player2Checkpoint.position = GridToCenterPosition(x, y);
+                                    GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), false);
+                                    GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), false);
+                                    GSPlay.AddCheckpointParticles(GridToCenterPosition(x, y), false);
+                                }
                             }
                         }
                         

@@ -58,6 +58,8 @@ namespace WorldsApart.Code.Gamestates
                 timeCounter++;
                 if (timeCounter >= timeRate)
                 {
+                    AudioManager.PlayMusic("Title");
+                    gameStateManager.currentLevel = 1;
                     gameStateManager.TransitionToGameState(this, GameStateType.GSTitle, 120);
                 }
             }

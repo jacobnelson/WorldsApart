@@ -293,11 +293,17 @@ namespace WorldsApart.Code.Entities
                 if (holding)
                 {
                     holding = false;
-                    Vector2 throwSpeed = Vector2.Zero;
-                    if (upDown) throwSpeed.Y = -10;
-                    if (downDown) throwSpeed.Y = 10;
-                    if (rightDown) throwSpeed.X = 10;
-                    if (leftDown) throwSpeed.X = -10;
+                    Vector2 throwSpeed = new Vector2(0, -10);
+                    //if (upDown) throwSpeed.Y = -10;
+                    //if (downDown) throwSpeed.Y = 10;
+                    //if (rightDown) throwSpeed.X = 10;
+                    //if (leftDown) throwSpeed.X = -10;
+
+                    if (facing == Facing.Right) throwSpeed.X = 10;
+                    if (facing == Facing.Left) throwSpeed.X = -10;
+
+                    if (downDown) throwSpeed = Vector2.Zero;
+
                     pickUp.GetDropped(throwSpeed);
                     pickUp = null;
                 }

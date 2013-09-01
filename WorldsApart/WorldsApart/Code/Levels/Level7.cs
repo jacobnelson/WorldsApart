@@ -64,11 +64,11 @@ namespace WorldsApart.Code.Levels
             levelDataTexture = gsPlay.LoadTexture("Levels/level7Data");
 
 
-            //player1Pos = GridToPosition(5, 280);
-            //player2Pos = GridToPosition(7, 280);
+            player1Pos = GridToPosition(5, 280);
+            player2Pos = GridToPosition(7, 280);
 
-            player1Pos = GridToPosition(224, 274);
-            player2Pos = player1Pos;
+            //player1Pos = GridToPosition(322, 117);
+            //player2Pos = player1Pos;
 
             portalPos = GridToPosition(394, 41);
             pItemPos = GridToPosition(441, 119);
@@ -285,7 +285,7 @@ namespace WorldsApart.Code.Levels
             Moveable m3 = gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveableMechanical"), Level.GridToPosition(new Point(302, 97)), .8f);
             m3.SetPlayerMode(PlayerObjectMode.One);
 
-            c3 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(338, 98)), 256, 360);
+            c3 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(342, 98)), 256, 360);
             c3.increment = -c3.increment;
             c3.SetPlayerMode(PlayerObjectMode.Two);
             c4 = gsPlay.AddActivateCircularPlatform(gsPlay.LoadTexture("TestSprites/platform"), Level.GridToPosition(new Point(348, 98)), 256, 360);
@@ -308,7 +308,7 @@ namespace WorldsApart.Code.Levels
             LightningChain lc23 = gsPlay.AddLightning(b1.position, GridToPosition(287, 87), Color.Red);
             lc23.AddVertex(GridToPosition(343, 87));
             lc23.AddVertex(GridToPosition(343, 98));
-            lc23.AddVertex(GridToPosition(338, 98));
+            lc23.AddVertex(GridToPosition(342, 98));
             lc23.AddVertex(c3.position);
             lc23.ConvertEndPointToTarget(c3);
             b1.AddEvent(new EventTrigger(this, lc23));

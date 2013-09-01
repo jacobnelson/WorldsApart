@@ -114,6 +114,8 @@ namespace WorldsApart.Code.Gamestates
             
 
             SwitchToGSTitle();
+
+            AudioManager.PlayMusic("Title");
         }
 
         public void Update(GameTime gameTime)

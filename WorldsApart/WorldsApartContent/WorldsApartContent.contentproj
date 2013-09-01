@@ -825,25 +825,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TitleAssets\SmokePuff.png">
-      <Name>SmokePuff</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="TitleAssets\moveable.png">
-      <Name>moveable</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="TitleAssets\moveableMechanical.png">
-      <Name>moveableMechanical</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="TestSprites\moveableMechanical.png">
       <Name>moveableMechanical</Name>
       <Importer>TextureImporter</Importer>
