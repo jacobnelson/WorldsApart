@@ -208,9 +208,9 @@ namespace WorldsApart.Code.Levels
                     {
                         environmentData[x, y] = new EnvironmentData(false);
                         environmentData[x, y].killZone = true;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/killZone"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/killZone"), GridToPosition(new Point(x, y)));
+                        //tile.origin = Vector2.Zero;
+                        //gsPlay.backFGList.Add(tile);
                         //gsPlay.AddFireParticle(GridToCenterPosition(x, y));
                     }
                     else if (colorData[x, y] == new Color(255, 128, 1))

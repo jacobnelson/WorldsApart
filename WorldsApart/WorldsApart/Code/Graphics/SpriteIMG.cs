@@ -28,6 +28,8 @@ namespace WorldsApart.Code.Graphics
 
         protected float positionModifier = 1;
 
+        public float rotationSpeed = 0;
+
         public SpriteIMG(Texture2D texture, Vector2 position)
             : base(position)
         {
@@ -56,6 +58,7 @@ namespace WorldsApart.Code.Graphics
             {
                 selfIlluminating = true;
             }
+            rotation += rotationSpeed;
         }
 
         public virtual void DrawAura(SpriteBatch spriteBatch, Vector2 screenOrigin)
@@ -70,6 +73,13 @@ namespace WorldsApart.Code.Graphics
             base.Draw(spriteBatch);
             if (auraTexture != null) spriteBatch.Draw(auraTexture, position * positionModifier, Color.White);
             if (texture != null) spriteBatch.Draw(texture, sPosition * positionModifier, crop, color, rotation, origin, scale, spriteEffects, 0);
+        }
+
+
+        public bool IsOnScreen(Camera camera)
+        {
+            Rectangle textureArea = new Rectangle((int)position.X - texture.Width / 2, (int)position.Y - texture.Width / 2, texture.Width, texture.Height);
+            return textureArea.Intersects(camera.visibleArea);
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)

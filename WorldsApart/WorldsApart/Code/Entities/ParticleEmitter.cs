@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using WorldsApart.Code.Graphics;
 using WorldsApart.Code.Gamestates;
+using WorldsApart.Code.Controllers;
 
 namespace WorldsApart.Code.Entities
 {
@@ -49,6 +50,12 @@ namespace WorldsApart.Code.Entities
             this.particle = particle;
             this.position = position;
             spawnCounter = Mathness.RandomNumber(0, spawnRate);
+        }
+
+        public bool IsOnScreen(Camera camera)
+        {
+            Rectangle textureArea = new Rectangle((int)position.X - 2, (int)position.Y - 2, 4, 4);
+            return textureArea.Intersects(camera.visibleArea);
         }
 
         virtual public void Update()

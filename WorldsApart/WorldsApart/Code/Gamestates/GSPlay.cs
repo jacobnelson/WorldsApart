@@ -927,21 +927,21 @@ namespace WorldsApart.Code.Gamestates
             pe2.selfIlluminated = true;
             pe2.angle = angle;
 
-            //AnimatedSprite particle3 = new AnimatedSprite(LoadTexture("GameObjects/orangeFire"), position);
-            //CircularEmitter pe3 = AddCircularEmitter(particle3, position);
-            //pe3.fadeInOut = true;
-            //pe3.startAlpha = 0;
-            //pe3.endAlpha = 128;
-            //pe3.startScale = 3;
-            //pe3.endScale = 4;
-            //pe3.spawnRate = 1;
-            //pe3.color = Color.Orange;
-            //pe3.randomDisplacement = new Vector2(10, 8);
-            //pe3.randomSpeedX = new Vector2(-.25f, .25f);
-            //pe3.randomSpeedY = new Vector2(-.6f, -.4f);
-            //pe3.life = 30;
-            //pe3.selfIlluminated = true;
-            //pe3.angle = (float)Math.PI;
+            AnimatedSprite particle3 = new AnimatedSprite(LoadTexture("GameObjects/orangeFire"), position);
+            CircularEmitter pe3 = AddCircularEmitter(particle3, position);
+            pe3.fadeInOut = true;
+            pe3.startAlpha = 0;
+            pe3.endAlpha = 128;
+            pe3.startScale = 3;
+            pe3.endScale = 4;
+            pe3.spawnRate = 1;
+            pe3.color = Color.Orange;
+            pe3.randomDisplacement = new Vector2(10, 8);
+            pe3.randomSpeedX = new Vector2(-.25f, .25f);
+            pe3.randomSpeedY = new Vector2(-.6f, -.4f);
+            pe3.life = 30;
+            pe3.selfIlluminated = true;
+            pe3.angle = (float)Math.PI;
 
             AnimatedSprite particle = new AnimatedSprite(LoadTexture("GameObjects/whiteFire"), position);
             CircularEmitter pe = AddCircularEmitter(particle, position);
@@ -957,19 +957,96 @@ namespace WorldsApart.Code.Gamestates
             pe.selfIlluminated = true;
             pe.angle = angle;
 
-            //AnimatedSprite particle4 = new AnimatedSprite(LoadTexture("GameObjects/whiteFire"), position);
-            //CircularEmitter pe4 = AddCircularEmitter(particle4, position);
-            //pe4.startAlpha = 0;
-            //pe4.endAlpha = 255;
-            //pe4.fadeInOut = true;
-            //pe4.startScale = 2f;
-            //pe4.endScale = 2.5f;
-            //pe4.spawnRate = 5;
-            //pe4.life = 40;
-            //pe4.color = new Color(255, 242, 93);
-            //pe4.randomDisplacement = new Vector2(5, 5);
-            //pe4.selfIlluminated = true;
-            //pe4.angle = (float)Math.PI;
+            AnimatedSprite particle4 = new AnimatedSprite(LoadTexture("GameObjects/whiteFire"), position);
+            CircularEmitter pe4 = AddCircularEmitter(particle4, position);
+            pe4.startAlpha = 0;
+            pe4.endAlpha = 255;
+            pe4.fadeInOut = true;
+            pe4.startScale = 2f;
+            pe4.endScale = 2.5f;
+            pe4.spawnRate = 5;
+            pe4.life = 40;
+            pe4.color = new Color(255, 242, 93);
+            pe4.randomDisplacement = new Vector2(5, 5);
+            pe4.selfIlluminated = true;
+            pe4.angle = (float)Math.PI;
+        }
+
+        public Particle AddWarmGear(Texture2D texture, Vector2 position, float scale, float rotationSpeed)
+        {
+            Particle gear = new Particle(texture, position);
+            gear.scale = new Vector2(scale);
+            gear.rotationSpeed = rotationSpeed;
+            bgParticleList.Add(gear);
+            gear.SetPlayerMode(PlayerObjectMode.One);
+            gear.origin = new Vector2(gear.texture.Width / 2, gear.texture.Height / 2);
+            gear.canDie = false;
+            return gear;
+        }
+
+        public Particle AddCoolGear(Texture2D texture, Vector2 position, float scale, float rotationSpeed)
+        {
+            Particle gear = new Particle(texture, position);
+            gear.scale = new Vector2(scale);
+            gear.rotationSpeed = rotationSpeed;
+            bgParticleList.Add(gear);
+            gear.SetPlayerMode(PlayerObjectMode.Two);
+            gear.origin = new Vector2(gear.texture.Width / 2, gear.texture.Height / 2);
+            gear.canDie = false;
+            return gear;
+        }
+
+        public SpriteIMG AddBackgroundCoolGear(Texture2D texture, Vector2 position, float scale, float rotationSpeed)
+        {
+            SpriteIMG gear = new SpriteIMG(texture, position);
+            gear.scale = new Vector2(scale);
+            gear.rotationSpeed = rotationSpeed;
+            AddParallax(gear, .5f);
+            gear.SetPlayerMode(PlayerObjectMode.Two);
+            gear.origin = new Vector2(gear.texture.Width / 2, gear.texture.Height / 2);
+            return gear;
+        }
+
+        public SpriteIMG AddBackgroundWarmGear(Texture2D texture, Vector2 position, float scale, float rotationSpeed)
+        {
+            SpriteIMG gear = new SpriteIMG(texture, position);
+            gear.scale = new Vector2(scale);
+            gear.rotationSpeed = rotationSpeed;
+            AddParallax(gear, .5f);
+            gear.SetPlayerMode(PlayerObjectMode.One);
+            gear.origin = new Vector2(gear.texture.Width / 2, gear.texture.Height / 2);
+            return gear;
+        }
+
+        public void CreateGearMatte(Vector2 position)
+        {
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool1"), position + new Vector2(-53, -338), 1f, .1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool3"), position + new Vector2(-225, -240), .75f, -.1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool1"), position + new Vector2(-309, -202), 1f, .1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool2"), position + new Vector2(-225, -138), 1.25f, -.1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool2"), position + new Vector2(282, -220), .75f, .1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool1"), position + new Vector2(282, -220), 1.5f, -.1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool2"), position + new Vector2(-397, 358), 1.4f, .1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool2"), position + new Vector2(-372, 246), 1f, .15f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool3"), position + new Vector2(-110, 193), 1f, -.1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool1"), position + new Vector2(215, 184), 1f, .1f);
+            AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool1"), position + new Vector2(182, 299), 1f, -.1f);
+
+
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm1"), position + new Vector2(-53, -338), 1f, .1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm3"), position + new Vector2(-225, -240), .75f, -.1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm1"), position + new Vector2(-309, -202), 1f, .1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm2"), position + new Vector2(-225, -138), 1.25f, -.1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm2"), position + new Vector2(282, -220), .75f, .1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm1"), position + new Vector2(282, -220), 1.5f, -.1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm2"), position + new Vector2(-397, 358), 1.4f, .1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm2"), position + new Vector2(-372, 246), 1f, .15f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm3"), position + new Vector2(-110, 193), 1f, -.1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm1"), position + new Vector2(215, 184), 1f, .1f);
+            AddBackgroundWarmGear(LoadTexture("GameObjects/gearWarm1"), position + new Vector2(182, 299), 1f, -.1f);
+
+
+
         }
 
         #endregion
@@ -1179,7 +1256,10 @@ namespace WorldsApart.Code.Gamestates
 
             foreach (ParticleEmitter emitter in emitterList)
             {
-                emitter.Update();
+                if (emitter.IsOnScreen(cameraPlayer1) || emitter.IsOnScreen(cameraPlayer2))
+                {
+                    emitter.Update();
+                }
             }
             foreach (TimerObject timer in timerList)
             {
@@ -1190,16 +1270,22 @@ namespace WorldsApart.Code.Gamestates
             particleList.CopyTo(tempParticles);
             foreach (Particle particle in tempParticles)
             {
-                particle.Update();
-                if (particle.isDead) particleList.Remove(particle);
+                //if (particle.IsOnScreen(cameraPlayer1) || particle.IsOnScreen(cameraPlayer2))
+                //{
+                    particle.Update();
+                    if (particle.isDead) particleList.Remove(particle);
+                //}
             }
 
             tempParticles = new Particle[bgParticleList.Count];
             bgParticleList.CopyTo(tempParticles);
             foreach (Particle particle in tempParticles)
             {
-                particle.Update();
-                if (particle.isDead) bgParticleList.Remove(particle);
+                //if (particle.IsOnScreen(cameraPlayer1) || particle.IsOnScreen(cameraPlayer2))
+                //{
+                    particle.Update();
+                    if (particle.isDead) bgParticleList.Remove(particle);
+                //}
             }
 
             foreach (PointLight light in lightList)
@@ -1624,6 +1710,7 @@ namespace WorldsApart.Code.Gamestates
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
+            foreach (Particle particle in bgParticleList) if (particle.playerVisible == PlayerObjectMode.One) particle.Draw(spriteBatch, camera);
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.One) s.Draw(spriteBatch, camera);
             foreach (Button button in buttonList) if (button.playerVisible == PlayerObjectMode.One) button.Draw(spriteBatch, camera);
             foreach (TriggerArea area in areaList) if (area.playerVisible == PlayerObjectMode.One) area.Draw(spriteBatch, camera);
@@ -1662,6 +1749,7 @@ namespace WorldsApart.Code.Gamestates
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in backFGList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
+            foreach (Particle particle in bgParticleList) if (particle.playerVisible == PlayerObjectMode.Two) particle.Draw(spriteBatch, camera);
             foreach (FlipSwitch s in switchList) if (s.playerVisible == PlayerObjectMode.Two) s.Draw(spriteBatch, camera);
             foreach (Button button in buttonList) if (button.playerVisible == PlayerObjectMode.Two) button.Draw(spriteBatch, camera);
             foreach (TriggerArea area in areaList) if (area.playerVisible == PlayerObjectMode.Two) area.Draw(spriteBatch, camera);

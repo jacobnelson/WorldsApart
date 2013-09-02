@@ -64,11 +64,11 @@ namespace WorldsApart.Code.Levels
             levelDataTexture = gsPlay.LoadTexture("Levels/level7Data");
 
 
-            player1Pos = GridToPosition(5, 280);
-            player2Pos = GridToPosition(7, 280);
+            //player1Pos = GridToPosition(5, 280);
+            //player2Pos = GridToPosition(7, 280);
 
-            //player1Pos = GridToPosition(322, 117);
-            //player2Pos = player1Pos;
+            player1Pos = GridToPosition(430, 123);
+            player2Pos = player1Pos;
 
             portalPos = GridToPosition(394, 41);
             pItemPos = GridToPosition(441, 119);
@@ -77,6 +77,60 @@ namespace WorldsApart.Code.Levels
 
             leftLimit = 32;
             rightLimit = levelWidth;
+
+            Vector2 bgPosition = new Vector2(-400, -300);
+            for (int x = 0; x < 3; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/constructionBackdropBase1"), bgPosition);
+                    bg1.SetPlayerMode(PlayerObjectMode.One);
+                    gsPlay.AddParallax(bg1, .1f);
+                    SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/constructionBackdropBase2"), bgPosition);
+                    bg2.SetPlayerMode(PlayerObjectMode.Two);
+                    gsPlay.AddParallax(bg2, .1f);
+
+                    bgPosition.Y += 1024;
+                }
+
+                bgPosition.X += 1024;
+                bgPosition.Y = -300;
+            }
+
+            bgPosition = new Vector2(-300, -300);
+            for (int x = 0; x < 4; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/constructionBackdropOverlay1"), bgPosition);
+                    bg1.SetPlayerMode(PlayerObjectMode.One);
+                    gsPlay.AddParallax(bg1, .2f);
+                    SpriteIMG bg2 = new SpriteIMG(gsPlay.LoadTexture("BGs/constructionBackdropOverlay2"), bgPosition);
+                    bg2.SetPlayerMode(PlayerObjectMode.Two);
+                    gsPlay.AddParallax(bg2, .2f);
+
+                    bgPosition.Y += 1024;
+                }
+
+                bgPosition.Y = -300;
+                bgPosition.X += 1024;
+            }
+
+
+            bgPosition = new Vector2(-512, -512);
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 5; y++)
+                {
+                    gsPlay.CreateGearMatte(bgPosition);
+
+                    bgPosition.Y += 1024;
+                }
+
+                bgPosition.X += 1024;
+                bgPosition.Y = -512;
+            }
+            
 
             TriggerArea update = gsPlay.AddTriggerArea(new EventTrigger(this, 99), Art.smoke, Vector2.Zero);
             update.visible = false;

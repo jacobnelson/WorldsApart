@@ -58,6 +58,8 @@ namespace WorldsApart.Code.Gamestates
             backdropBase = new ScrollingBackground(LoadTexture("BGs/fieldBackdropBase1"), false);
             backdropOverlay = new ScrollingBackground(LoadTexture("BGs/fieldBackdropOverlay2"), false);
             backdropMatte = new ScrollingBackground(LoadTexture("TitleAssets/menuBackdrop"), false);
+
+            gsm.goodness = 0;
         }
 
         public void MenuUp()

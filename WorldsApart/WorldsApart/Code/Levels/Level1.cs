@@ -39,11 +39,11 @@ namespace WorldsApart.Code.Levels
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level1Data");
 
-            player1Pos = GridToPosition(42, 25);
-            player2Pos = GridToPosition(40, 25);
+            //player1Pos = GridToPosition(42, 25);
+            //player2Pos = GridToPosition(40, 25);
 
-            //player1Pos = GridToPosition(554, 24);
-            //player2Pos = player1Pos;
+            player1Pos = GridToPosition(673, 20);
+            player2Pos = player1Pos;
 
             portalPos = GridToPosition(681, 20);
             pItemPos = GridToPosition(672, 11);
@@ -62,8 +62,8 @@ namespace WorldsApart.Code.Levels
             //Deactivate players for intro scene:
             StartIntro();
 
-            Vector2 bgPosition = new Vector2(-300, -500);
-            for (int x = 0; x < 3; x++)
+            Vector2 bgPosition = new Vector2(-500, -500);
+            for (int x = 0; x < 34; x++)
             {
                 SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropBase1"), bgPosition);
                 bg1.SetPlayerMode(PlayerObjectMode.One);
@@ -75,8 +75,8 @@ namespace WorldsApart.Code.Levels
                 bgPosition.X += 1024;
             }
 
-            bgPosition = new Vector2(-300, -500);
-            for (int x = 0; x < 5; x++)
+            bgPosition = new Vector2(-800, -500);
+            for (int x = 0; x < 6; x++)
             {
                 SpriteIMG bg1 = new SpriteIMG(gsPlay.LoadTexture("BGs/fieldBackdropOverlay1"), bgPosition);
                 bg1.SetPlayerMode(PlayerObjectMode.One);
@@ -100,6 +100,10 @@ namespace WorldsApart.Code.Levels
 
                 bgPosition.X += 1024;
             }
+
+            //672, 13
+            gsPlay.AddWarmGear(gsPlay.LoadTexture("GameObjects/gearWarm3"), GridToCenterPosition(672, 13), .75f, .02f);
+            gsPlay.AddCoolGear(gsPlay.LoadTexture("GameObjects/gearCool3"), GridToCenterPosition(672, 13), .75f, .02f);
 
             TriggerArea update = gsPlay.AddTriggerArea(new EventTrigger(this, 99), Art.barrier, Vector2.Zero);
 

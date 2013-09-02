@@ -34,7 +34,7 @@ namespace WorldsApart.Code.Entities
                 sPosition = value;
             }
         }
-        public float rotationSpeed = 0;
+       
         public float mass = 1;
         public float currentMass = 1;
         public Vector2 gravity = Vector2.Zero;
@@ -146,7 +146,7 @@ namespace WorldsApart.Code.Entities
             tempPosition = position + speed;
             CollisionEnvironmentResponse();
             position = tempPosition;
-            rotation += rotationSpeed;
+            
             //hitBox.SetPosition(position);
 
             CheckBounds();
