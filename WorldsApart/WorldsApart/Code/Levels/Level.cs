@@ -28,6 +28,8 @@ namespace WorldsApart.Code.Levels
         public static EnvironmentData[,] environmentData;
         public List<InventoryItem> itemList = new List<InventoryItem>();
 
+        public bool renderCollision = false;
+
         public Vector2 player1Pos = Vector2.Zero;
         public Vector2 player2Pos = Vector2.Zero;
         public Vector2 portalPos = Vector2.Zero;
@@ -69,10 +71,13 @@ namespace WorldsApart.Code.Levels
                     if (colorData[x, y] == Color.Black)
                     {
                         environmentData[x, y] = new EnvironmentData(true);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tile"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
-                        gsPlay.AddGroundTile(GridToPosition(new Point(x, y)) + new Vector2(16, 16));
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tile"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                            gsPlay.AddGroundTile(GridToPosition(new Point(x, y)) + new Vector2(16, 16));
+                        }
                     }
                     else if (colorData[x, y] == new Color(0, 0, 255))
                     {
@@ -121,80 +126,113 @@ namespace WorldsApart.Code.Levels
                     else if (colorData[x, y] == new Color(255, 255, 150))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileRight1, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight1"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight1"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(255, 255, 100))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileRight2, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight2"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight2"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(255, 255, 50))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileRight3, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight3"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeRight3"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(50, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileLeft1, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft1"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft1"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(100, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileLeft2, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft2"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft2"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(150, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.ThreeTileLeft3, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft3"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineThreeLeft3"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(64, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileLeft1, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoLeft1"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoLeft1"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(128, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileLeft2, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoLeft2"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoLeft2"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(255, 255, 128))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileRight1, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoRight1"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoRight1"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(255, 255, 64))
                     {
                         environmentData[x, y] = new EnvironmentData(InclineType.TwoTileRight2, FrictionType.Normal);
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoRight2"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/tileInclineTwoRight2"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(50, 50, 50))
                     {
                         environmentData[x, y] = new EnvironmentData(true);
                         environmentData[x, y].oneWayPlatform = true;
-                        SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/jumpThru"), GridToPosition(new Point(x, y)));
-                        tile.origin = Vector2.Zero;
-                        gsPlay.backFGList.Add(tile);
+                        if (renderCollision)
+                        {
+                            SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/jumpThru"), GridToPosition(new Point(x, y)));
+                            tile.origin = Vector2.Zero;
+                            gsPlay.backFGList.Add(tile);
+                        }
                     }
                     else if (colorData[x, y] == new Color(255, 128, 255))
                     {

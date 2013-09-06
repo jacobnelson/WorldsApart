@@ -36,6 +36,8 @@ namespace WorldsApart.Code.Levels
             portalPos = GridToPosition(457, 67);
             pItemPos = GridToPosition(241, 79);
 
+            renderCollision = true;
+
             SetupLevel();
 
             Vector2 bgPosition = new Vector2(-400, -350);

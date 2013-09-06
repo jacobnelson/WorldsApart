@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
+using System.IO;
+
 using WorldsApart.Code.Entities;
 using WorldsApart.Code.Gamestates;
 using WorldsApart.Code.Controllers;
@@ -39,11 +41,11 @@ namespace WorldsApart.Code.Levels
         {
             levelDataTexture = gsPlay.LoadTexture("Levels/level1Data");
 
-            //player1Pos = GridToPosition(42, 25);
-            //player2Pos = GridToPosition(40, 25);
+            player1Pos = GridToPosition(42, 25);
+            player2Pos = GridToPosition(40, 25);
 
-            player1Pos = GridToPosition(673, 20);
-            player2Pos = player1Pos;
+            //player1Pos = GridToPosition(673, 20);
+            //player2Pos = player1Pos;
 
             portalPos = GridToPosition(681, 20);
             pItemPos = GridToPosition(672, 11);
@@ -104,6 +106,53 @@ namespace WorldsApart.Code.Levels
             //672, 13
             gsPlay.AddWarmGear(gsPlay.LoadTexture("GameObjects/gearWarm3"), GridToCenterPosition(672, 13), .75f, .02f);
             gsPlay.AddCoolGear(gsPlay.LoadTexture("GameObjects/gearCool3"), GridToCenterPosition(672, 13), .75f, .02f);
+
+            for (int x = 1; x <= 22; x++)
+            {
+                for (int y = 1; y <= 1; y++)
+                {
+                    string fgName = "LevelTiles/Field/fieldCoolFG" + x + "x" + y;
+                    if (File.Exists("Content/" + fgName + ".xnb"))
+                    {
+                        SpriteIMG fg = gsPlay.AddFrontFGTile(gsPlay.LoadTexture(fgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        fg.origin = Vector2.Zero;
+                        fg.SetPlayerMode(PlayerObjectMode.Two);
+                    }
+
+                    string bgName = "LevelTiles/Field/fieldCoolBG" + x + "x" + y;
+                    if (File.Exists("Content/" + bgName + ".xnb"))
+                    {
+                        SpriteIMG bg = gsPlay.AddBackFGTile(gsPlay.LoadTexture(bgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        bg.origin = Vector2.Zero;
+                        bg.SetPlayerMode(PlayerObjectMode.Two);
+                    }
+
+                }
+            }
+
+            for (int x = 1; x <= 22; x++)
+            {
+                for (int y = 1; y <= 1; y++)
+                {
+                    string fgName = "LevelTiles/Field/fieldWarmFG" + x + "x" + y;
+                    if (File.Exists("Content/" + fgName + ".xnb"))
+                    {
+                        SpriteIMG fg = gsPlay.AddFrontFGTile(gsPlay.LoadTexture(fgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        fg.origin = Vector2.Zero;
+                        fg.SetPlayerMode(PlayerObjectMode.One);
+
+                    }
+
+                    string bgName = "LevelTiles/Field/fieldWarmBG" + x + "x" + y;
+                    if (File.Exists("Content/" + bgName + ".xnb"))
+                    {
+                        SpriteIMG bg = gsPlay.AddBackFGTile(gsPlay.LoadTexture(bgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        bg.origin = Vector2.Zero;
+                        bg.SetPlayerMode(PlayerObjectMode.One);
+                    }
+
+                }
+            }
 
             TriggerArea update = gsPlay.AddTriggerArea(new EventTrigger(this, 99), Art.barrier, Vector2.Zero);
 

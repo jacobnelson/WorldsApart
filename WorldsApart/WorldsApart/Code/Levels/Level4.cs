@@ -35,6 +35,8 @@ namespace WorldsApart.Code.Levels
             portalPos = GridToPosition(232, 48);
             pItemPos = GridToPosition(194, 48);
 
+            renderCollision = true;
+
             SetupLevel();
 
             rightLimit = levelWidth - 32;

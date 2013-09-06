@@ -64,14 +64,16 @@ namespace WorldsApart.Code.Levels
             levelDataTexture = gsPlay.LoadTexture("Levels/level7Data");
 
 
-            //player1Pos = GridToPosition(5, 280);
-            //player2Pos = GridToPosition(7, 280);
+            player1Pos = GridToPosition(5, 280);
+            player2Pos = GridToPosition(7, 280);
 
-            player1Pos = GridToPosition(430, 123);
-            player2Pos = player1Pos;
+            //player1Pos = GridToPosition(430, 123);
+            //player2Pos = player1Pos;
 
             portalPos = GridToPosition(394, 41);
             pItemPos = GridToPosition(441, 119);
+
+            renderCollision = true;
 
             SetupLevel();
 
