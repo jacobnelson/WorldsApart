@@ -127,6 +127,7 @@
     <Compile Include="Code\Entities\InteractiveParticle.cs" />
     <Compile Include="Code\Entities\LightConsole.cs" />
     <Compile Include="Code\Entities\LightningChain.cs" />
+    <Compile Include="Code\Entities\MagicTile.cs" />
     <Compile Include="Code\Entities\Moveable.cs" />
     <Compile Include="Code\Entities\MovingPlatform.cs" />
     <Compile Include="Code\Entities\Particle.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Code\Entities\TriggerArea.cs" />
     <Compile Include="Code\Gamestates\GameState.cs" />
     <Compile Include="Code\Gamestates\GameStateManager.cs" />
+    <Compile Include="Code\Gamestates\GSHowToPlay.cs" />
     <Compile Include="Code\Gamestates\GSMenu.cs" />
     <Compile Include="Code\Gamestates\GSOverlay.cs" />
     <Compile Include="Code\Gamestates\GSPause.cs" />

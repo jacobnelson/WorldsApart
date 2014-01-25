@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using WorldsApart.Code.Controllers;
+using WorldsApart.Code.Graphics;
 
 using System.Diagnostics;
 
@@ -24,6 +25,8 @@ namespace WorldsApart.Code.Entities
 
         public float neededMass = 1;
         public float heldMass = 0;
+
+        public SpriteIMG bBase;
 
         public Button(EventTrigger eventTrigger, Texture2D texture, Vector2 position)
             : base(texture, position)
@@ -89,6 +92,12 @@ namespace WorldsApart.Code.Entities
 
             base.Update();
             
+        }
+
+        public override void SetPlayerMode(PlayerObjectMode pi)
+        {
+            base.SetPlayerMode(pi);
+            bBase.SetPlayerMode(pi);
         }
 
         //public void CheckForPress(PhysObj obj)

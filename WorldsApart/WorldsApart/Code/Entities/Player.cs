@@ -79,6 +79,8 @@ namespace WorldsApart.Code.Entities
         public bool signalPressed = false;
         public bool superDown = false;
 
+        public bool prevActionDown = false;
+
         bool ableToPressDrop = false;
         int dropCounter = 0;
         int dropRate = 10;
@@ -201,6 +203,9 @@ namespace WorldsApart.Code.Entities
             ChangeSprite();
 
             thumb = Vector2.Zero;
+
+            prevActionDown = actionDown;
+
             rightDown = false;
             leftDown = false;
             upDown = false;
@@ -253,10 +258,18 @@ namespace WorldsApart.Code.Entities
                 psyHold = true;
             }
 
+            
+
             pressing = false;
             if (actionPressed)
             {
                 pressing = true;
+                AudioManager.playerPsyActivate.Play();
+            }
+
+            if (!actionDown && prevActionDown)
+            {
+                AudioManager.playerPsyDeactivate.Play();
             }
 
 
@@ -302,7 +315,11 @@ namespace WorldsApart.Code.Entities
                     if (facing == Facing.Right) throwSpeed.X = 10;
                     if (facing == Facing.Left) throwSpeed.X = -10;
 
-                    if (downDown) throwSpeed = Vector2.Zero;
+                    if (downDown)
+                    {
+                        if (rightDown || leftDown) throwSpeed.Y = 10;
+                        else throwSpeed = Vector2.Zero;
+                    }
 
                     pickUp.GetDropped(throwSpeed);
                     pickUp = null;
@@ -329,12 +346,14 @@ namespace WorldsApart.Code.Entities
                     downNotBeingPressed = InputManager.IsButtonUp2(Buttons.DPadDown) && InputManager.IsKeyUp(Keys.S) && !superDown;
             }
 
-            if (jumpPressed && state == PhysState.Grounded && downNotBeingPressed) //TODO: change back
-            //if (jumpPressed && downNotBeingPressed)
+            if (jumpPressed && state == PhysState.Grounded && downNotBeingPressed) //TODO: uncomment
+            //if (jumpPressed && downNotBeingPressed) //This be the not correct
             {
                 force.Y += jumpForce;
                 isJumping = true;
                 jumpingLegacy = true;
+                AudioManager.playerJump.Play();
+
             }
             if (jumpDown)
             {
@@ -378,6 +397,7 @@ namespace WorldsApart.Code.Entities
             isSignaling = true;
             signalCounter = 0;
             gsPlay.AddSignal(this);
+            AudioManager.signal.Play();
         }
 
         public void DeactivateSignal()
@@ -396,6 +416,7 @@ namespace WorldsApart.Code.Entities
         {
             if (currentSet != PlayerMode.Dying)
             {
+                AudioManager.playerDie.Play();
                 am.Pause();
                 ChangeCurrentSet(PlayerMode.Dying);
                 //ChangeAnimationBounds(5, 1, 4);
@@ -409,6 +430,7 @@ namespace WorldsApart.Code.Entities
             hitBox.SetPosition(position);
             speed = Vector2.Zero;
             nextForce = Vector2.Zero;
+            AudioManager.playerRevive.Play();
         }
 
         public void GetInput()

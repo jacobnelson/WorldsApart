@@ -25,6 +25,7 @@ namespace WorldsApart.Code.Gamestates
 
         SpriteIMG singlePlayer;
         SpriteIMG multiPlayer;
+        SpriteIMG howToPlay;
         SpriteIMG exit;
 
         ScrollingBackground backdropBase;
@@ -47,12 +48,14 @@ namespace WorldsApart.Code.Gamestates
             : base(gsm)
         {
             logo = new SpriteIMG(LoadTexture("TitleAssets/logoWorldsApart"), Game1.GetScreenCenter() + new Vector2(0, -200));
-            singlePlayer = new SpriteIMG(LoadTexture("TitleAssets/multiPlayer"), Game1.GetScreenCenter() + new Vector2(0, 0));
-            multiPlayer = new SpriteIMG(LoadTexture("TitleAssets/singlePlayer"), Game1.GetScreenCenter() + new Vector2(0, 100));
-            exit = new SpriteIMG(LoadTexture("TitleAssets/exit"), Game1.GetScreenCenter() + new Vector2(0, 200));
+            singlePlayer = new SpriteIMG(LoadTexture("TitleAssets/multiPlayer"), Game1.GetScreenCenter() + new Vector2(0, -50));
+            multiPlayer = new SpriteIMG(LoadTexture("TitleAssets/singlePlayer"), Game1.GetScreenCenter() + new Vector2(0, 50));
+            howToPlay = new SpriteIMG(LoadTexture("TitleAssets/howToPlay"), Game1.GetScreenCenter() + new Vector2(0, 150));
+            exit = new SpriteIMG(LoadTexture("TitleAssets/exit"), Game1.GetScreenCenter() + new Vector2(0, 250));
 
 
             multiPlayer.alpha = 128;
+            howToPlay.alpha = 128;
             exit.alpha = 128;
 
             backdropBase = new ScrollingBackground(LoadTexture("BGs/fieldBackdropBase1"), false);
@@ -65,13 +68,27 @@ namespace WorldsApart.Code.Gamestates
         public void MenuUp()
         {
             menuIndex--;
-            if (menuIndex < 0) menuIndex = 0;
+            bool didIt = true;
+            if (menuIndex < 0)
+            {
+                menuIndex = 0;
+                didIt = false;
+            }
+            if (didIt) AudioManager.menuMove.Play();
         }
 
         public void MenuDown()
         {
             menuIndex++;
-            if (menuIndex > 2) menuIndex = 2;
+            bool didIt = true;
+            if (menuIndex > 3)
+            {
+                menuIndex = 3;
+                didIt = false;
+            }
+
+            if (didIt) AudioManager.menuMove.Play();
+
         }
 
         public void GetInput()
@@ -127,6 +144,7 @@ namespace WorldsApart.Code.Gamestates
 
             singlePlayer.Update();
             multiPlayer.Update();
+            howToPlay.Update();
             exit.Update();
 
             backdropBase.UpdateScroll(-.25f);
@@ -148,34 +166,59 @@ namespace WorldsApart.Code.Gamestates
                 case 0:
                     ActivateItem(singlePlayer);
                     DeactivateItem(multiPlayer);
+                    DeactivateItem(howToPlay);
                     DeactivateItem(exit);
                     if (startPressed)
                     {
                         GameStateManager.isMultiplayer = false;
                         //gameStateManager.SwitchToGSPlay();
                         gameStateManager.TransitionToGameState(this, GameStateType.GSPlay, 30);
+                        AudioManager.menuSelect.Play();
                     }
                     break;
                 case 1:
                     DeactivateItem(singlePlayer);
                     ActivateItem(multiPlayer);
+                    DeactivateItem(howToPlay);
                     DeactivateItem(exit);
                     if (startPressed)
                     {
                         GameStateManager.isMultiplayer = true;
                         //gameStateManager.SwitchToGSPlay();
                         gameStateManager.TransitionToGameState(this, GameStateType.GSPlay, 30);
+                        AudioManager.menuSelect.Play();
                     }
                     break;
                 case 2:
                     DeactivateItem(singlePlayer);
                     DeactivateItem(multiPlayer);
+                    ActivateItem(howToPlay);
+                    DeactivateItem(exit);
+                    if (startPressed)
+                    {
+                        if (InputManager.IsKeyPressed(Keys.Enter))
+                        {
+                            GSHowToPlay.gamepad = false;
+                        }
+                        else
+                        {
+                            GSHowToPlay.gamepad = true;
+                        }
+                        gameStateManager.SwitchToGSHow();
+                    }
+                    break;
+                case 3:
+                    
+                    DeactivateItem(singlePlayer);
+                    DeactivateItem(multiPlayer);
+                    DeactivateItem(howToPlay);
                     ActivateItem(exit);
                     if (startPressed)
                     {
                         gameStateManager.game.Exit();
                     }
                     break;
+                    
             }
         }
 
@@ -206,8 +249,9 @@ namespace WorldsApart.Code.Gamestates
         public void DimAll()
         {
             singlePlayer.alpha = 128;
-            singlePlayer.alpha = 128;
-            singlePlayer.alpha = 128;
+            multiPlayer.alpha = 128;
+            howToPlay.alpha = 128;
+            exit.alpha = 128;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -224,6 +268,7 @@ namespace WorldsApart.Code.Gamestates
             logo.Draw(spriteBatch);
             singlePlayer.Draw(spriteBatch);
             multiPlayer.Draw(spriteBatch);
+            howToPlay.Draw(spriteBatch);
             exit.Draw(spriteBatch);
 
             spriteBatch.End();

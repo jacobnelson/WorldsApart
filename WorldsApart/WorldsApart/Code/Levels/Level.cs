@@ -39,8 +39,8 @@ namespace WorldsApart.Code.Levels
 
         static public float deathHeight = 0;
 
-        static public SpriteIMG player1Checkpoint;
-        static public SpriteIMG player2Checkpoint;
+        static public Particle player1Checkpoint;
+        static public Particle player2Checkpoint;
 
         Portal glados;
         public bool hasPortal = true;
@@ -90,38 +90,41 @@ namespace WorldsApart.Code.Levels
                     else if (colorData[x, y] == new Color(0, 255, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(0, -1f));
-                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(0, -2));
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(8, 32), new Vector2(0, -2));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentUp"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
                         //tile.alpha = 128;
-                        //gsPlay.tileList.Add(tile);
+                        //gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 0, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(0, 1f));
-                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(0, 2));
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(16, -16), new Vector2(0, 2));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentDown"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
+                        //tile.scale = new Vector2(2);
                         //tile.alpha = 128;
-                        //gsPlay.tileList.Add(tile);
+                        //gsPlay.backFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 0))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(4, 0));
-                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(2, 0));
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(-16, 16), new Vector2(2, 0));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentRight"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
                         //tile.alpha = 128;
-                        //gsPlay.tileList.Add(tile);
+                        //tile.scale = new Vector2(2);
+                        //gsPlay.frontFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(0, 255, 255))
                     {
                         environmentData[x, y] = new EnvironmentData(new Vector2(-4, 0));
-                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(0, 16), new Vector2(-2, 0));
+                        gsPlay.AddWindEmitter(GridToPosition(x, y) + new Vector2(48, 16), new Vector2(-2, 0));
                         //SpriteIMG tile = new SpriteIMG(gsPlay.LoadTexture("TestSprites/airCurrentLeft"), GridToPosition(new Point(x, y)));
                         //tile.origin = Vector2.Zero;
                         //tile.alpha = 128;
-                        //gsPlay.tileList.Add(tile);
+                        //tile.scale = new Vector2(2);
+                        //gsPlay.frontFGList.Add(tile);
                     }
                     else if (colorData[x, y] == new Color(255, 255, 150))
                     {
@@ -277,13 +280,15 @@ namespace WorldsApart.Code.Levels
             gsPlay.player2.SetAnimationStuff(1, 1, 8, 8, 256, 256, 64, 5);
             gsPlay.player2.SetCollisionBox(48, 96, Vector2.Zero);
 
-            player1Checkpoint = gsPlay.AddBackFGTile(gsPlay.LoadTexture("TestSprites/checkpointWarm"), new Vector2(-64, -64));
+            player1Checkpoint = gsPlay.AddBGParticle(gsPlay.LoadTexture("TestSprites/checkpointWarm"), new Vector2(-64, -64));
             player1Checkpoint.SetPlayerMode(PlayerObjectMode.One);
             player1Checkpoint.scale = new Vector2(1.5f);
+            player1Checkpoint.canDie = false;
             player1Checkpoint.illuminatingAllTheTime = true;
-            player2Checkpoint = gsPlay.AddBackFGTile(gsPlay.LoadTexture("TestSprites/checkpointCool"), new Vector2(-64, -64));
+            player2Checkpoint = gsPlay.AddBGParticle(gsPlay.LoadTexture("TestSprites/checkpointCool"), new Vector2(-64, -64));
             player2Checkpoint.SetPlayerMode(PlayerObjectMode.Two);
             player2Checkpoint.scale = new Vector2(1.5f);
+            player2Checkpoint.canDie = false;
             player2Checkpoint.illuminatingAllTheTime = true;
             
             if (hasPortal)
@@ -417,6 +422,7 @@ namespace WorldsApart.Code.Levels
 
                             if (player.checkpoint != GridToCenterPosition(x, y))
                             {
+                                AudioManager.checkpoint.Play();
                                 player.checkpoint = GridToCenterPosition(new Point(x, y));
                                 if (player.playerObjectMode == PlayerObjectMode.One)
                                 {

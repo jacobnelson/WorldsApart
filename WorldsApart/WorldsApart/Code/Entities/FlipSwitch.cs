@@ -59,21 +59,25 @@ namespace WorldsApart.Code.Entities
             switch (playerVisible)
             {
                 case PlayerObjectMode.One:
+                    AudioManager.switchActivate.Play();
                     currentCellCol = 3;
                     light.color = Color.Orange;
                     break;
                 case PlayerObjectMode.Two:
+                    AudioManager.switchActivate.Play();
                     currentCellCol = 2;
                     light.color = Color.Blue;
                     break;
                 case PlayerObjectMode.None:
                     if (!multiSwitch)
                     {
+                        AudioManager.switchActivate.Play();
                         currentCellCol = 1;
                         light.color = Color.Green;
                     }
                     else
                     {
+                        AudioManager.switchActivate.Play();
                         currentCellCol = 3;
                         light.color = Color.Orange;
                     }
@@ -89,13 +93,14 @@ namespace WorldsApart.Code.Entities
 
             if (!multiSwitch)
             {
-
+                AudioManager.switchActivate.Play();
                 currentCellCol = 4;
                 selfIlluminating = false;
                 light.visible = false;
             }
             else
             {
+                AudioManager.switchDeactivate.Play();
                 currentCellCol = 2;
                 light.color = Color.Blue;
                 selfIlluminating = true;

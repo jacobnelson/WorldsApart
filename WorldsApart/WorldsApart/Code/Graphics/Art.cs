@@ -49,5 +49,7 @@ namespace WorldsApart.Code.Graphics
         public static Texture2D bridgeParticle16;
         public static Texture2D bridgeParticle17;
         public static Texture2D bridgeParticle18;
+        public static Texture2D door;
+        public static Texture2D platform;
     }
 }

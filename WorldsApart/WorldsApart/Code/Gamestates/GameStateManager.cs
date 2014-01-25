@@ -50,6 +50,7 @@ namespace WorldsApart.Code.Gamestates
         public GSPlay gsPlay;
         public GSWin gsWin;
         public GSPause gsPause;
+        public GSHowToPlay gsHow;
         //GSOverlay gsOverlay;
 
         public bool screenTransition = false;
@@ -107,6 +108,8 @@ namespace WorldsApart.Code.Gamestates
             Art.bridgeParticle16 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle16");
             Art.bridgeParticle17 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle17");
             Art.bridgeParticle18 = game.Content.Load<Texture2D>("GameObjects/bridgeDebrisParticle18");
+            Art.door = game.Content.Load<Texture2D>("TestSprites/door");
+            Art.platform = game.Content.Load<Texture2D>("TestSprites/platform");
 
 
             GSOverlay.InitializeGSOverlay(this);
@@ -136,8 +139,8 @@ namespace WorldsApart.Code.Gamestates
                             break;
                         case GameStateType.GSPlay:
                             GSOverlay.fadeOverlay.alpha = 255;
+                            gsPlay = null;
                             SwitchToGSPlay();
-                            Trace.WriteLine(2);
                             GSOverlay.FadeOut(30);
                             break;
                         case GameStateType.GSTitle:
@@ -159,6 +162,7 @@ namespace WorldsApart.Code.Gamestates
             if (gsMenu != null) gsMenu.Update(gameTime);
             if (gsTitle != null) gsTitle.Update(gameTime);
             if (gsWin != null) gsWin.Update(gameTime);
+            if (gsHow != null) gsHow.Update(gameTime);
 
             //if (server != null)
             //{
@@ -204,6 +208,8 @@ namespace WorldsApart.Code.Gamestates
             gsTitle = null;
             gsWin = null;
             gsMenu = null;
+            gsHow = null;
+            
         }
 
         public void SwitchToGSMenu()
@@ -213,6 +219,7 @@ namespace WorldsApart.Code.Gamestates
             gsWin = null;
             gsMenu = new GSMenu(this);
             gsPause = null;
+            gsHow = null;
         }
 
         public void SwitchToGSTitle()
@@ -224,6 +231,7 @@ namespace WorldsApart.Code.Gamestates
             gsPlay = null;
             gsWin = null;
             gsMenu = null;
+            gsHow = null;
         }
 
         public void SwitchToGSWin()
@@ -235,6 +243,7 @@ namespace WorldsApart.Code.Gamestates
             gsPlay = null;
             gsTitle = null;
             gsMenu = null;
+            gsHow = null;
         }
 
         public void SwitchToGSPause()
@@ -246,6 +255,19 @@ namespace WorldsApart.Code.Gamestates
             gsPlay.paused = true;
             gsTitle = null;
             gsMenu = null;
+            gsHow = null;
+        }
+
+        public void SwitchToGSHow()
+        {
+            if (gsHow == null)
+            {
+                gsHow = new GSHowToPlay(this);
+            }
+            gsPlay = null;
+            gsTitle = null;
+            gsMenu = null;
+            gsPause = null;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -256,6 +278,7 @@ namespace WorldsApart.Code.Gamestates
             if (gsTitle != null) gsTitle.Draw(spriteBatch);
             if (gsMenu != null) gsMenu.Draw(spriteBatch);
             if (gsWin != null) gsWin.Draw(spriteBatch);
+            if (gsHow != null) gsHow.Draw(spriteBatch);
             game.GraphicsDevice.SetRenderTarget(null);
             GSOverlay.Draw(spriteBatch);
         }

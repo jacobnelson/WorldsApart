@@ -54,7 +54,7 @@ namespace WorldsApart.Code.Entities
 
         public bool IsOnScreen(Camera camera)
         {
-            Rectangle textureArea = new Rectangle((int)position.X - 2, (int)position.Y - 2, 4, 4);
+            Rectangle textureArea = new Rectangle((int)position.X - 150, (int)position.Y - 150, 300, 300);
             return textureArea.Intersects(camera.visibleArea);
         }
 

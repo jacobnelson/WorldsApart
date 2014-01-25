@@ -44,6 +44,7 @@ namespace WorldsApart.Code.Levels
                 case 0:
                     if (triggerState == TriggerState.Triggered)
                     {
+                        AudioManager.portal.Play();
                         bool isGood = true;
                         foreach (Portal portal in gsPlay.portalList)
                         {

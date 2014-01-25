@@ -26,6 +26,7 @@ namespace WorldsApart.Code.Entities
             {
                 emitter.isActive = false;
             }
+            AudioManager.portalItem.Play();
         }
 
 

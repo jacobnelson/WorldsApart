@@ -11,6 +11,8 @@ using WorldsApart.Code.Gamestates;
 using WorldsApart.Code.Controllers;
 using WorldsApart.Code.Graphics;
 
+using System.IO;
+
 
 namespace WorldsApart.Code.Levels
 {
@@ -29,15 +31,46 @@ namespace WorldsApart.Code.Levels
             player1Pos = GridToPosition(15, 10);
             player2Pos = GridToPosition(17, 10);
 
-            //player1Pos = GridToPosition(176, 84);
+            //player1Pos = GridToPosition(197, 43);
             //player2Pos = player1Pos;
 
             portalPos = GridToPosition(232, 48);
             pItemPos = GridToPosition(194, 48);
 
-            renderCollision = true;
+            renderCollision = false;
 
             SetupLevel();
+
+            for (int x = 1; x <= 8; x++)
+            {
+                for (int y = 1; y <= 3; y++)
+                {
+
+                    string bgName = "LevelTiles/Cave/caveCoolBG" + x + "x" + y;
+                    if (File.Exists("Content/" + bgName + ".xnb"))
+                    {
+                        SpriteIMG bg = gsPlay.AddBackFGTile(gsPlay.LoadTexture(bgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        bg.origin = Vector2.Zero;
+                        bg.SetPlayerMode(PlayerObjectMode.Two);
+                    }
+
+                }
+            }
+            for (int x = 1; x <= 8; x++)
+            {
+                for (int y = 1; y <= 3; y++)
+                {
+
+                    string bgName = "LevelTiles/Cave/caveWarmBG" + x + "x" + y;
+                    if (File.Exists("Content/" + bgName + ".xnb"))
+                    {
+                        SpriteIMG bg = gsPlay.AddBackFGTile(gsPlay.LoadTexture(bgName), new Vector2(1024 * (x - 1), 1024 * (y - 1)));
+                        bg.origin = Vector2.Zero;
+                        bg.SetPlayerMode(PlayerObjectMode.One);
+                    }
+
+                }
+            }
 
             rightLimit = levelWidth - 32;
 
@@ -86,6 +119,16 @@ namespace WorldsApart.Code.Levels
                 bgPosition.X += 1024;
             }
 
+            gsPlay.AddBGWarmGear(gsPlay.LoadTexture("GameObjects/gearWarm1"), GridToCenterPosition(195, 45), 1.5f, .01f, 1);
+            gsPlay.AddBGCoolGear(gsPlay.LoadTexture("GameObjects/gearCool1"), GridToCenterPosition(195, 45), 1.5f, .01f, 1);
+            gsPlay.AddBGWarmGear(gsPlay.LoadTexture("GameObjects/gearWarm3"), GridToCenterPosition(198, 46), .75f, -.022f, 1);
+            gsPlay.AddBGCoolGear(gsPlay.LoadTexture("GameObjects/gearCool3"), GridToCenterPosition(198, 46), .75f, -.022f, 1);
+            gsPlay.AddBGWarmGear(gsPlay.LoadTexture("GameObjects/gearWarm2"), GridToCenterPosition(188, 46), 1f, -.02f, 1);
+            gsPlay.AddBGCoolGear(gsPlay.LoadTexture("GameObjects/gearCool2"), GridToCenterPosition(188, 46), 1f, -.02f, 1);
+            gsPlay.AddBGWarmGear(gsPlay.LoadTexture("GameObjects/gearWarm3"), GridToCenterPosition(206, 44), 1f, -.022f, 1);
+            gsPlay.AddBGCoolGear(gsPlay.LoadTexture("GameObjects/gearCool3"), GridToCenterPosition(206, 44), 1f, -.022f, 1);
+
+
             atmosphereLight = new Color(0, 0, 0);
 
             gsPlay.AddPointLight(gsPlay.LoadTexture("ShaderAssets/pointLight"), GridToPosition(240, 44), new Vector2(4));
@@ -97,7 +140,7 @@ namespace WorldsApart.Code.Levels
             player2Light.SetGlowing(2, 2.4f, 120);
 
             //Doors and switches
-            Door d1 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(47, 42)), OpenState.Closed);
+            Door d1 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(47, 42)), OpenState.Closed);
             FlipSwitch s1 = gsPlay.AddOnSwitch(new EventTrigger(this, d1), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(28, 54)));
             s1.SetPlayerMode(PlayerObjectMode.One);
             LightningChain lc1 = gsPlay.AddLightning(s1.position, s1.position + new Vector2(0, -208), Color.Orange);
@@ -108,7 +151,7 @@ namespace WorldsApart.Code.Levels
             lc1.defaultActive = true;
             lc1.SetActive(true);
 
-            Door d2 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(108, 58)), OpenState.Closed);
+            Door d2 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(108, 58)), OpenState.Closed);
             FlipSwitch s2 = gsPlay.AddOnSwitch(new EventTrigger(this, d2), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(62, 57)));
             s2.SetPlayerMode(PlayerObjectMode.One);
             LightningChain lc2 = gsPlay.AddLightning(s2.position, s2.position + new Vector2(0, 112), Color.Orange);
@@ -118,7 +161,7 @@ namespace WorldsApart.Code.Levels
             lc2.defaultActive = true;
             lc2.SetActive(true);
 
-            Door d3 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(100, 39)), OpenState.Closed);
+            Door d3 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(100, 39)), OpenState.Closed);
             FlipSwitch s3 = gsPlay.AddOnSwitch(new EventTrigger(this, d3), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(103, 40)));
             s3.SetPlayerMode(PlayerObjectMode.Two);
             LightningChain lc3 = gsPlay.AddLightning(s3.position, s3.position + new Vector2(0, 48), Color.Blue);
@@ -128,7 +171,7 @@ namespace WorldsApart.Code.Levels
             lc3.defaultActive = true;
             lc3.SetActive(true);
 
-            Door d4 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(134, 23)), OpenState.Closed);
+            Door d4 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(134, 23)), OpenState.Closed);
             FlipSwitch s4 = gsPlay.AddOnSwitch(new EventTrigger(this, d4), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(120, 33)));
             s4.SetPlayerMode(PlayerObjectMode.One);
             LightningChain lc4 = gsPlay.AddLightning(s4.position, s4.position + new Vector2(0, -192), Color.Orange);
@@ -139,7 +182,7 @@ namespace WorldsApart.Code.Levels
             lc4.defaultActive = true;
             lc4.SetActive(true);
 
-            Door d5 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(159, 23)), OpenState.Closed);
+            Door d5 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(159, 23)), OpenState.Closed);
             FlipSwitch s5 = gsPlay.AddOnSwitch(new EventTrigger(this, d5), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(156, 29)));
             LightningChain lc5 = gsPlay.AddLightning(s5.position, s5.position + new Vector2(0, -112), Color.Yellow);
             lc5.AddVertex(d5.position + new Vector2(0, 80));
@@ -148,7 +191,7 @@ namespace WorldsApart.Code.Levels
             lc5.defaultActive = true;
             lc5.SetActive(true);
 
-            Door d6 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(164, 28)) + new Vector2(-16, 0), OpenState.Closed);
+            Door d6 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(164, 28)) + new Vector2(-16, 0), OpenState.Closed);
             FlipSwitch s6 = gsPlay.AddOnSwitch(new EventTrigger(this, d6), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(162, 24)));
             LightningChain lc6 = gsPlay.AddLightning(s6.position, s6.position + new Vector2(0, 48), Color.Yellow);
             lc6.AddVertex(d6.position + new Vector2(0, -80));
@@ -157,7 +200,7 @@ namespace WorldsApart.Code.Levels
             lc6.defaultActive = true;
             lc6.SetActive(true);
 
-            Door d7 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(188, 33)) + new Vector2(-16, 0), OpenState.Closed);
+            Door d7 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(188, 33)) + new Vector2(-16, 0), OpenState.Closed);
             FlipSwitch s7 = gsPlay.AddOnSwitch(new EventTrigger(this, d7), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(192, 29)));
             LightningChain lc7 = gsPlay.AddLightning(s7.position, s7.position + new Vector2(0, 48), Color.Yellow);
             lc7.AddVertex(d7.position + new Vector2(0, -80));
@@ -166,7 +209,7 @@ namespace WorldsApart.Code.Levels
             lc7.defaultActive = true;
             lc7.SetActive(true);
 
-            Door d8 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(178, 28)), OpenState.Closed);
+            Door d8 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(178, 28)), OpenState.Closed);
             FlipSwitch s8 = gsPlay.AddOnSwitch(new EventTrigger(this, d8), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(176, 29)));
             LightningChain lc8 = gsPlay.AddLightning(s8.position, s8.position + new Vector2(0, 48), Color.Yellow);
             lc8.AddVertex(d8.position + new Vector2(0, 80));
@@ -175,7 +218,7 @@ namespace WorldsApart.Code.Levels
             lc8.defaultActive = true;
             lc8.SetActive(true);
 
-            Door d9 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(169, 33)) + new Vector2(-16, 0), OpenState.Closed);
+            Door d9 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(169, 33)) + new Vector2(-16, 0), OpenState.Closed);
             FlipSwitch s9 = gsPlay.AddOnSwitch(new EventTrigger(this, d9), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(172, 39)));
             LightningChain lc9 = gsPlay.AddLightning(s9.position, s9.position + new Vector2(0, 48), Color.Yellow);
             lc9.AddVertex(s9.position + new Vector2(-112, 48));
@@ -184,7 +227,7 @@ namespace WorldsApart.Code.Levels
             lc9.defaultActive = true;
             lc9.SetActive(true);
 
-            Door d10 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(174, 63)), OpenState.Closed);
+            Door d10 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(174, 63)), OpenState.Closed);
             FlipSwitch s10 = gsPlay.AddOnSwitch(new EventTrigger(this, d10), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(173, 69)));
             LightningChain lc10 = gsPlay.AddLightning(s10.position, s10.position + new Vector2(0, -112), Color.Yellow);
             lc10.AddVertex(d10.position + new Vector2(0, 80));
@@ -193,7 +236,7 @@ namespace WorldsApart.Code.Levels
             lc10.defaultActive = true;
             lc10.SetActive(true);
 
-            Door d11 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(187, 73)), OpenState.Closed);
+            Door d11 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(187, 73)), OpenState.Closed);
             FlipSwitch s11 = gsPlay.AddOnSwitch(new EventTrigger(this, d11), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(173, 74)));
             LightningChain lc11 = gsPlay.AddLightning(s11.position, s11.position + new Vector2(0, 48), Color.Yellow);
             lc11.AddVertex(d11.position + new Vector2(0, 80));
@@ -202,15 +245,15 @@ namespace WorldsApart.Code.Levels
             lc11.defaultActive = true;
             lc11.SetActive(true);
 
-            Door d12 = gsPlay.AddOpeningDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(180, 73)), GridToPosition(new Point(180, 68)), OpenState.Closed);
-            FlipSwitch s12 = gsPlay.AddSwitch(new EventTrigger(this, d12), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(173, 74)));
+            Door d12 = gsPlay.AddOpeningDoor(Art.door, GridToPosition(new Point(180, 73)), GridToPosition(new Point(180, 68)), OpenState.Closed);
+            FlipSwitch s12 = gsPlay.AddMultiSwitch(new EventTrigger(this, d12), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(173, 74)));
             LightningChain lc12 = gsPlay.AddLightning(s12.position, s12.position + new Vector2(0, -112), Color.Yellow);
             lc12.AddVertex(d12.position + new Vector2(0, 80));
             lc12.AddVertex(d12.position + new Vector2(0, 64));
             lc12.ConvertEndPointToTarget(d12);
             s12.AddEvent(new EventTrigger(this, lc12));
 
-            Door d13 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(171, 78)), OpenState.Closed);
+            Door d13 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(171, 78)), OpenState.Closed);
             FlipSwitch s13 = gsPlay.AddOnSwitch(new EventTrigger(this, d13), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(174, 79)));
             LightningChain lc13 = gsPlay.AddLightning(s13.position, s13.position + new Vector2(0, 48), Color.Yellow);
             lc13.AddVertex(d13.position + new Vector2(0, 80));
@@ -219,7 +262,7 @@ namespace WorldsApart.Code.Levels
             lc13.defaultActive = true;
             lc13.SetActive(true);
 
-            Door d14 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(197, 78)) + new Vector2(-16, 0), OpenState.Closed);
+            Door d14 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(197, 78)) + new Vector2(-16, 0), OpenState.Closed);
             FlipSwitch s14 = gsPlay.AddOnSwitch(new EventTrigger(this, d14), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(199, 74)));
             LightningChain lc14 = gsPlay.AddLightning(s14.position, s14.position + new Vector2(0, 48), Color.Yellow);
             lc14.AddVertex(d14.position + new Vector2(0, -80));
@@ -228,7 +271,7 @@ namespace WorldsApart.Code.Levels
             lc14.defaultActive = true;
             lc14.SetActive(true);
 
-            Door d15 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(202, 58)), OpenState.Closed);
+            Door d15 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(202, 58)), OpenState.Closed);
             FlipSwitch s15 = gsPlay.AddOnSwitch(new EventTrigger(this, d15), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(200, 64)));
             LightningChain lc15 = gsPlay.AddLightning(s15.position, s15.position + new Vector2(0, -112), Color.Yellow);
             lc15.AddVertex(d15.position + new Vector2(0, 80));
@@ -237,7 +280,7 @@ namespace WorldsApart.Code.Levels
             lc15.defaultActive = true;
             lc15.SetActive(true);
 
-            Door d16 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(212, 63)), OpenState.Closed);
+            Door d16 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(212, 63)), OpenState.Closed);
             FlipSwitch s16 = gsPlay.AddOnSwitch(new EventTrigger(this, d16), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(209, 60)));
             LightningChain lc16 = gsPlay.AddLightning(s16.position, s16.position + new Vector2(0, 48), Color.Yellow);
             lc16.AddVertex(d16.position + new Vector2(0, -80));
@@ -266,7 +309,7 @@ namespace WorldsApart.Code.Levels
             lc17.defaultActive = true;
             lc17.SetActive(true);
 
-            Door d31 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(189, 48)), OpenState.Closed);
+            Door d31 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(189, 48)), OpenState.Closed);
             FlipSwitch s18 = gsPlay.AddSwitch(new EventTrigger(this, d31), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(214, 39)));
             LightningChain lc18 = gsPlay.AddLightning(s18.position, GridToCenterPosition(214, 40) + new Vector2(-16,0), Color.Red);
             lc18.AddVertex(GridToCenterPosition(211, 40));
@@ -275,7 +318,7 @@ namespace WorldsApart.Code.Levels
             lc18.AddVertex(GridToPosition(200, 46));
             s18.AddEvent(new EventTrigger(this, lc18));
 
-            Door d32 = gsPlay.AddFadingDoor(gsPlay.LoadTexture("TestSprites/door"), GridToPosition(new Point(200, 48)), OpenState.Closed);
+            Door d32 = gsPlay.AddFadingDoor(Art.door, GridToPosition(new Point(200, 48)), OpenState.Closed);
             FlipSwitch s19 = gsPlay.AddSwitch(new EventTrigger(this, d32), gsPlay.LoadTexture("TestSprites/switch"), Level.GridToPosition(new Point(214, 39)));
             LightningChain lc19 = gsPlay.AddLightning(GridToCenterPosition(200, 45) + new Vector2(-16, 0), GridToCenterPosition(189, 45) + new Vector2(-16,0), Color.Red);
             lc19.AddVertex(GridToPosition(189, 46));
@@ -304,38 +347,54 @@ namespace WorldsApart.Code.Levels
             gsPlay.AddMoveable(gsPlay.LoadTexture("TestSprites/moveableMechanical"), Level.GridToPosition(new Point(74, 67)), .8f);
 
             //platforms used to block a players path
-            MovingPlatform p1 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(144, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(144, 26)) + new Vector2(0, -16));
+            MovingPlatform p1 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2a"), Level.GridToPosition(new Point(144, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(144, 26)) + new Vector2(0, -16));
             p1.SetPlayerMode(PlayerObjectMode.One);
-            MovingPlatform p2 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(166, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(166, 26)) + new Vector2(0, -16));
+            p1.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p2 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2a"), Level.GridToPosition(new Point(166, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(166, 26)) + new Vector2(0, -16));
             p2.SetPlayerMode(PlayerObjectMode.One);
-            MovingPlatform p3 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(198, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(198, 26)) + new Vector2(0, -16));
+            p2.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p3 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2a"), Level.GridToPosition(new Point(198, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(198, 26)) + new Vector2(0, -16));
             p3.SetPlayerMode(PlayerObjectMode.One);
-            MovingPlatform p4 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(208, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(208, 26)) + new Vector2(0, -16));
+            p3.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p4 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(208, 26)) + new Vector2(0, -16), Level.GridToPosition(new Point(208, 26)) + new Vector2(0, -16));
             p4.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p5 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(193, 36)) + new Vector2(0, -16), Level.GridToPosition(new Point(193, 36)) + new Vector2(0, -16));
+            p4.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p5 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2a"), Level.GridToPosition(new Point(193, 36)) + new Vector2(0, -16), Level.GridToPosition(new Point(193, 36)) + new Vector2(0, -16));
             p5.SetPlayerMode(PlayerObjectMode.One);
-            MovingPlatform p6 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(161, 51)) + new Vector2(0, -16), Level.GridToPosition(new Point(161, 51)) + new Vector2(0, -16));
+            p5.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p6 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(161, 51)) + new Vector2(0, -16), Level.GridToPosition(new Point(161, 51)) + new Vector2(0, -16));
             p6.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p7 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(219, 61)) + new Vector2(0, -16), Level.GridToPosition(new Point(219, 61)) + new Vector2(0, -16));
+            p6.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p7 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2a"), Level.GridToPosition(new Point(219, 61)) + new Vector2(0, -16), Level.GridToPosition(new Point(219, 61)) + new Vector2(0, -16));
             p7.SetPlayerMode(PlayerObjectMode.One);
-            MovingPlatform p8 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(214, 56)) + new Vector2(0, -16), Level.GridToPosition(new Point(214, 56)) + new Vector2(0, -16));
+            p7.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p8 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(214, 56)) + new Vector2(0, -16), Level.GridToPosition(new Point(214, 56)) + new Vector2(0, -16));
             p8.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p9 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(219, 51)) + new Vector2(0, -16), Level.GridToPosition(new Point(219, 51)) + new Vector2(0, -16));
+            p8.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p9 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(219, 51)) + new Vector2(0, -16), Level.GridToPosition(new Point(219, 51)) + new Vector2(0, -16));
             p9.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p10 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(219, 56)) + new Vector2(0, -16), Level.GridToPosition(new Point(219, 56)) + new Vector2(0, -16));
+            p9.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p10 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2a"), Level.GridToPosition(new Point(219, 56)) + new Vector2(0, -16), Level.GridToPosition(new Point(219, 56)) + new Vector2(0, -16));
             p10.SetPlayerMode(PlayerObjectMode.One);
-            MovingPlatform p11 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(214, 51)) + new Vector2(0, -16), Level.GridToPosition(new Point(214, 51)) + new Vector2(0, -16));
+            p10.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p11 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2a"), Level.GridToPosition(new Point(214, 51)) + new Vector2(0, -16), Level.GridToPosition(new Point(214, 51)) + new Vector2(0, -16));
             p11.SetPlayerMode(PlayerObjectMode.One);
-            MovingPlatform p12 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(56, 69)) + new Vector2(0, -16), Level.GridToPosition(new Point(56, 69)) + new Vector2(0, -16));
+            p11.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p12 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(56, 69)) + new Vector2(0, -16), Level.GridToPosition(new Point(56, 69)) + new Vector2(0, -16));
             p12.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p13 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(60, 69)) + new Vector2(0, -16), Level.GridToPosition(new Point(59, 69)) + new Vector2(0, -16));
+            p12.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p13 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(60, 69)) + new Vector2(0, -16), Level.GridToPosition(new Point(59, 69)) + new Vector2(0, -16));
             p13.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p14 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(64, 69)) + new Vector2(0, -16), Level.GridToPosition(new Point(62, 69)) + new Vector2(0, -16));
+            p13.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p14 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(64, 69)) + new Vector2(0, -16), Level.GridToPosition(new Point(62, 69)) + new Vector2(0, -16));
             p14.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p16 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(89, 39)) + new Vector2(0, -16), Level.GridToPosition(new Point(89, 39)) + new Vector2(0, -16));
+            p14.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p16 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(89, 39)) + new Vector2(0, -16), Level.GridToPosition(new Point(89, 39)) + new Vector2(0, -16));
             p16.SetPlayerMode(PlayerObjectMode.Two);
-            MovingPlatform p17 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2"), Level.GridToPosition(new Point(85, 38)) + new Vector2(0, -16), Level.GridToPosition(new Point(86, 38)) + new Vector2(0, -16));
+            p16.SetCollisionBox(128, 32, Vector2.Zero);
+            MovingPlatform p17 = gsPlay.AddReversePlatform(gsPlay.LoadTexture("TestSprites/platform2b"), Level.GridToPosition(new Point(85, 38)) + new Vector2(0, -16), Level.GridToPosition(new Point(86, 38)) + new Vector2(0, -16));
             p17.SetPlayerMode(PlayerObjectMode.Two);
+            p17.SetCollisionBox(128, 32, Vector2.Zero);
 
             //Lights
             //15,58
@@ -431,6 +490,7 @@ namespace WorldsApart.Code.Levels
                 case 0:
                     if (triggerState == TriggerState.Triggered && !gsPlay.gameStateManager.screenTransition)
                     {
+                        AudioManager.portal.Play();
                         bool isGood = true;
                         foreach (Portal portal in gsPlay.portalList)
                         {

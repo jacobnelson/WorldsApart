@@ -215,6 +215,8 @@ namespace WorldsApart.Code.Levels
                         {
                             if (sceneCounter == 120)
                             {
+                                AudioManager.worldShatter.Play();
+
                                 gsPlay.player1.visible = false;
                                 gsPlay.player2.visible = false;
                                 gsPlay.alphaDot.visible = false;
@@ -248,6 +250,8 @@ namespace WorldsApart.Code.Levels
                         {
                             if (sceneCounter == 120)
                             {
+                                AudioManager.worldShatter.Play();
+
                                 gsPlay.player1.visible = false;
                                 gsPlay.player2.visible = false;
                                 gsPlay.alphaDot.visible = false;

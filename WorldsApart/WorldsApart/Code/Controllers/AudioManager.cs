@@ -31,6 +31,12 @@ namespace WorldsApart.Code.Controllers
         public static SoundEffect bridgeBarrier;
         public static SoundEffect bridgeBreaking;
         public static SoundEffect worldShatter;
+        public static SoundEffect checkpoint;
+        public static SoundEffect signal;
+
+        public static SoundEffect pause;
+        public static SoundEffect menuMove;
+        public static SoundEffect menuSelect;
 
         static public void InitializeAudioManager(ContentManager cm)
         {
@@ -39,6 +45,30 @@ namespace WorldsApart.Code.Controllers
             soundBank = new SoundBank(audioEngine, "Content//Music//Sound Bank.xsb");
 
             //TODO: initialize SoundEffects
+            worldShatter = cm.Load<SoundEffect>("SFX/DimensionShatter");
+            doorClose = cm.Load<SoundEffect>("SFX/DoorClose");
+            doorOpen = cm.Load<SoundEffect>("SFX/DoorOpen");
+            portal = cm.Load<SoundEffect>("SFX/EnterPortal");
+            bridgeBarrier = cm.Load<SoundEffect>("SFX/HitBarrier");             
+            objectDestroyed = cm.Load<SoundEffect>("SFX/ObjectDestroyed");      
+            playerDie = cm.Load<SoundEffect>("SFX/PlayerDie");                 
+            playerRevive = cm.Load<SoundEffect>("SFX/PlayerRevive");
+            portalItem = cm.Load<SoundEffect>("SFX/PortalItemGet");
+            switchActivate = cm.Load<SoundEffect>("SFX/SwitchActivate");        
+            switchDeactivate = cm.Load<SoundEffect>("SFX/SwitchDeactivate");    
+            bridgeBreaking = cm.Load<SoundEffect>("SFX/ObjectDestroyed");       //Change 
+            playerJump = cm.Load<SoundEffect>("SFX/PlayerJump");                  
+            playerLand = cm.Load<SoundEffect>("SFX/PlayerLand");                  
+            playerPsyActivate = cm.Load<SoundEffect>("SFX/PsyActivate");        
+            playerPsyDeactivate = cm.Load<SoundEffect>("SFX/PsyDeactivate");      
+            checkpoint = worldShatter;                                          //Change?
+            signal = bridgeBarrier;                                             //Do  -> Change?
+
+            pause = cm.Load<SoundEffect>("SFX/pause");                          //Change
+            //menuMove = cm.Load<SoundEffect>("SFX/menuBlip");
+            menuMove = bridgeBarrier;
+            //menuSelect = cm.Load<SoundEffect>("SFX/menuSelect");
+            menuSelect = worldShatter;
         }
 
         static public void StopMusic()

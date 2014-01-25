@@ -58,6 +58,7 @@ namespace WorldsApart.Code.Gamestates
             {
                 //gameStateManager.SwitchToGSMenu();
                 gameStateManager.TransitionToGameState(this, GameStateType.GSMenu, 30);
+                AudioManager.worldShatter.Play();
             }
         }
 

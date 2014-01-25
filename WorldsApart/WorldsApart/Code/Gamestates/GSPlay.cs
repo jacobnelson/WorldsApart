@@ -506,6 +506,8 @@ namespace WorldsApart.Code.Gamestates
         public CircularPlatform AddCircularPlatform(Texture2D texture, Vector2 centerPosition, float radius, float duration)
         {
             CircularPlatform platform = new CircularPlatform(texture, centerPosition, radius);
+            if (texture == Art.door) platform.hitBox.SetSize(new Vector2(32,128));
+            if (texture == Art.platform) platform.hitBox.SetSize(new Vector2(96,32));
             platform.UpdateIncrement(duration);
             cPlatformList.Add(platform);
             return platform;
@@ -514,6 +516,8 @@ namespace WorldsApart.Code.Gamestates
         public CircularPlatform AddActivateCircularPlatform(Texture2D texture, Vector2 centerPosition, float radius, float duration)
         {
             CircularPlatform platform = new CircularPlatform(texture, centerPosition, radius);
+            if (texture == Art.door) platform.hitBox.SetSize(new Vector2(32,128));
+            if (texture == Art.platform) platform.hitBox.SetSize(new Vector2(96,32));
             platform.moving = false;
             platform.platformMode = PlatformMode.PressToActivate;
             platform.UpdateIncrement(duration);
@@ -524,6 +528,8 @@ namespace WorldsApart.Code.Gamestates
         public MovingPlatform AddPlatform(Texture2D texture, Vector2 startPosition, Vector2 endPosition)
         {
             MovingPlatform platform = new MovingPlatform(texture, startPosition, endPosition);
+            if (texture == Art.door) platform.hitBox.SetSize(new Vector2(32,128));
+            if (texture == Art.platform) platform.hitBox.SetSize(new Vector2(96,32));
             platformList.Add(platform);
             return platform;
         }
@@ -531,6 +537,8 @@ namespace WorldsApart.Code.Gamestates
         public MovingPlatform AddReversePlatform(Texture2D texture, Vector2 startPosition, Vector2 endPosition)
         {
             MovingPlatform platform = new MovingPlatform(texture, startPosition, endPosition);
+            if (texture == Art.door) platform.hitBox.SetSize(new Vector2(32,128));
+            if (texture == Art.platform) platform.hitBox.SetSize(new Vector2(96,32));
             platform.looping = false;
             platformList.Add(platform);
             return platform;
@@ -539,6 +547,8 @@ namespace WorldsApart.Code.Gamestates
         public MovingPlatform AddActivatePlatform(Texture2D texture, Vector2 startPosition, Vector2 endPosition)
         {
             MovingPlatform platform = new MovingPlatform(texture, startPosition, endPosition);
+            if (texture == Art.door) platform.hitBox.SetSize(new Vector2(32,128));
+            if (texture == Art.platform) platform.hitBox.SetSize(new Vector2(96,32));
             platform.platformerMode = PlatformMode.PressToActivate;
             platform.moving = false;
             platformList.Add(platform);
@@ -553,6 +563,8 @@ namespace WorldsApart.Code.Gamestates
 
             SpriteIMG bBase = AddFrontFGTile(LoadTexture("TestSprites/buttonBase"), position);
             bBase.origin = button.origin;
+
+            button.bBase = bBase;
 
             return button;
         }
@@ -597,6 +609,8 @@ namespace WorldsApart.Code.Gamestates
         {
 
             Door door = new Door(texture, openPosition, closePosition, state);
+            if (texture == Art.door) door.hitBox.SetSize(new Vector2(32,128));
+            if (texture == Art.platform) door.hitBox.SetSize(new Vector2(96,32));
             doorList.Add(door);
             return door;
         }
@@ -604,7 +618,24 @@ namespace WorldsApart.Code.Gamestates
         public Door AddFadingDoor(Texture2D texture, Vector2 position, OpenState state)
         {
             Door door = new Door(texture, position, state);
+            if (texture == Art.door) door.hitBox.SetSize(new Vector2(32,128));
+            if (texture == Art.platform) door.hitBox.SetSize(new Vector2(96,32));
             doorList.Add(door);
+            return door;
+        }
+
+        public Door AddFrontFadingDoor(Texture2D texture, Vector2 position, OpenState state, Vector2 offset, Vector2 collision)
+        {
+            Door door = new Door(texture, position, state);
+            door.SetCollisionBox(collision.X, collision.Y, Vector2.Zero);
+            door.visible = false;
+            doorList.Add(door);
+
+            MagicTile img = new MagicTile(texture, position + offset);
+            door.tileList.Add(img);
+            img.SetPlayerMode(PlayerObjectMode.One);
+            frontFGList.Add(img);
+
             return door;
         }
 
@@ -1026,6 +1057,28 @@ namespace WorldsApart.Code.Gamestates
             return gear;
         }
 
+        public SpriteIMG AddBGWarmGear(Texture2D texture, Vector2 position, float scale, float rotationSpeed, float parallaxRatio)
+        {
+            SpriteIMG gear = new SpriteIMG(texture, position);
+            gear.scale = new Vector2(scale);
+            gear.rotationSpeed = rotationSpeed;
+            AddParallax(gear, parallaxRatio);
+            gear.SetPlayerMode(PlayerObjectMode.One);
+            gear.origin = new Vector2(gear.texture.Width / 2, gear.texture.Height / 2);
+            return gear;
+        }
+
+        public SpriteIMG AddBGCoolGear(Texture2D texture, Vector2 position, float scale, float rotationSpeed, float parallaxRatio)
+        {
+            SpriteIMG gear = new SpriteIMG(texture, position);
+            gear.scale = new Vector2(scale);
+            gear.rotationSpeed = rotationSpeed;
+            AddParallax(gear, parallaxRatio);
+            gear.SetPlayerMode(PlayerObjectMode.Two);
+            gear.origin = new Vector2(gear.texture.Width / 2, gear.texture.Height / 2);
+            return gear;
+        }
+
         public void CreateGearMatte(Vector2 position)
         {
             AddBackgroundCoolGear(LoadTexture("GameObjects/gearCool1"), position + new Vector2(-53, -338), 1f, .1f);
@@ -1076,7 +1129,7 @@ namespace WorldsApart.Code.Gamestates
 
             if (!GameStateManager.isMultiplayer)
             {
-                if (InputManager.IsButtonPressed(Buttons.Back) || InputManager.IsKeyPressed(Keys.LeftShift))
+                if (InputManager.IsButtonPressed(Buttons.RightShoulder) || InputManager.IsButtonPressed(Buttons.LeftShoulder) || InputManager.IsKeyPressed(Keys.LeftShift))
                 {
                     ShiftPlayer();
                 }
@@ -1146,6 +1199,8 @@ namespace WorldsApart.Code.Gamestates
                 player2.stopInput = false;
             }
 
+            PhysState player1State = player1.state;
+            PhysState player2State = player2.state;
 
             player1.Update();
             player2.Update();
@@ -1256,6 +1311,9 @@ namespace WorldsApart.Code.Gamestates
             //    move.AdjustToPlayer(player1);
             //    move.AdjustToPlayer(player2);
             //}
+
+            //if (player1State != PhysState.Grounded && player1.state == PhysState.Grounded) AudioManager.playerLand.Play();
+            //if (player2State != PhysState.Grounded && player2.state == PhysState.Grounded) AudioManager.playerLand.Play();
 
             foreach (PortalParticles pp in ppList)
             {
@@ -1661,7 +1719,11 @@ namespace WorldsApart.Code.Gamestates
             foreach (CircularPlatform platform in cPlatformList) if (platform.playerVisible == PlayerObjectMode.One) platform.Draw(spriteBatch, camera);
             foreach (Moveable move in moveList) if (move.playerVisible == PlayerObjectMode.One) move.Draw(spriteBatch, camera);
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.One) pickUp.Draw(spriteBatch, camera);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.One) tile.Draw(spriteBatch, camera);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (Particle particle in particleList) if (particle.playerVisible == PlayerObjectMode.One) particle.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
@@ -1700,7 +1762,11 @@ namespace WorldsApart.Code.Gamestates
             foreach (CircularPlatform platform in cPlatformList) if (platform.playerVisible == PlayerObjectMode.Two) platform.Draw(spriteBatch, camera);
             foreach (Moveable move in moveList) if (move.playerVisible == PlayerObjectMode.Two) move.Draw(spriteBatch, camera);
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.Two) pickUp.Draw(spriteBatch, camera);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
             foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.Two) tile.Draw(spriteBatch, camera);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
             foreach (Particle particle in particleList) if (particle.playerVisible == PlayerObjectMode.Two) particle.Draw(spriteBatch, camera);
             spriteBatch.End();
             #endregion
@@ -1780,8 +1846,8 @@ namespace WorldsApart.Code.Gamestates
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            spriteBatch.Draw(alphaBGPlayer, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.Draw(nonAlphaBGPlayer, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(alphaBGPlayer, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
 
             //colorShader.Parameters["DestColor"].SetValue(Color.White.ToVector4());
@@ -1872,6 +1938,9 @@ namespace WorldsApart.Code.Gamestates
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, camera.transform);
                 }
             }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
             foreach (PickUpObj pickUp in pickUpList) if (pickUp.playerVisible == PlayerObjectMode.None) pickUp.Draw(spriteBatch, camera);
             foreach (SpriteIMG tile in frontFGList) if (tile.playerVisible == PlayerObjectMode.None) tile.Draw(spriteBatch, camera);

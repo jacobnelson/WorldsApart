@@ -18,6 +18,7 @@ namespace WorldsApart.Code.Gamestates
 
         SpriteIMG resume;
         SpriteIMG mainMenu;
+        SpriteIMG restart;
 
         bool firstBit = true;
 
@@ -36,21 +37,36 @@ namespace WorldsApart.Code.Gamestates
         {
             resume = new SpriteIMG(LoadTexture("TitleAssets/resume"), Game1.GetScreenCenter() + new Vector2(0, -50));
             mainMenu = new SpriteIMG(LoadTexture("TitleAssets/mainMenu"), Game1.GetScreenCenter() + new Vector2(0, 50));
+            restart = new SpriteIMG(LoadTexture("TitleAssets/restart"), Game1.GetScreenCenter() + new Vector2(0, 150));
 
             backdrop = new SpriteIMG(LoadTexture("TitleAssets/pauseBG"), Game1.GetScreenCenter());
+
+            AudioManager.pause.Play();
 
         }
 
         public void MenuUp()
         {
             menuIndex--;
-            if (menuIndex < 0) menuIndex = 0;
+            bool didIt = true;
+            if (menuIndex < 0)
+            {
+                menuIndex = 0;
+                didIt = false;
+            }
+            if (didIt) AudioManager.menuMove.Play();
         }
 
         public void MenuDown()
         {
             menuIndex++;
-            if (menuIndex > 1) menuIndex = 1;
+            bool didIt = true;
+            if (menuIndex > 2)
+            {
+                menuIndex = 2;
+                didIt = false;
+            }
+            if (didIt) AudioManager.menuMove.Play();
         }
 
         public override void Update(GameTime gameTime)
@@ -59,6 +75,7 @@ namespace WorldsApart.Code.Gamestates
 
             resume.Update();
             mainMenu.Update();
+            restart.Update();
 
             if (InputManager.IsButtonPressed(Buttons.DPadUp) || InputManager.IsKeyPressed(Keys.W) || InputManager.IsKeyPressed(Keys.Up) || InputManager.IsButtonPressed2(Buttons.DPadUp))
             {
@@ -113,17 +130,33 @@ namespace WorldsApart.Code.Gamestates
                 case 0:
                     ActivateItem(resume);
                     DeactivateItem(mainMenu);
+                    DeactivateItem(restart);
                     if (startPressed)
+                    {
                         gameStateManager.SwitchToGSPlay();
+                        AudioManager.pause.Play();
+                    }
                     break;
                 case 1:
                     DeactivateItem(resume);
                     ActivateItem(mainMenu);
+                    DeactivateItem(restart);
                     if (startPressed)
                     {
                         AudioManager.PlayMusic("Title");
+                        AudioManager.menuSelect.Play();
                         gameStateManager.currentLevel = 1;
                         gameStateManager.SwitchToGSMenu();
+                    }
+                    break;
+                case 2:
+                    DeactivateItem(resume);
+                    ActivateItem(restart);
+                    DeactivateItem(mainMenu);
+                    if (startPressed)
+                    {
+                        gameStateManager.TransitionToGameState(this, GameStateType.GSPlay, 30);
+                        AudioManager.menuSelect.Play();
                     }
                     break;
             }
@@ -162,6 +195,7 @@ namespace WorldsApart.Code.Gamestates
             backdrop.Draw(spriteBatch);
             resume.Draw(spriteBatch);
             mainMenu.Draw(spriteBatch);
+            restart.Draw(spriteBatch);
 
 
             spriteBatch.End();

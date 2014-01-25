@@ -196,6 +196,7 @@ namespace WorldsApart.Code.Entities
         public virtual void Die()
         {
             GSPlay.AddObjectDeath(position);
+            AudioManager.objectDestroyed.Play();
             position = new Vector2(checkpoint.X, checkpoint.Y);
             hitBox.SetPosition(position);
             speed = Vector2.Zero;

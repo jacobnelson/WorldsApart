@@ -148,6 +148,7 @@ namespace WorldsApart.Code.Levels
                 case 1:
 
                     atmosphereLight = Color.White;
+                    
                     //barrierCounter += Time.GetSeconds();
                     //if (barrierCounter >= barrierRate)
                     //{
@@ -163,6 +164,7 @@ namespace WorldsApart.Code.Levels
 
                     if (barrier.hitBox.CheckCollision(gsPlay.player1.hitBox))
                     {
+                        AudioManager.bridgeBarrier.Play();
                         gsPlay.player1.nextForce.X = 5;
                         Vector2 pos = new Vector2(barrier.position.X, gsPlay.player1.position.Y);
                         Particle p = gsPlay.AddParticle(Art.barrier, pos);
@@ -179,6 +181,7 @@ namespace WorldsApart.Code.Levels
                     }
                     if (barrier.hitBox.CheckCollision(gsPlay.player2.hitBox))
                     {
+                        AudioManager.bridgeBarrier.Play();
                         gsPlay.player2.nextForce.X = -5;
                         Vector2 pos = new Vector2(barrier.position.X, gsPlay.player2.position.Y);
                         Particle p = gsPlay.AddParticle(Art.barrier, pos);
@@ -211,6 +214,8 @@ namespace WorldsApart.Code.Levels
 
         public void ShatterBridge()
         {
+            AudioManager.bridgeBreaking.Play();
+
             bridgeShattered = true;
 
             //62, 15
